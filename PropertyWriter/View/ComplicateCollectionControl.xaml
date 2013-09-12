@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="PropertyWriter.View.ComplicateCollectionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+						 xmlns:local="clr-namespace:PropertyWriter.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="3*"/>
+		</Grid.ColumnDefinitions>
+		
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+
+			<ListBox 
+				Name="dataList"
+				ItemsSource="{Binding Collection}"
+				SelectionChanged="dataList_SelectionChanged"
+				Grid.Row="0">
+				<ListBox.Resources>
+					<DataTemplate DataType="{x:Type local:ClassInstance}">
+						<TextBlock Text="{Binding FormatedString}"/>
+					</DataTemplate>
+				</ListBox.Resources>
+			</ListBox>
+
+			<Grid Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+
+				<Button Name="addButton" Content="追加" Click="addButton_Click" Grid.Column="0"/>
+				<Button Name="removeButton" Content="削除" Click="removeButton_Click" Grid.Column="1"/>
+			</Grid>
+		</Grid>
+
+		<ContentControl Name="propertyContent" Focusable="False" Grid.Column="1">
+			<ContentControl.Resources>
+				<ResourceDictionary Source="BlockProperty.xaml"/>
+			</ContentControl.Resources>
+		</ContentControl>
+
+	</Grid>
+</UserControl>

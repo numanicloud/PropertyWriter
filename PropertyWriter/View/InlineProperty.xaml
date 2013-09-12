@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+										xmlns:local="clr-namespace:PropertyWriter.Model">
+    
+	<DataTemplate DataType="{x:Type local:PropertyInstance}">
+		<StackPanel Orientation="Horizontal" Margin="2">
+			<TextBlock Text="{Binding PropertyInfo.Name}" Width="50" TextAlignment="Right"/>
+			<TextBlock Text=":"/>
+			<ContentControl Content="{Binding Instance}" Focusable="False" />
+		</StackPanel>
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type local:ClassInstance}">
+		<TextBlock Text="{Binding FormatedString}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type local:IntInstance}">
+		<TextBox Text="{Binding Path=IntValue}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type local:BoolInstance}">
+		<CheckBox IsChecked="{Binding Path=BoolValue}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type local:StringInstance}">
+		<TextBox Text="{Binding Path=StringValue}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type local:FloatInstance}">
+		<TextBox Text="{Binding Path=FloatValue}"/>
+	</DataTemplate>
+
+</ResourceDictionary>
