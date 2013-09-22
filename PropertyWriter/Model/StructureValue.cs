@@ -28,7 +28,8 @@ namespace PropertyWriter.Model
 
 		void __OnValueChanged( PropertyInstance instance )
 		{
-			instance.PropertyInfo.SetValue( Value, instance.Instance.Value );
+			var value = InstanceConverter.Convert( instance.Instance.Value, instance.PropertyInfo.PropertyType );
+			instance.PropertyInfo.SetValue( Value, value );
 			OnValueChanged();
 		}
 	}

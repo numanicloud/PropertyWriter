@@ -30,6 +30,23 @@ namespace PropertyWriter.Model
 		public override event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 		internal static readonly string ValueName = PropertyName<BasicCollectionInstance>.Get( _ => _.Value );
 
+		public override string FormatedString
+		{
+			get { return "Count = " + Collection.Count; }
+		}
+
+
+		public void AddNewProperty()
+		{
+			CollectionValue.AddNewProperty();
+		}
+
+		public void RemoveAt( int index )
+		{
+			CollectionValue.RemoveAt( index );
+		}
+
+
 		private CollectionValue CollectionValue { get; set; }
 	}
 }

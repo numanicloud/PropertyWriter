@@ -31,7 +31,6 @@ namespace PropertyWriter.Model
 
 		#endregion
 
-
 		public override event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 		internal static readonly string ValueName = PropertyName<BoolInstance>.Get( _ => _.Value );
 	}

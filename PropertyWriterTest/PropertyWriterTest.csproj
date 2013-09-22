@@ -56,6 +56,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ChainingAssertion.MSTest.cs" />
+    <Compile Include="InstanceConverterTest.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="TypeParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

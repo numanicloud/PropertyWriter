@@ -12,7 +12,7 @@ namespace PropertyWriter.Model
 	abstract class Instance : IInstance
 	{
 		public abstract object Value { get; }
-		public string FormatedString
+		public virtual string FormatedString
 		{
 			get { return Value.ToString(); }
 		}

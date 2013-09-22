@@ -1,11 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-										xmlns:local="clr-namespace:PropertyWriter.Model">
+										xmlns:local="clr-namespace:PropertyWriter.Model"
+										x:Class="PropertyWriter.View.InlineProperty">
     
 	<DataTemplate DataType="{x:Type local:PropertyInstance}">
-		<StackPanel Orientation="Horizontal" Margin="2">
+		<StackPanel Orientation="Horizontal" Margin="2" Height="24">
 			<TextBlock Text="{Binding PropertyInfo.Name}" Width="50" TextAlignment="Right"/>
-			<TextBlock Text=":"/>
+			<TextBlock Text=":" Margin="4 0"/>
 			<ContentControl Content="{Binding Instance}" Focusable="False" />
 		</StackPanel>
 	</DataTemplate>
@@ -19,7 +20,7 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:BoolInstance}">
-		<CheckBox IsChecked="{Binding Path=BoolValue}"/>
+		<CheckBox IsChecked="{Binding Path=BoolValue}" VerticalAlignment="Center"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:StringInstance}">
@@ -28,6 +29,19 @@
 
 	<DataTemplate DataType="{x:Type local:FloatInstance}">
 		<TextBox Text="{Binding Path=FloatValue}"/>
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type local:EnumInstance}">
+		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue}"/>
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">
+		<StackPanel Orientation="Horizontal">
+			<Button Content="編集" Click="OpenBasicCollection"/>
+			<TextBlock Text=" (" />
+			<TextBlock Text="{Binding Path=FormatedString}" />
+			<TextBlock Text=")" />
+		</StackPanel>
 	</DataTemplate>
 
 </ResourceDictionary>

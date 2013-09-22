@@ -13,8 +13,9 @@ namespace PropertyWriter.Model
 		{
 			this.itemType = type.GenericTypeArguments[0];
 
-			var listType = typeof( List<> ).MakeGenericType( this.itemType );
-			Value = Activator.CreateInstance( listType ) as IEnumerable<object>;
+			Value = Array.CreateInstance( itemType, 0 )
+				.Cast<object>()
+				.ToArray();
 
 			Collection = new ObservableCollection<IInstance>();
 			Collection.CollectionChanged += Collection_CollectionChanged;
