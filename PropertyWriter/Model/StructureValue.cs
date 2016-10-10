@@ -9,7 +9,7 @@ namespace PropertyWriter.Model
 	{
 		public StructureValue( Type type )
 		{
-			Properties = type.GetProperties()
+			Properties = DllLoader.LoadProperties( type )
 				.Select( _ => new PropertyInstance( _ ) )
 				.ToArray();
 			Properties.ForEach( _ => _.OnValueChanged += __OnValueChanged );

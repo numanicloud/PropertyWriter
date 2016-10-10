@@ -27,11 +27,25 @@ namespace TestDll
 		public Enum1 Enum1 { get; set; }
 		[DataMember]
 		public IEnumerable<int> IntCollection { get; set; }
+		[DataMember]
+		public Class2 ClassValue { get; set; }
 		public int NonEdit { get; set; }
 
 		public override string ToString()
 		{
 			return string.Format( "({0},{1},{2})", X, Boolean, Enum1 );
+		}
+	}
+	
+	[DataContract]
+	public class Class2
+	{
+		[DataMember]
+		public int Y { get; set; }
+
+		public override string ToString()
+		{
+			return string.Format( "Y = {0}", Y );
 		}
 	}
 }

@@ -68,15 +68,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BasicCollectionWindow.xaml">
+    <Page Include="View\BlockWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ClassControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ComplicateCollectionControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -121,19 +121,20 @@
     <Compile Include="Model\TargetOfEdit.cs" />
     <Compile Include="Model\TypeParser.cs" />
     <Compile Include="Model\Instance\ComplicateCollectionInstance.cs" />
+    <Compile Include="Model\TypeStore.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\BasicCollectionControl.xaml.cs">
       <DependentUpon>BasicCollectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BasicCollectionWindow.xaml.cs">
-      <DependentUpon>BasicCollectionWindow.xaml</DependentUpon>
+    <Compile Include="View\BlockWindow.xaml.cs">
+      <DependentUpon>BlockWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ClassControl.xaml.cs">
+      <DependentUpon>ClassControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ComplicateCollectionControl.xaml.cs">
       <DependentUpon>ComplicateCollectionControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\EditorWindow.xaml.cs">
-      <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\PropertyEditor.cs" />
     <Compile Include="ViewModel\TypeSelectViewModel.cs" />

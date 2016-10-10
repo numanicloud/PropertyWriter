@@ -43,6 +43,10 @@ namespace PropertyWriter.View
 			{
 				property.RemoveAt( index );
 				propertyContent.Content = null;
+				if( index < dataList.Items.Count )
+				{
+					dataList.SelectedIndex = index;
+				}
 			}
 		}
 

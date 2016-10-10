@@ -8,10 +8,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="2*"/>
-			<ColumnDefinition Width="3*"/>
+			<ColumnDefinition Width="2*" MinWidth="100"/>
+			<ColumnDefinition Width="3*" MinWidth="100"/>
 		</Grid.ColumnDefinitions>
-		
+
 		<Grid Grid.Column="0">
 			<Grid.RowDefinitions>
 				<RowDefinition/>
@@ -41,11 +41,13 @@
 			</Grid>
 		</Grid>
 
-		<ContentControl Name="propertyContent" Focusable="False" Grid.Column="1">
+		<ContentControl Name="propertyContent" Focusable="False" Grid.Column="1" Margin="5,0,0,0">
 			<ContentControl.Resources>
 				<ResourceDictionary Source="BlockProperty.xaml"/>
 			</ContentControl.Resources>
 		</ContentControl>
+
+		<GridSplitter Focusable="False" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" Background="Transparent"/>
 
 	</Grid>
 </UserControl>

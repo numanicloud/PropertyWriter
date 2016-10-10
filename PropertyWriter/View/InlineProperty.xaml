@@ -10,9 +10,14 @@
 			<ContentControl Content="{Binding Instance}" Focusable="False" />
 		</StackPanel>
 	</DataTemplate>
-	
+
 	<DataTemplate DataType="{x:Type local:ClassInstance}">
-		<TextBlock Text="{Binding FormatedString}"/>
+		<StackPanel Orientation="Horizontal">
+			<Button Content="編集" Click="OpenBlockWindow"/>
+			<TextBlock Text=" (" />
+			<TextBlock Text="{Binding Path=FormatedString}" />
+			<TextBlock Text=")" />
+		</StackPanel>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:IntInstance}">
@@ -24,7 +29,7 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:StringInstance}">
-		<TextBox Text="{Binding Path=StringValue}"/>
+		<TextBox Text="{Binding Path=StringValue}" AcceptsReturn="True" TextWrapping="WrapWithOverflow"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:FloatInstance}">
@@ -37,7 +42,16 @@
 	
 	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">
 		<StackPanel Orientation="Horizontal">
-			<Button Content="編集" Click="OpenBasicCollection"/>
+			<Button Content="編集" Click="OpenBlockWindow"/>
+			<TextBlock Text=" (" />
+			<TextBlock Text="{Binding Path=FormatedString}" />
+			<TextBlock Text=")" />
+		</StackPanel>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type local:ComplicateCollectionInstance}">
+		<StackPanel Orientation="Horizontal">
+			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />
 			<TextBlock Text="{Binding Path=FormatedString}" />
 			<TextBlock Text=")" />

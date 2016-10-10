@@ -9,10 +9,7 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:ClassInstance}">
-		<DataTemplate.Resources>
-			<ResourceDictionary Source="InlineProperty.xaml"/>
-		</DataTemplate.Resources>
-		<ItemsControl ItemsSource="{Binding Properties}" Focusable="False" Margin="5"/>
+		<c:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:IntInstance}">
@@ -21,6 +18,14 @@
 
 	<DataTemplate DataType="{x:Type local:BoolInstance}">
 		<CheckBox IsChecked="{Binding Path=BoolValue}"/>
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">
+		<c:BasicCollectionControl
+			HorizontalAlignment="Stretch" 
+			VerticalAlignment="Stretch"
+			DataContext="{Binding Path=.}"
+			Padding="8"/>
 	</DataTemplate>
 
 </ResourceDictionary>
