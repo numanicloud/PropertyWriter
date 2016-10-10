@@ -3,7 +3,7 @@
 										xmlns:local="clr-namespace:PropertyWriter.Model"
 										x:Class="PropertyWriter.View.InlineProperty">
     
-	<DataTemplate DataType="{x:Type local:PropertyInstance}">
+	<DataTemplate DataType="{x:Type local:InstanceAndPropertyInfo}">
 		<StackPanel Orientation="Horizontal" Margin="2" Height="24">
 			<TextBlock Text="{Binding PropertyInfo.Name}" Width="50" TextAlignment="Right"/>
 			<TextBlock Text=":" Margin="4 0"/>
@@ -15,36 +15,36 @@
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />
-			<TextBlock Text="{Binding Path=FormatedString}" />
+			<TextBlock Text="{Binding Path=FormatedString.Value}" />
 			<TextBlock Text=")" />
 		</StackPanel>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:IntInstance}">
-		<TextBox Text="{Binding Path=IntValue}"/>
+		<TextBox Text="{Binding Path=IntValue.Value}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:BoolInstance}">
-		<CheckBox IsChecked="{Binding Path=BoolValue}" VerticalAlignment="Center"/>
+		<CheckBox IsChecked="{Binding Path=BoolValue.Value}" VerticalAlignment="Center"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:StringInstance}">
-		<TextBox Text="{Binding Path=StringValue}" AcceptsReturn="True" TextWrapping="WrapWithOverflow"/>
+		<TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:FloatInstance}">
-		<TextBox Text="{Binding Path=FloatValue}"/>
+		<TextBox Text="{Binding Path=FloatValue.Value}"/>
 	</DataTemplate>
 	
 	<DataTemplate DataType="{x:Type local:EnumInstance}">
-		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue}"/>
+		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
 	</DataTemplate>
 	
 	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />
-			<TextBlock Text="{Binding Path=FormatedString}" />
+			<TextBlock Text="{Binding Path=FormatedString.Value}" />
 			<TextBlock Text=")" />
 		</StackPanel>
 	</DataTemplate>
@@ -53,7 +53,7 @@
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />
-			<TextBlock Text="{Binding Path=FormatedString}" />
+			<TextBlock Text="{Binding Path=FormatedString.Value}" />
 			<TextBlock Text=")" />
 		</StackPanel>
 	</DataTemplate>

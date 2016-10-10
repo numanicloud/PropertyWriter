@@ -13,11 +13,11 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:IntInstance}">
-		<TextBox Text="{Binding Path=IntValue}"/>
+		<TextBox Text="{Binding Path=IntValue.Value}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type local:BoolInstance}">
-		<CheckBox IsChecked="{Binding Path=BoolValue}"/>
+		<CheckBox IsChecked="{Binding Path=BoolValue.Value}"/>
 	</DataTemplate>
 	
 	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">

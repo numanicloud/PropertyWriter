@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
@@ -13,23 +15,14 @@ namespace PropertyWriter.Model
 		{
 			this.itemType = type.GenericTypeArguments[0];
 
-			Value = Array.CreateInstance( itemType, 0 )
-				.Cast<object>()
-				.ToArray();
-
 			Collection = new ObservableCollection<IInstance>();
-			Collection.CollectionChanged += Collection_CollectionChanged;
-			Collection.ForEach(
-				( _, i ) => _.PropertyChanged +=
-					( sender, e ) => OnPropertyChanged( i, _.Value ) );
 		}
 
-		public IEnumerable<object> Value { get; private set; }
+		public ReactiveProperty<IEnumerable<object>> Value => Collection.ToCollectionChanged()
+			.Select(x => Collection.Cast<object>())
+			.ToReactiveProperty();
 
-		public ObservableCollection<IInstance> Collection { get; private set; }
-
-
-		public event Action OnValueChanged;
+		public ObservableCollection<IInstance> Collection { get; }
 
 		public void AddNewProperty()
 		{
@@ -42,19 +35,6 @@ namespace PropertyWriter.Model
 			Collection.RemoveAt( index );
 		}
 
-
 		private Type itemType { get; set; }
-
-		private void Collection_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
-		{
-			Value = Collection.Select( _ => _.Value ).ToArray();
-			OnValueChanged();
-		}
-
-		private void OnPropertyChanged( int index, object newValue )
-		{
-			Value = Value.Select( ( _, i ) => i == index ? _ : newValue ).ToArray();
-			OnValueChanged();
-		}
 	}
 }

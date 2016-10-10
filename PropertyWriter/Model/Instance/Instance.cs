@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using MvvmHelper;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	class IntInstance : Instance
+	abstract class Instance : IInstance
 	{
-		public ReactiveProperty<int> IntValue { get; } = new ReactiveProperty<int>();
-		public override ReactiveProperty<object> Value => IntValue.Select(x => (object)x)
+		public abstract ReactiveProperty<object> Value { get; }
+		public virtual ReactiveProperty<string> FormatedString => Value.Select(x => x.ToString())
 			.ToReactiveProperty();
 	}
 }

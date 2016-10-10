@@ -2,35 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
 	class StructureValue
 	{
-		public StructureValue( Type type )
+		public StructureValue(Type type)
 		{
-			Properties = DllLoader.LoadProperties( type )
-				.Select( _ => new PropertyInstance( _ ) )
+			Properties = DllLoader.LoadProperties(type)
+				.Select(_ => new InstanceAndPropertyInfo(_))
 				.ToArray();
-			Properties.ForEach( _ => _.OnValueChanged += __OnValueChanged );
-			this.Value = Activator.CreateInstance( type );
+
+			Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
+
+			foreach (var property in Properties)
+			{
+				property.Instance.Value.Subscribe(x =>
+				{
+					var value = InstanceConverter.Convert(x, property.PropertyInfo.PropertyType);
+					property.PropertyInfo.SetValue(Value.Value, value);
+				});
+			}
 		}
 
-		public IEnumerable<IInstance> Instances
-		{
-			get { return Properties.Select( _ => _.Instance ).ToArray(); }
-		}
-		public IEnumerable<PropertyInstance> Properties { get; private set; }
-		public object Value { get; private set; }
+		public IEnumerable<IInstance> Instances => Properties.Select(_ => _.Instance).ToArray();
 
-		public event Action OnValueChanged;
+		public IEnumerable<InstanceAndPropertyInfo> Properties { get; }
 
-
-		void __OnValueChanged( PropertyInstance instance )
-		{
-			var value = InstanceConverter.Convert( instance.Instance.Value, instance.PropertyInfo.PropertyType );
-			instance.PropertyInfo.SetValue( Value, value );
-			OnValueChanged();
-		}
+		public ReactiveProperty<object> Value { get; }
 	}
 }

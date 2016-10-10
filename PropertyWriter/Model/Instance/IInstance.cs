@@ -5,11 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	interface IInstance : INotifyPropertyChanged
+	interface IInstance
 	{
-		object Value { get; }
+		ReactiveProperty<object> Value { get; }
 	}
 }

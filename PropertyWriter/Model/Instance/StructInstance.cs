@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using MvvmHelper;
+using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
@@ -18,22 +20,25 @@ namespace PropertyWriter.Model
 			}
 
 			StructValue = new StructureValue( type );
-			StructValue.OnValueChanged += () => PropertyChanged.Raise( this, ValueName, FormatedStringName );
 		}
 
-		public IEnumerable<IInstance> Instances
-		{
-			get { return StructValue.Instances; }
-		}
+		public IEnumerable<IInstance> Instances => StructValue.Instances;
+		public override ReactiveProperty<object> Value => StructValue.Value;
 
-		public override object Value
+		public override ReactiveProperty<string> FormatedString
 		{
-			get { return StructValue.Value; }
+			get
+			{
+				var events = StructValue.Properties
+					.Select(x => x.Instance.Value)
+					.Cast<IObservable<object>>()
+					.ToArray();
+				return Observable.Merge(events)
+					.Select(x => Value.Value.ToString())
+					.ToReactiveProperty();
+			}
 		}
 
 		private StructureValue StructValue { get; set; }
-
-		public override event PropertyChangedEventHandler PropertyChanged;
-		internal static readonly string ValueName = PropertyName<EnumInstance>.Get( _ => _.Value );
 	}
 }

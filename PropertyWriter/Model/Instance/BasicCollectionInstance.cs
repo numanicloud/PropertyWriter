@@ -4,36 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reactive.Linq;
 using System.Reflection;
 using MvvmHelper;
+using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
 	class BasicCollectionInstance : Instance
 	{
-		public BasicCollectionInstance( Type type )
+		public BasicCollectionInstance(Type type)
 		{
-			CollectionValue = new CollectionValue( type );
-			CollectionValue.OnValueChanged += () => PropertyChanged.Raise( this, ValueName, FormatedStringName );
+			CollectionValue = new CollectionValue(type);
 		}
 
-		public ObservableCollection<IInstance> Collection
-		{
-			get { return CollectionValue.Collection; }
-		}
+		public ObservableCollection<IInstance> Collection => CollectionValue.Collection;
 
-		public override object Value
-		{
-			get { return CollectionValue.Value; }
-		}
-
-		public override event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-		internal static readonly string ValueName = PropertyName<BasicCollectionInstance>.Get( _ => _.Value );
-
-		public override string FormatedString
-		{
-			get { return "Count = " + Collection.Count; }
-		}
+		public override ReactiveProperty<object> Value => CollectionValue.Value
+			.Cast<object>()
+			.ToReactiveProperty();
+		public override ReactiveProperty<string> FormatedString => Collection.ToCollectionChanged()
+			.Select(x => "Count = " + Collection.Count)
+			.ToReactiveProperty();
 
 
 		public void AddNewProperty()
@@ -41,9 +33,9 @@ namespace PropertyWriter.Model
 			CollectionValue.AddNewProperty();
 		}
 
-		public void RemoveAt( int index )
+		public void RemoveAt(int index)
 		{
-			CollectionValue.RemoveAt( index );
+			CollectionValue.RemoveAt(index);
 		}
 
 

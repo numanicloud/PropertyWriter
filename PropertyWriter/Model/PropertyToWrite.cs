@@ -6,37 +6,23 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmHelper;
+using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	class PropertyToWrite : INotifyPropertyChanged
+	class PropertyToWrite
 	{
-		public PropertyToWrite( PropertyInfo info )
+		public PropertyToWrite(PropertyInfo info)
 		{
 			this.Info = info;
-			Value = Activator.CreateInstance( info.PropertyType );
+			Value = new ReactiveProperty<object>
+			{
+				Value = Activator.CreateInstance(info.PropertyType)
+			};
 		}
 
 		public PropertyInfo Info { get; private set; }
 
-		#region Value
-
-		public object Value
-		{
-			get { return _Value; }
-			set
-			{
-				_Value = value;
-				PropertyChanged.Raise( this, ValueName );
-			}
-		}
-
-		private object _Value;
-		internal static readonly string ValueName = PropertyName<PropertyToWrite>.Get( _ => _.Value );
-
-		#endregion
-
-
-		public event PropertyChangedEventHandler PropertyChanged;
+		public ReactiveProperty<object> Value { get; set; }
 	}
 }

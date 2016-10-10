@@ -28,7 +28,7 @@
 			</MenuItem>
 		</Menu>
 
-		<ContentControl Content="{Binding Root}" Grid.Row="1" Focusable="False" Margin="8">
+		<ContentControl Content="{Binding Root.Value}" Grid.Row="1" Focusable="False" Margin="8">
 			<ContentControl.Resources>
 				<ResourceDictionary Source="BlockProperty.xaml" />
 			</ContentControl.Resources>
