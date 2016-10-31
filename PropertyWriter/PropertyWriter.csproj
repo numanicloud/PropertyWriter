@@ -122,10 +122,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TypeSelectWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -163,17 +159,12 @@
     <Compile Include="View\ComplicateCollectionControl.xaml.cs">
       <DependentUpon>ComplicateCollectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\TypeSelectViewModel.cs" />
     <Compile Include="View\GridHelpers.cs" />
     <Compile Include="View\InlineProperty.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PhantomPanel.cs" />
-    <Compile Include="View\TypeSelectWindow.xaml.cs">
-      <DependentUpon>TypeSelectWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
