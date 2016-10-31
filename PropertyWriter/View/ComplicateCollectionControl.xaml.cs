@@ -25,38 +25,5 @@ namespace PropertyWriter.View
 		{
 			InitializeComponent();
 		}
-
-		private ComplicateCollectionInstance property
-		{
-			get { return DataContext as ComplicateCollectionInstance; }
-		}
-
-		private void addButton_Click( object sender, RoutedEventArgs e )
-		{
-			property.AddNewProperty();
-		}
-
-		private void removeButton_Click( object sender, RoutedEventArgs e )
-		{
-			var index = dataList.SelectedIndex;
-			if( index != -1 )
-			{
-				property.RemoveAt( index );
-				propertyContent.Content = null;
-				if( index < dataList.Items.Count )
-				{
-					dataList.SelectedIndex = index;
-				}
-			}
-		}
-
-		private void dataList_SelectionChanged( object sender, SelectionChangedEventArgs e )
-		{
-			var index = dataList.SelectedIndex;
-			if( index != -1 )
-			{
-				propertyContent.Content = property.Collection[dataList.SelectedIndex];
-			}
-		}
 	}
 }

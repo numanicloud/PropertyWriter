@@ -132,27 +132,24 @@
     </Compile>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Model\InstanceConverter.cs" />
-    <Compile Include="Model\Instance\BasicCollectionInstance.cs" />
-    <Compile Include="Model\Instance\BoolInstance.cs" />
-    <Compile Include="Model\Instance\ClassInstance.cs" />
-    <Compile Include="Model\CollectionValue.cs" />
+    <Compile Include="Model\Instance\BasicCollectionModel.cs" />
+    <Compile Include="Model\Instance\BoolModel.cs" />
+    <Compile Include="Model\Instance\ClassModel.cs" />
+    <Compile Include="Model\Instance\CollectionHolder.cs" />
     <Compile Include="Model\DllLoader.cs" />
-    <Compile Include="Model\Instance\EnumInstance.cs" />
-    <Compile Include="Model\Instance\FloatInstance.cs" />
-    <Compile Include="Model\Instance\IntInstance.cs" />
-    <Compile Include="Model\Instance\IInstance.cs" />
-    <Compile Include="Model\Instance\Instance.cs" />
+    <Compile Include="Model\Instance\EnumModel.cs" />
+    <Compile Include="Model\Instance\FloatModel.cs" />
+    <Compile Include="Model\Instance\IntModel.cs" />
+    <Compile Include="Model\Instance\IPropertyModel.cs" />
+    <Compile Include="Model\Instance\PropertyModel.cs" />
     <Compile Include="Model\PropertyFactory.cs" />
     <Compile Include="Model\InstanceAndPropertyInfo.cs" />
-    <Compile Include="Model\PropertyToWrite.cs" />
-    <Compile Include="Model\Instance\StringInstance.cs" />
-    <Compile Include="Model\Instance\StructInstance.cs" />
-    <Compile Include="Model\StructureValue.cs" />
-    <Compile Include="Model\TargetOfEdit.cs" />
+    <Compile Include="Model\Instance\StringModel.cs" />
+    <Compile Include="Model\Instance\StructModel.cs" />
+    <Compile Include="Model\Instance\StructureHolder.cs" />
+    <Compile Include="Model\MasterInfo.cs" />
     <Compile Include="Model\TypeParser.cs" />
-    <Compile Include="Model\Instance\ComplicateCollectionInstance.cs" />
-    <Compile Include="Model\TypeStore.cs" />
-    <Compile Include="ViewModel\EditorViewModel.cs" />
+    <Compile Include="Model\Instance\ComplicateCollectionModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\BasicCollectionControl.xaml.cs">
       <DependentUpon>BasicCollectionControl.xaml</DependentUpon>
@@ -166,12 +163,13 @@
     <Compile Include="View\ComplicateCollectionControl.xaml.cs">
       <DependentUpon>ComplicateCollectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\PropertyEditor.cs" />
     <Compile Include="ViewModel\TypeSelectViewModel.cs" />
+    <Compile Include="View\GridHelpers.cs" />
     <Compile Include="View\InlineProperty.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PhantomPanel.cs" />
     <Compile Include="View\TypeSelectWindow.xaml.cs">
       <DependentUpon>TypeSelectWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

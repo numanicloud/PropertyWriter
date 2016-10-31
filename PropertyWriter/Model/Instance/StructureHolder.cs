@@ -6,9 +6,9 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	class StructureValue
+	class StructureHolder
 	{
-		public StructureValue(Type type)
+		public StructureHolder(Type type)
 		{
 			Properties = DllLoader.LoadProperties(type)
 				.Select(_ => new InstanceAndPropertyInfo(_))
@@ -26,7 +26,7 @@ namespace PropertyWriter.Model
 			}
 		}
 
-		public IEnumerable<IInstance> Instances => Properties.Select(_ => _.Instance).ToArray();
+		public IEnumerable<IPropertyModel> Instances => Properties.Select(_ => _.Instance).ToArray();
 
 		public IEnumerable<InstanceAndPropertyInfo> Properties { get; }
 

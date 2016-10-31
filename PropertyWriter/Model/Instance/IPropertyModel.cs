@@ -9,7 +9,7 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	interface IInstance
+	interface IPropertyModel
 	{
 		ReactiveProperty<object> Value { get; }
 	}

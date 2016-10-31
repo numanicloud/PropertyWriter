@@ -11,7 +11,7 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:ClassInstance}">
+	<DataTemplate DataType="{x:Type local:ClassModel}">
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />
@@ -20,27 +20,27 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:IntInstance}">
-		<TextBox Text="{Binding Path=IntValue.Value}"/>
+	<DataTemplate DataType="{x:Type local:IntModel}">
+		<TextBox Text="{Binding Path=IntValue.Value}" MinWidth="100" Height="24"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:BoolInstance}">
+	<DataTemplate DataType="{x:Type local:BoolModel}">
 		<CheckBox IsChecked="{Binding Path=BoolValue.Value}" VerticalAlignment="Center"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:StringInstance}">
-		<TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow"/>
+	<DataTemplate DataType="{x:Type local:StringModel}">
+		<TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="24" MinWidth="100"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:FloatInstance}">
-		<TextBox Text="{Binding Path=FloatValue.Value}"/>
+	<DataTemplate DataType="{x:Type local:FloatModel}">
+		<TextBox Text="{Binding Path=FloatValue.Value}" Height="24" MinWidth="100"/>
 	</DataTemplate>
 	
-	<DataTemplate DataType="{x:Type local:EnumInstance}">
+	<DataTemplate DataType="{x:Type local:EnumModel}">
 		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
 	</DataTemplate>
 	
-	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">
+	<DataTemplate DataType="{x:Type local:BasicCollectionModel}">
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />
@@ -49,7 +49,7 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:ComplicateCollectionInstance}">
+	<DataTemplate DataType="{x:Type local:ComplicateCollectionModel}">
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
 			<TextBlock Text=" (" />

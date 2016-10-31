@@ -11,7 +11,7 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	abstract class Instance : IInstance
+	abstract class PropertyModel : IPropertyModel
 	{
 		public abstract ReactiveProperty<object> Value { get; }
 		public virtual ReactiveProperty<string> FormatedString => Value.Select(x => x.ToString())

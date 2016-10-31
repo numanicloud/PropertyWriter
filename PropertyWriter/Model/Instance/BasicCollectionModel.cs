@@ -11,14 +11,14 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	class BasicCollectionInstance : Instance
+	class BasicCollectionModel : PropertyModel
 	{
-		public BasicCollectionInstance(Type type)
+		public BasicCollectionModel(Type type)
 		{
-			CollectionValue = new CollectionValue(type);
+			CollectionValue = new CollectionHolder(type);
 		}
 
-		public ObservableCollection<IInstance> Collection => CollectionValue.Collection;
+		public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
 
 		public override ReactiveProperty<object> Value => CollectionValue.Value
 			.Cast<object>()
@@ -39,6 +39,6 @@ namespace PropertyWriter.Model
 		}
 
 
-		private CollectionValue CollectionValue { get; set; }
+		private CollectionHolder CollectionValue { get; set; }
 	}
 }

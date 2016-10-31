@@ -19,6 +19,6 @@ namespace PropertyWriter.Model
 		}
 
 		public PropertyInfo PropertyInfo { get; private set; }
-		public IInstance Instance { get; set; }
+		public IPropertyModel Instance { get; set; }
 	}
 }

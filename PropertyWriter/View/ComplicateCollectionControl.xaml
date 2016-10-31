@@ -6,6 +6,7 @@
 						 xmlns:local="clr-namespace:PropertyWriter.Model"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*" MinWidth="100"/>
@@ -17,31 +18,28 @@
 				<RowDefinition/>
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
 			<ListBox 
-				Name="dataList"
 				ItemsSource="{Binding Collection}"
-				SelectionChanged="dataList_SelectionChanged"
-				Grid.Row="0">
+				Grid.Row="0"
+				Grid.ColumnSpan="2"
+				IsSynchronizedWithCurrentItem="True">
 				<ListBox.Resources>
-					<DataTemplate DataType="{x:Type local:ClassInstance}">
+					<DataTemplate DataType="{x:Type local:ClassModel}">
 						<TextBlock Text="{Binding FormatedString.Value}"/>
 					</DataTemplate>
 				</ListBox.Resources>
 			</ListBox>
 
-			<Grid Grid.Row="1">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition/>
-					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
-
-				<Button Name="addButton" Content="追加" Click="addButton_Click" Grid.Column="0"/>
-				<Button Name="removeButton" Content="削除" Click="removeButton_Click" Grid.Column="1"/>
-			</Grid>
+			<Button Content="追加" Command="{Binding AddCommand}" Grid.Row="1" Grid.Column="0"/>
+			<Button Content="削除" Command="{Binding RemoveCommand}" Grid.Row="1" Grid.Column="1"/>
 		</Grid>
 
-		<ContentControl Name="propertyContent" Focusable="False" Grid.Column="1" Margin="5,0,0,0">
+		<ContentControl Content="{Binding Collection/}" Focusable="False" Grid.Column="1" Margin="5,0,0,0">
 			<ContentControl.Resources>
 				<ResourceDictionary Source="BlockProperty.xaml"/>
 			</ContentControl.Resources>

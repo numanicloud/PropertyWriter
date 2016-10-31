@@ -9,20 +9,20 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	class CollectionValue
+	class CollectionHolder
 	{
-		public CollectionValue( Type type )
+		public CollectionHolder( Type type )
 		{
 			this.itemType = type.GenericTypeArguments[0];
 
-			Collection = new ObservableCollection<IInstance>();
+			Collection = new ObservableCollection<IPropertyModel>();
 		}
 
 		public ReactiveProperty<IEnumerable<object>> Value => Collection.ToCollectionChanged()
 			.Select(x => Collection.Cast<object>())
 			.ToReactiveProperty();
 
-		public ObservableCollection<IInstance> Collection { get; }
+		public ObservableCollection<IPropertyModel> Collection { get; }
 
 		public void AddNewProperty()
 		{

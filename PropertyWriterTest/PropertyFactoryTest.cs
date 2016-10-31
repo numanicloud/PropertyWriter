@@ -13,55 +13,55 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void CreateIntType()
 		{
-			TestCreateInstance<IntInstance>( typeof( int ) );
+			TestCreateInstance<IntModel>( typeof( int ) );
 		}
 
 		[TestMethod]
 		public void CreateBoolType()
 		{
-			TestCreateInstance<BoolInstance>( typeof( bool ) );
+			TestCreateInstance<BoolModel>( typeof( bool ) );
 		}
 
 		[TestMethod]
 		public void CreateStringType()
 		{
-			TestCreateInstance<StringInstance>( typeof( string ) );
+			TestCreateInstance<StringModel>( typeof( string ) );
 		}
 
 		[TestMethod]
 		public void CreateFloatType()
 		{
-			TestCreateInstance<FloatInstance>( typeof( float ) );
+			TestCreateInstance<FloatModel>( typeof( float ) );
 		}
 
 		[TestMethod]
 		public void CreateEnumType()
 		{
-			TestCreateInstance<EnumInstance>( typeof( TestEnum ) );
+			TestCreateInstance<EnumModel>( typeof( TestEnum ) );
 		}
 
 		[TestMethod]
 		public void CreateClassType()
 		{
-			TestCreateInstance<ClassInstance>( typeof( TestClass ) );
+			TestCreateInstance<ClassModel>( typeof( TestClass ) );
 		}
 
 		[TestMethod]
 		public void CreateStructType()
 		{
-			TestCreateInstance<StructInstance>( typeof( TestStruct ) );
+			TestCreateInstance<StructModel>( typeof( TestStruct ) );
 		}
 
 		[TestMethod]
 		public void CreateBasicCollectionType()
 		{
-			TestCreateInstance<BasicCollectionInstance>( typeof( IEnumerable<int> ) );
+			TestCreateInstance<BasicCollectionModel>( typeof( IEnumerable<int> ) );
 		}
 
 		[TestMethod]
 		public void CreateComplicateCollectionType()
 		{
-			TestCreateInstance<ComplicateCollectionInstance>( typeof( IEnumerable<TestClass> ) );
+			TestCreateInstance<ComplicateCollectionModel>( typeof( IEnumerable<TestClass> ) );
 		}
 
 		private void TestCreateInstance<Expected>( Type type )

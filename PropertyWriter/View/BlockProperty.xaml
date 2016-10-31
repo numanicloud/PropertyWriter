@@ -4,23 +4,23 @@
 										xmlns:local="clr-namespace:PropertyWriter.Model"
 										xmlns:c="clr-namespace:PropertyWriter.View">
 
-	<DataTemplate DataType="{x:Type local:ComplicateCollectionInstance}">
+	<DataTemplate DataType="{x:Type local:ComplicateCollectionModel}">
 		<c:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:ClassInstance}">
+	<DataTemplate DataType="{x:Type local:ClassModel}">
 		<c:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:IntInstance}">
+	<DataTemplate DataType="{x:Type local:IntModel}">
 		<TextBox Text="{Binding Path=IntValue.Value}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:BoolInstance}">
+	<DataTemplate DataType="{x:Type local:BoolModel}">
 		<CheckBox IsChecked="{Binding Path=BoolValue.Value}"/>
 	</DataTemplate>
 	
-	<DataTemplate DataType="{x:Type local:BasicCollectionInstance}">
+	<DataTemplate DataType="{x:Type local:BasicCollectionModel}">
 		<c:BasicCollectionControl
 			HorizontalAlignment="Stretch" 
 			VerticalAlignment="Stretch"

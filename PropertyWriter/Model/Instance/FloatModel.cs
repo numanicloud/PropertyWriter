@@ -9,10 +9,10 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
-	class StringInstance : Instance
+	class FloatModel : PropertyModel
 	{
-		public ReactiveProperty<string> StringValue { get; } = new ReactiveProperty<string>();
-		public override ReactiveProperty<object> Value => StringValue.Select(x => (object) x)
+		public ReactiveProperty<float> FloatValue { get; } = new ReactiveProperty<float>();
+		public override ReactiveProperty<object> Value => FloatValue.Select(x => (object) x)
 			.ToReactiveProperty();
 	}
 }

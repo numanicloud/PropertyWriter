@@ -12,7 +12,7 @@ namespace PropertyWriter.View
 	{
 		public void OpenBasicCollection( object sender, RoutedEventArgs e )
 		{
-			var instance = ( sender as FrameworkElement ).DataContext as Model.BasicCollectionInstance;
+			var instance = ( sender as FrameworkElement ).DataContext as Model.BasicCollectionModel;
 			var window = new BlockWindow()
 			{
 				Title = "Collection",
@@ -23,7 +23,7 @@ namespace PropertyWriter.View
 
 		public void OpenComplicateCollection(object sender, RoutedEventArgs e)
 		{
-			var instance = ( sender as FrameworkElement ).DataContext as Model.ComplicateCollectionInstance;
+			var instance = ( sender as FrameworkElement ).DataContext as Model.ComplicateCollectionModel;
 			var window = new BlockWindow()
 			{
 				Title = "Collection",
