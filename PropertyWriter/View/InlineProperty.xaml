@@ -3,7 +3,7 @@
 										xmlns:local="clr-namespace:PropertyWriter.Model"
 										xmlns:instance="clr-namespace:PropertyWriter.Model.Instance"
 										x:Class="PropertyWriter.View.InlineProperty">
-    
+
 	<DataTemplate DataType="{x:Type local:InstanceAndMemberInfo}">
 		<StackPanel Orientation="Horizontal" Margin="2" Height="24">
 			<TextBlock Text="{Binding Title}" Width="50" TextAlignment="Right"/>
@@ -36,11 +36,11 @@
 	<DataTemplate DataType="{x:Type instance:FloatModel}">
 		<TextBox Text="{Binding Path=FloatValue.Value}" Height="24" MinWidth="100"/>
 	</DataTemplate>
-	
+
 	<DataTemplate DataType="{x:Type instance:EnumModel}">
 		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
 	</DataTemplate>
-	
+
 	<DataTemplate DataType="{x:Type instance:BasicCollectionModel}">
 		<StackPanel Orientation="Horizontal">
 			<Button Content="編集" Click="OpenBlockWindow"/>
@@ -57,6 +57,16 @@
 			<TextBlock Text="{Binding Path=FormatedString.Value}" />
 			<TextBlock Text=")" />
 		</StackPanel>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type instance:ReferenceByIntModel}">
+		<ComboBox ItemsSource="{Binding Source}" SelectedItem="{Binding SelectedObject.Value}" VerticalAlignment="Center">
+			<ComboBox.ItemTemplate>
+				<DataTemplate DataType="{x:Type instance:PropertyModel}">
+					<TextBlock Text="{Binding FormatedString.Value}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 	</DataTemplate>
 
 </ResourceDictionary>

@@ -26,13 +26,33 @@ namespace PropertyWriter.Model
 
 		public static InstanceAndMemberInfo[] LoadMembers(Type type)
 		{
-			var properties = type.GetProperties()
-				.Where(IsAnnotatedMember<PwMemberAttribute>)
-				.Select(InstanceAndPropertyInfo.ForMember);
-			var fields = type.GetFields()
-				.Where(IsAnnotatedMember<PwMemberAttribute>)
-				.Select(InstanceAndFieldInfo.ForMember);
-			return properties.Cast<InstanceAndMemberInfo>().Concat(fields).ToArray();
+			var properties = type.GetProperties();
+			var fields = type.GetFields();
+
+			var generalProps = properties.Where(IsAnnotatedMember<PwMemberAttribute>).ToArray();
+			var refProps = properties.Except(generalProps)
+				.Where(IsAnnotatedMember<PwReferenceMemberAttribute>)
+				.Select(x =>
+				{
+					var attr = x.GetCustomAttribute<PwReferenceMemberAttribute>();
+					return InstanceAndPropertyInfo.ForReference(x, attr.TargetType, attr.IdFieldName);
+				});
+
+			var generalFields = fields.Where(IsAnnotatedMember<PwMemberAttribute>).ToArray();
+			var refFields = fields.Except(generalFields)
+				.Where(IsAnnotatedMember<PwReferenceMemberAttribute>)
+				.Select(x =>
+				{
+					var attr = x.GetCustomAttribute<PwReferenceMemberAttribute>();
+					return InstanceAndFieldInfo.ForReferenceMember(x, attr.TargetType, attr.IdFieldName);
+				});
+
+			return generalProps.Select(InstanceAndPropertyInfo.ForMember)
+				.Cast<InstanceAndMemberInfo>()
+				.Concat(generalFields.Select(InstanceAndFieldInfo.ForMember))
+				.Concat(refProps)
+				.Concat(refFields)
+				.ToArray();
 		}
 
 		private static bool IsAnnotatedMember<TAttribute>(MemberInfo member)

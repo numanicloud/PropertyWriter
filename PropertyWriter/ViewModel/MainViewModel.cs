@@ -33,6 +33,7 @@ namespace PropertyWriter.ViewModel
 			{
 				Roots.Value = EntityLoader.LoadDataTypes(dialog.FileName)
 					.ToArray();
+				ReferenceManager.SetReferenceForMaster(Roots.Value);
 			}
 		}
 	}

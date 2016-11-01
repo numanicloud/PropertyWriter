@@ -9,30 +9,30 @@ namespace PropertyWriter.Model
 {
 	class MasterInfo
 	{
-		public string TypeName { get; private set; }
+		public Type Type { get; private set; }
 		public IPropertyModel Master { get; private set; }
 
-		public MasterInfo(string typeName, IPropertyModel master)
+		public MasterInfo(Type type, IPropertyModel master)
 		{
-			TypeName = typeName;
+			Type = type;
 			Master = master;
 		}
 
 		public static MasterInfo ForGlobal(Type type)
 		{
-			return new MasterInfo(type.Name, InstanceFactory.Create(type));
+			return new MasterInfo(type, InstanceFactory.Create(type));
 		}
 
 		public static MasterInfo ForMaster(Type type)
 		{
 			var collectionType = typeof(IEnumerable<>).MakeGenericType(type);
-			return new MasterInfo(type.Name, InstanceFactory.Create(collectionType));
+			return new MasterInfo(type, InstanceFactory.Create(collectionType));
 		}
 
 		public static MasterInfo ForSubtypingMaster(Type type)
 		{
 			var model = new BasicCollectionModel(type);
-			return new MasterInfo(type.Name, model);
+			return new MasterInfo(type, model);
 		}
 	}
 }

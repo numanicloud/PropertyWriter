@@ -9,6 +9,18 @@ namespace PropertyWriter.Model
 {
 	class InstanceFactory
 	{
+		public static IPropertyModel CreateReference(Type type, Type targetType, string idMemberName)
+		{
+			var propertyType = TypeParser.ParseType(type);
+			switch (propertyType)
+			{
+			case PropertyKind.Integer:
+				return new ReferenceByIntModel(targetType, idMemberName);
+			default:
+				throw new InvalidOperationException("ID参照はInt32のみがサポートされます。");
+			}
+		}
+
 		public static IPropertyModel Create( Type type )
 		{
 			var propertyType = TypeParser.ParseType( type );

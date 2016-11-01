@@ -23,8 +23,6 @@ namespace PropertyWriter.Model.Instance
 			}
 		}
 
-		public IEnumerable<IPropertyModel> Instances => Properties.Select(_ => _.Model).ToArray();
-
 		public IEnumerable<InstanceAndMemberInfo> Properties { get; }
 
 		public ReactiveProperty<object> Value { get; }

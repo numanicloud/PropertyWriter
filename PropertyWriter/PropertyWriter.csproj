@@ -127,8 +127,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
-    <Compile Include="Model\InstanceAndFieldInfo.cs" />
-    <Compile Include="Model\InstanceAndPropertyInfo.cs" />
+    <Compile Include="Model\Info\InstanceAndFieldInfo.cs" />
+    <Compile Include="Model\Info\InstanceAndPropertyInfo.cs" />
     <Compile Include="Model\InstanceConverter.cs" />
     <Compile Include="Model\Instance\BasicCollectionModel.cs" />
     <Compile Include="Model\Instance\BoolModel.cs" />
@@ -142,11 +142,12 @@
     <Compile Include="Model\Instance\PropertyModel.cs" />
     <Compile Include="Model\Instance\ReferenceByIntModel.cs" />
     <Compile Include="Model\PropertyFactory.cs" />
-    <Compile Include="Model\InstanceAndMemberInfo.cs" />
+    <Compile Include="Model\Info\InstanceAndMemberInfo.cs" />
     <Compile Include="Model\Instance\StringModel.cs" />
     <Compile Include="Model\Instance\StructModel.cs" />
     <Compile Include="Model\Instance\StructureHolder.cs" />
-    <Compile Include="Model\MasterInfo.cs" />
+    <Compile Include="Model\Info\MasterInfo.cs" />
+    <Compile Include="Model\ReferenceManager.cs" />
     <Compile Include="Model\TypeParser.cs" />
     <Compile Include="Model\Instance\ComplicateCollectionModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

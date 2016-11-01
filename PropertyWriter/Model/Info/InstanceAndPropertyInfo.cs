@@ -23,5 +23,10 @@ namespace PropertyWriter.Model
 		{
 			return new InstanceAndPropertyInfo(property, InstanceFactory.Create(property.PropertyType));
 		}
+
+		public static InstanceAndPropertyInfo ForReference(PropertyInfo property, Type type, string idMemberName)
+		{
+			return new InstanceAndPropertyInfo(property, InstanceFactory.CreateReference(property.PropertyType, type, idMemberName));
+		}
 	}
 }

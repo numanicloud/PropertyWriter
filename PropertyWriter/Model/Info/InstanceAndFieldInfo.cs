@@ -22,5 +22,10 @@ namespace PropertyWriter.Model
 		{
 			return new InstanceAndFieldInfo(field, InstanceFactory.Create(field.FieldType));
 		}
+
+		public static InstanceAndFieldInfo ForReferenceMember(FieldInfo field, Type type, string idMemberName)
+		{
+			return new InstanceAndFieldInfo(field, InstanceFactory.CreateReference(field.FieldType, type, idMemberName));
+		}
 	}
 }

@@ -12,26 +12,25 @@ namespace PropertyWriter.Model.Instance
 {
 	class ReferenceByIntModel : PropertyModel
 	{
-		private readonly ComplicateCollectionModel source_;
+		public Type Type { get; }
 		private readonly InstanceAndMemberInfo memberInfo_;
 
-		public ReadOnlyReactiveCollection<object> Source => source_.Collection.ToReadOnlyReactiveCollection(x => x.Value.Value);
-		public ReactiveProperty<object> SelectedObject { get; } = new ReactiveProperty<object>(); 
+		public ReadOnlyReactiveCollection<object> Source { get; set; }
+		public ReactiveProperty<object> SelectedObject { get; } = new ReactiveProperty<object>();
 		public ReactiveProperty<int> IntValue => SelectedObject.Select(x => (int)(memberInfo_?.GetValue(x) ?? -1))
 			.ToReactiveProperty();
 		public override ReactiveProperty<object> Value => IntValue.Select(x => (object)x).ToReactiveProperty();
 
-		public ReferenceByIntModel(ComplicateCollectionModel source, string idFieldName)
+		public ReferenceByIntModel(Type type, string idFieldName)
 		{
-			source_ = source;
-
-			var property = source.ElementType.GetProperty(idFieldName);
+			Type = type;
+			var property = type.GetProperty(idFieldName);
 			if (property != null)
 			{
 				memberInfo_ = InstanceAndPropertyInfo.ForMember(property);
 			}
 
-			var field = source.ElementType.GetField(idFieldName);
+			var field = type.GetField(idFieldName);
 			if (field != null)
 			{
 				memberInfo_ = InstanceAndFieldInfo.ForMember(field);
