@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using PropertyWriter.Model.Instance;
 
 namespace PropertyWriter.View
 {
@@ -12,7 +13,7 @@ namespace PropertyWriter.View
 	{
 		public void OpenBasicCollection( object sender, RoutedEventArgs e )
 		{
-			var instance = ( sender as FrameworkElement ).DataContext as Model.BasicCollectionModel;
+			var instance = ( sender as FrameworkElement ).DataContext as BasicCollectionModel;
 			var window = new BlockWindow()
 			{
 				Title = "Collection",
@@ -23,7 +24,7 @@ namespace PropertyWriter.View
 
 		public void OpenComplicateCollection(object sender, RoutedEventArgs e)
 		{
-			var instance = ( sender as FrameworkElement ).DataContext as Model.ComplicateCollectionModel;
+			var instance = ( sender as FrameworkElement ).DataContext as ComplicateCollectionModel;
 			var window = new BlockWindow()
 			{
 				Title = "Collection",

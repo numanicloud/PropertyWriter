@@ -127,19 +127,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Model\InstanceAndFieldInfo.cs" />
+    <Compile Include="Model\InstanceAndPropertyInfo.cs" />
     <Compile Include="Model\InstanceConverter.cs" />
     <Compile Include="Model\Instance\BasicCollectionModel.cs" />
     <Compile Include="Model\Instance\BoolModel.cs" />
     <Compile Include="Model\Instance\ClassModel.cs" />
     <Compile Include="Model\Instance\CollectionHolder.cs" />
-    <Compile Include="Model\DllLoader.cs" />
+    <Compile Include="Model\EntityLoader.cs" />
     <Compile Include="Model\Instance\EnumModel.cs" />
     <Compile Include="Model\Instance\FloatModel.cs" />
     <Compile Include="Model\Instance\IntModel.cs" />
     <Compile Include="Model\Instance\IPropertyModel.cs" />
     <Compile Include="Model\Instance\PropertyModel.cs" />
+    <Compile Include="Model\Instance\ReferenceByIntModel.cs" />
     <Compile Include="Model\PropertyFactory.cs" />
-    <Compile Include="Model\InstanceAndPropertyInfo.cs" />
+    <Compile Include="Model\InstanceAndMemberInfo.cs" />
     <Compile Include="Model\Instance\StringModel.cs" />
     <Compile Include="Model\Instance\StructModel.cs" />
     <Compile Include="Model\Instance\StructureHolder.cs" />
@@ -193,6 +196,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PropertyWriter.Annotation\PropertyWriter.Annotation.csproj">
+      <Project>{d150e57f-6501-4679-9094-368efc4f2129}</Project>
+      <Name>PropertyWriter.Annotation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

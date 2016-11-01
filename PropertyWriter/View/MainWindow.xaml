@@ -32,7 +32,7 @@
 				</DataTemplate>
 			</TabControl.ItemTemplate>
 			<TabControl.ContentTemplate>
-				<DataTemplate>
+				<DataTemplate DataType="model:MasterInfo">
 					<ContentControl Content="{Binding Master}" Focusable="False"/>
 				</DataTemplate>
 			</TabControl.ContentTemplate>

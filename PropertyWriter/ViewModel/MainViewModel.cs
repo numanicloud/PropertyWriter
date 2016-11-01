@@ -31,13 +31,7 @@ namespace PropertyWriter.ViewModel
 			};
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
-				Roots.Value = DllLoader.LoadDataTypes(dialog.FileName)
-					.Select(x =>
-					{
-						var master = typeof (IEnumerable<>).MakeGenericType(x);
-						var masterModel = InstanceFactory.Create(master);
-						return new MasterInfo(x.Name, masterModel);
-					})
+				Roots.Value = EntityLoader.LoadDataTypes(dialog.FileName)
 					.ToArray();
 			}
 		}

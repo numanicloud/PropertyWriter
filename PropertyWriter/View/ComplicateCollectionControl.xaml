@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 						 xmlns:local="clr-namespace:PropertyWriter.Model"
-             mc:Ignorable="d" 
+						 xmlns:instance="clr-namespace:PropertyWriter.Model.Instance"
+						 mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
 	<Grid>
@@ -29,7 +30,7 @@
 				Grid.ColumnSpan="2"
 				IsSynchronizedWithCurrentItem="True">
 				<ListBox.Resources>
-					<DataTemplate DataType="{x:Type local:ClassModel}">
+					<DataTemplate DataType="{x:Type instance:ClassModel}">
 						<TextBlock Text="{Binding FormatedString.Value}"/>
 					</DataTemplate>
 				</ListBox.Resources>

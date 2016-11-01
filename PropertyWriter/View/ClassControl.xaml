@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 						 xmlns:local="clr-namespace:PropertyWriter.View"
+						 xmlns:model="clr-namespace:PropertyWriter.Model"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -11,23 +12,23 @@
 		<ResourceDictionary Source="InlineProperty.xaml"/>
 	</UserControl.Resources>
 
-	<ItemsControl ItemsSource="{Binding Properties}" Grid.IsSharedSizeScope="True">
+	<ItemsControl ItemsSource="{Binding Members}" Grid.IsSharedSizeScope="True">
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
 				<WrapPanel Orientation="Vertical"/>
 			</ItemsPanelTemplate>
 		</ItemsControl.ItemsPanel>
 		<ItemsControl.ItemTemplate>
-			<DataTemplate>
+			<DataTemplate DataType="model:InstanceAndMemberInfo">
 				<Grid Height="26" Margin="4,4,20,4">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
 						<ColumnDefinition Width="Auto" SharedSizeGroup="ColonColumn"/>
 						<ColumnDefinition Width="*" SharedSizeGroup="ValueColumn"/>
 					</Grid.ColumnDefinitions>
-					<TextBlock Text="{Binding PropertyInfo.Name}" TextAlignment="Right" VerticalAlignment="Center"/>
+					<TextBlock Text="{Binding Title}" TextAlignment="Right" VerticalAlignment="Center"/>
 					<TextBlock Text=":" Margin="4 0" Grid.Column="1" VerticalAlignment="Center"/>
-					<ContentControl Content="{Binding Instance}" Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
+					<ContentControl Content="{Binding Model}" Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
 				</Grid>
 			</DataTemplate>
 		</ItemsControl.ItemTemplate>

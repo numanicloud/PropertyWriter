@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	internal class ComplicateCollectionModel : PropertyModel
 	{
@@ -13,6 +13,7 @@ namespace PropertyWriter.Model
 			.ToReactiveProperty();
 		public ReactiveCommand AddCommand { get; private set; } = new ReactiveCommand();
 		public ReactiveCommand<int> RemoveCommand { get; private set; } = new ReactiveCommand<int>();
+		public Type ElementType => ComplicateCollectionValue.ItemType;
 
 		private CollectionHolder ComplicateCollectionValue { get; }
 

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using MvvmHelper;
 using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	class EnumModel : PropertyModel
 	{

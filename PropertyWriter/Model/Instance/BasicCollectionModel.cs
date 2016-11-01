@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Reactive.Linq;
-using System.Reflection;
-using MvvmHelper;
 using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	class BasicCollectionModel : PropertyModel
 	{

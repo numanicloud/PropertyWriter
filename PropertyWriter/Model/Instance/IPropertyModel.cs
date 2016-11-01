@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Reactive.Bindings;
+﻿using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	interface IPropertyModel
 	{

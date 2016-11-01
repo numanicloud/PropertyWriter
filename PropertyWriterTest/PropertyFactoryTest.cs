@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PropertyWriter.Model;
 using System.Linq;
+using PropertyWriter.Model.Instance;
 
 namespace PropertyWriterTest
 {

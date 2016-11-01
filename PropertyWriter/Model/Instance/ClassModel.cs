@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reflection;
-using System.Text;
-using MvvmHelper;
 using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	class ClassModel : PropertyModel
 	{
@@ -22,7 +17,7 @@ namespace PropertyWriter.Model
 			ClassValue = new StructureHolder( type );
 		}
 
-		public InstanceAndPropertyInfo[] Properties => ClassValue.Properties.ToArray();
+		public InstanceAndMemberInfo[] Members => ClassValue.Properties.ToArray();
 		public override ReactiveProperty<object> Value => ClassValue.Value;
 
 		public override ReactiveProperty<string> FormatedString
@@ -30,7 +25,7 @@ namespace PropertyWriter.Model
 			get
 			{
 				var events = ClassValue.Properties
-					.Select(x => x.Instance.Value)
+					.Select(x => x.Model.Value)
 					.Cast<IObservable<object>>()
 					.ToArray();
 				return Observable.Merge(events)

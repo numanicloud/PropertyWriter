@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
 using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	class CollectionHolder
 	{
 		public CollectionHolder( Type type )
 		{
-			this.itemType = type.GenericTypeArguments[0];
+			this.ItemType = type.GenericTypeArguments[0];
 
 			Collection = new ObservableCollection<IPropertyModel>();
 		}
@@ -26,7 +24,7 @@ namespace PropertyWriter.Model
 
 		public void AddNewProperty()
 		{
-			var instance = InstanceFactory.Create( itemType );
+			var instance = InstanceFactory.Create( ItemType );
 			Collection.Add( instance );
 		}
 
@@ -35,6 +33,6 @@ namespace PropertyWriter.Model
 			Collection.RemoveAt( index );
 		}
 
-		private Type itemType { get; set; }
+		public Type ItemType { get; }
 	}
 }

@@ -2,25 +2,30 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 										xmlns:s="clr-namespace:System;assembly=mscorlib"
 										xmlns:local="clr-namespace:PropertyWriter.Model"
-										xmlns:c="clr-namespace:PropertyWriter.View">
+										xmlns:c="clr-namespace:PropertyWriter.View"
+										xmlns:instance="clr-namespace:PropertyWriter.Model.Instance">
 
-	<DataTemplate DataType="{x:Type local:ComplicateCollectionModel}">
+	<DataTemplate DataType="{x:Type instance:ComplicateCollectionModel}">
 		<c:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:ClassModel}">
+	<DataTemplate DataType="{x:Type instance:ClassModel}">
 		<c:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:IntModel}">
+	<DataTemplate DataType="{x:Type instance:StructModel}">
+		<c:ClassControl DataContext="{Binding Path=.}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type instance:IntModel}">
 		<TextBox Text="{Binding Path=IntValue.Value}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type local:BoolModel}">
+	<DataTemplate DataType="{x:Type instance:BoolModel}">
 		<CheckBox IsChecked="{Binding Path=BoolValue.Value}"/>
 	</DataTemplate>
 	
-	<DataTemplate DataType="{x:Type local:BasicCollectionModel}">
+	<DataTemplate DataType="{x:Type instance:BasicCollectionModel}">
 		<c:BasicCollectionControl
 			HorizontalAlignment="Stretch" 
 			VerticalAlignment="Stretch"

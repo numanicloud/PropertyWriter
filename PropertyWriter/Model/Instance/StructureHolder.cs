@@ -1,34 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Reactive.Bindings;
 
-namespace PropertyWriter.Model
+namespace PropertyWriter.Model.Instance
 {
 	class StructureHolder
 	{
 		public StructureHolder(Type type)
 		{
-			Properties = DllLoader.LoadProperties(type)
-				.Select(_ => new InstanceAndPropertyInfo(_))
-				.ToArray();
+			Properties = EntityLoader.LoadMembers(type);
 
 			Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
 
 			foreach (var property in Properties)
 			{
-				property.Instance.Value.Subscribe(x =>
+				property.Model.Value.Subscribe(x =>
 				{
-					var value = InstanceConverter.Convert(x, property.PropertyInfo.PropertyType);
-					property.PropertyInfo.SetValue(Value.Value, value);
+					var value = InstanceConverter.Convert(x, property.Type);
+					property.SetValue(Value.Value, value);
 				});
 			}
 		}
 
-		public IEnumerable<IPropertyModel> Instances => Properties.Select(_ => _.Instance).ToArray();
+		public IEnumerable<IPropertyModel> Instances => Properties.Select(_ => _.Model).ToArray();
 
-		public IEnumerable<InstanceAndPropertyInfo> Properties { get; }
+		public IEnumerable<InstanceAndMemberInfo> Properties { get; }
 
 		public ReactiveProperty<object> Value { get; }
 	}

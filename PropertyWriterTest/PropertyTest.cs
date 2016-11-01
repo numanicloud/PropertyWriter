@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PropertyWriter.Model;
 using System.Linq;
 using System.Collections.Generic;
+using PropertyWriter.Model.Instance;
 
 namespace PropertyWriterTest
 {
@@ -21,8 +22,8 @@ namespace PropertyWriterTest
 		public void ClassProperties()
 		{
 			var classProp = new ClassModel( typeof( TestClass ) );
-			classProp.Properties.ElementAt( 0 ).Instance.IsInstanceOf<IntModel>();
-			classProp.Properties.ElementAt( 1 ).Instance.IsInstanceOf<StringModel>();
+			classProp.Members.ElementAt( 0 ).Model.IsInstanceOf<IntModel>();
+			classProp.Members.ElementAt( 1 ).Model.IsInstanceOf<StringModel>();
 		}
 	}
 }
