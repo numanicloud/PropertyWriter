@@ -20,6 +20,15 @@ namespace TestDll
 		public override string ToString() => $"Apple: {Id}, {X}";
 	}
 
+    [PwMaster]
+    class OrangeAnnotatedData
+    {
+        [PwReferenceMember(typeof(AppleAnnotatedData), nameof(AppleAnnotatedData.Id))]
+        public int AppleId { get; set; }
+
+        public override string ToString() => $"Orange: {AppleId}";
+    }
+
 	[PwSubtyping]
 	[PwMinor]
 	class AtherAnnotatedData

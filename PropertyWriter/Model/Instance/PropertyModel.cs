@@ -3,10 +3,10 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	abstract class PropertyModel : IPropertyModel
+	abstract class PropertyModel : Livet.ViewModel, IPropertyModel
 	{
 		public abstract ReactiveProperty<object> Value { get; }
-		public virtual ReactiveProperty<string> FormatedString => Value.Select(x => x.ToString())
+		public virtual ReactiveProperty<string> FormatedString => Value.Select(x => x?.ToString())
 			.ToReactiveProperty();
 	}
 }

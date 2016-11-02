@@ -17,15 +17,5 @@ namespace PropertyWriter.Model
 		public override Type Type => field_.FieldType;
 		public override object GetValue(object obj) => field_.GetValue(obj);
 		public override void SetValue(object obj, object value) => field_.SetValue(obj, value);
-		
-		public static InstanceAndFieldInfo ForMember(FieldInfo field)
-		{
-			return new InstanceAndFieldInfo(field, InstanceFactory.Create(field.FieldType));
-		}
-
-		public static InstanceAndFieldInfo ForReferenceMember(FieldInfo field, Type type, string idMemberName)
-		{
-			return new InstanceAndFieldInfo(field, InstanceFactory.CreateReference(field.FieldType, type, idMemberName));
-		}
 	}
 }

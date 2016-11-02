@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PropertyWriter.Annotation;
 
 namespace PropertyWriter.Model
 {
@@ -13,7 +14,8 @@ namespace PropertyWriter.Model
 		Class,
 		Struct,
 		BasicCollection,
-		ComplicateCollection
+		ComplicateCollection,
+        SubtypingClass,
 	}
 
 	class TypeParser
@@ -38,6 +40,10 @@ namespace PropertyWriter.Model
 			}
 			else if(type.IsClass || type.IsInterface)
 			{
+			    if (Helpers.IsAnnotatedType<PwSubtypingAttribute>(type))
+			    {
+			        return PropertyKind.SubtypingClass;
+			    }
 				return PropertyKind.Class;
 			}
 			else if(type.IsValueType)

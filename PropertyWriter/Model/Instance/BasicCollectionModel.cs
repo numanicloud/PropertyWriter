@@ -7,12 +7,19 @@ namespace PropertyWriter.Model.Instance
 {
 	class BasicCollectionModel : PropertyModel
 	{
-		public BasicCollectionModel(Type type)
+        private ModelFactory modelFactory;
+
+        public BasicCollectionModel(Type type)
 		{
-			CollectionValue = new CollectionHolder(type);
+			CollectionValue = new CollectionHolder(type, modelFactory);
 		}
 
-		public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
+        public BasicCollectionModel(Type type, ModelFactory modelFactory) : this(type)
+        {
+            this.modelFactory = modelFactory;
+        }
+
+        public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
 
 		public override ReactiveProperty<object> Value => CollectionValue.Value
 			.Cast<object>()

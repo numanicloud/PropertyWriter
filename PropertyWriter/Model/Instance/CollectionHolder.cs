@@ -9,9 +9,12 @@ namespace PropertyWriter.Model.Instance
 {
 	class CollectionHolder
 	{
-		public CollectionHolder( Type type )
+	    private readonly ModelFactory _modelFactory;
+
+	    public CollectionHolder(Type type, ModelFactory modelFactory)
 		{
-			this.ItemType = type.GenericTypeArguments[0];
+		    _modelFactory = modelFactory;
+		    this.ItemType = type.GenericTypeArguments[0];
 
 			Collection = new ObservableCollection<IPropertyModel>();
 		}
@@ -24,7 +27,7 @@ namespace PropertyWriter.Model.Instance
 
 		public void AddNewProperty()
 		{
-			var instance = InstanceFactory.Create( ItemType );
+			var instance = _modelFactory.Create(ItemType);
 			Collection.Add( instance );
 		}
 

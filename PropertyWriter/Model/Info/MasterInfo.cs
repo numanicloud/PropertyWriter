@@ -16,17 +16,17 @@ namespace PropertyWriter.Model
 		{
 			Type = type;
 			Master = master;
-		}
+		}        
 
-		public static MasterInfo ForGlobal(Type type)
+		internal static MasterInfo ForGlobal(Type type, ModelFactory modelFactory)
 		{
-			return new MasterInfo(type, InstanceFactory.Create(type));
+			return new MasterInfo(type, modelFactory.Create(type));
 		}
 
-		public static MasterInfo ForMaster(Type type)
+		public static MasterInfo ForMaster(Type type, ModelFactory modelFactory)
 		{
 			var collectionType = typeof(IEnumerable<>).MakeGenericType(type);
-			return new MasterInfo(type, InstanceFactory.Create(collectionType));
+			return new MasterInfo(type, modelFactory.Create(collectionType));
 		}
 
 		public static MasterInfo ForSubtypingMaster(Type type)

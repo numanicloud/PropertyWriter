@@ -8,14 +8,17 @@ namespace PropertyWriter.Model.Instance
 {
 	class StructModel : PropertyModel
 	{
-		public StructModel( Type type )
+		private ModelFactory modelFactory;
+
+		public StructModel(Type type, ModelFactory modelFactory)
 		{
-			if( !type.IsValueType )
+			if (!type.IsValueType)
 			{
-				throw new ArgumentException( "type が構造体を表す Type クラスではありません。" );
+				throw new ArgumentException("type が構造体を表す Type クラスではありません。");
 			}
 
-			StructValue = new StructureHolder( type );
+			this.modelFactory = modelFactory;
+			StructValue = new StructureHolder(type, modelFactory);
 		}
 
 		public InstanceAndMemberInfo[] Members => StructValue.Properties.ToArray();

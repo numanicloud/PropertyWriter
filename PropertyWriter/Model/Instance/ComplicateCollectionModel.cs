@@ -7,7 +7,9 @@ namespace PropertyWriter.Model.Instance
 {
 	internal class ComplicateCollectionModel : PropertyModel
 	{
-		public ObservableCollection<IPropertyModel> Collection => ComplicateCollectionValue.Collection;
+        private ModelFactory modelFactory;
+
+        public ObservableCollection<IPropertyModel> Collection => ComplicateCollectionValue.Collection;
 		public override ReactiveProperty<object> Value => ComplicateCollectionValue.Value
 			.Cast<object>()
 			.ToReactiveProperty();
@@ -17,11 +19,12 @@ namespace PropertyWriter.Model.Instance
 
 		private CollectionHolder ComplicateCollectionValue { get; }
 
-		public ComplicateCollectionModel(Type type)
-		{
-			ComplicateCollectionValue = new CollectionHolder(type);
+        public ComplicateCollectionModel(Type type, ModelFactory modelFactory)
+        {
+            this.modelFactory = modelFactory;
+			ComplicateCollectionValue = new CollectionHolder(type, modelFactory);
 			AddCommand.Subscribe(x => ComplicateCollectionValue.AddNewProperty());
 			RemoveCommand.Subscribe(x => ComplicateCollectionValue.RemoveAt(x));
 		}
-	}
+    }
 }

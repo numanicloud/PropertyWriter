@@ -1,67 +1,90 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-										xmlns:local="clr-namespace:PropertyWriter.Model"
-										xmlns:instance="clr-namespace:PropertyWriter.Model.Instance"
-										x:Class="PropertyWriter.View.InlineProperty">
+					xmlns:local="clr-namespace:PropertyWriter.Model"
+					xmlns:instance="clr-namespace:PropertyWriter.Model.Instance"
+                    xmlns:l="clr-namespace:Livet.Behaviors.Messaging;assembly=Livet"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:v="clr-namespace:PropertyWriter.View"
+					x:Class="PropertyWriter.View.InlineProperty">
 
-	<DataTemplate DataType="{x:Type local:InstanceAndMemberInfo}">
-		<StackPanel Orientation="Horizontal" Margin="2" Height="24">
-			<TextBlock Text="{Binding Title}" Width="50" TextAlignment="Right"/>
-			<TextBlock Text=":" Margin="4 0"/>
-			<ContentControl Content="{Binding Model}" Focusable="False" />
-		</StackPanel>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type local:InstanceAndMemberInfo}">
+        <StackPanel Orientation="Horizontal" Margin="2" MinHeight="24" VerticalAlignment="Top">
+            <TextBlock Text="{Binding Title}" Width="50" TextAlignment="Right" VerticalAlignment="Top"/>
+            <TextBlock Text=":" Margin="4 0" VerticalAlignment="Top"/>
+            <ContentControl Content="{Binding Model}" Focusable="False" VerticalAlignment="Top" />
+        </StackPanel>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:ClassModel}">
-		<StackPanel Orientation="Horizontal">
-			<Button Content="編集" Click="OpenBlockWindow"/>
-			<TextBlock Text=" (" />
-			<TextBlock Text="{Binding Path=FormatedString.Value}" />
-			<TextBlock Text=")" />
-		</StackPanel>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:ClassModel}">
+        <StackPanel Orientation="Horizontal">
+            <Button Content="編集" Click="OpenBlockWindow"/>
+            <TextBlock Text=" (" />
+            <TextBlock Text="{Binding Path=FormatedString.Value}" />
+            <TextBlock Text=")" />
+        </StackPanel>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:IntModel}">
-		<TextBox Text="{Binding Path=IntValue.Value}" MinWidth="100" Height="24"/>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:IntModel}">
+        <TextBox Text="{Binding Path=IntValue.Value}" MinWidth="100" Height="24"/>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:BoolModel}">
-		<CheckBox IsChecked="{Binding Path=BoolValue.Value}" VerticalAlignment="Center"/>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:BoolModel}">
+        <CheckBox IsChecked="{Binding Path=BoolValue.Value}" VerticalAlignment="Center"/>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:StringModel}">
-		<TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="24" MinWidth="100"/>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:StringModel}">
+        <TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="24" MinWidth="100"/>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:FloatModel}">
-		<TextBox Text="{Binding Path=FloatValue.Value}" Height="24" MinWidth="100"/>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:FloatModel}">
+        <TextBox Text="{Binding Path=FloatValue.Value}" Height="24" MinWidth="100"/>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:EnumModel}">
-		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:EnumModel}">
+        <ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:BasicCollectionModel}">
-		<StackPanel Orientation="Horizontal">
-			<Button Content="編集" Click="OpenBlockWindow"/>
-			<TextBlock Text=" (" />
-			<TextBlock Text="{Binding Path=FormatedString.Value}" />
-			<TextBlock Text=")" />
-		</StackPanel>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:BasicCollectionModel}">
+        <StackPanel Orientation="Horizontal">
+            <Button Content="編集" Click="OpenBlockWindow"/>
+            <TextBlock Text=" (" />
+            <TextBlock Text="{Binding Path=FormatedString.Value}" />
+            <TextBlock Text=")" />
+        </StackPanel>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:ComplicateCollectionModel}">
-		<StackPanel Orientation="Horizontal">
-			<Button Content="編集" Click="OpenBlockWindow"/>
-			<TextBlock Text=" (" />
-			<TextBlock Text="{Binding Path=FormatedString.Value}" />
-			<TextBlock Text=")" />
-		</StackPanel>
-	</DataTemplate>
+    <DataTemplate DataType="{x:Type instance:ComplicateCollectionModel}">
+        <StackPanel Orientation="Horizontal">
+            <Button Content="編集" Click="OpenBlockWindow"/>
+            <TextBlock Text=" (" />
+            <TextBlock Text="{Binding Path=FormatedString.Value}" />
+            <TextBlock Text=")" />
+        </StackPanel>
+    </DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:ReferenceByIntModel}">
+    <DataTemplate DataType="{x:Type instance:ReferenceByIntModel}">
         <ComboBox ItemsSource="{Binding Source}" SelectedItem="{Binding SelectedObject.Value}" VerticalAlignment="Center"/>
+    </DataTemplate>
 
+    <DataTemplate DataType="{x:Type instance:SubtypingModel}">
+        <StackPanel>
+            <i:Interaction.Triggers>
+                <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="SubtypeEditor">
+                    <l:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+                </l:InteractionMessageTrigger>
+            </i:Interaction.Triggers>
+            <ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}"/>
+                <TextBlock Text="{Binding Path=FormatedString.Value}" />
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
 
 </ResourceDictionary>

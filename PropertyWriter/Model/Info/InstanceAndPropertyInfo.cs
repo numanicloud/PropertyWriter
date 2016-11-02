@@ -18,15 +18,5 @@ namespace PropertyWriter.Model
 
 		public override object GetValue(object obj) => property_.GetValue(obj);
 		public override void SetValue(object obj, object value) => property_.SetValue(obj, value);
-
-		public static InstanceAndPropertyInfo ForMember(PropertyInfo property)
-		{
-			return new InstanceAndPropertyInfo(property, InstanceFactory.Create(property.PropertyType));
-		}
-
-		public static InstanceAndPropertyInfo ForReference(PropertyInfo property, Type type, string idMemberName)
-		{
-			return new InstanceAndPropertyInfo(property, InstanceFactory.CreateReference(property.PropertyType, type, idMemberName));
-		}
 	}
 }

@@ -67,8 +67,8 @@ namespace PropertyWriterTest
 
 		private void TestCreateInstance<Expected>( Type type )
 		{
-			InstanceFactory.Create( type )
-				.IsInstanceOf<Expected>();
+			var factory = new ModelFactory();
+			factory.Create( type ).IsInstanceOf<Expected>();
 		}
 	}
 }

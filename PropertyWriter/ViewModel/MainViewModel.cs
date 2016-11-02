@@ -30,9 +30,8 @@ namespace PropertyWriter.ViewModel
 			};
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
-				Roots.Value = EntityLoader.LoadDataTypes(dialog.FileName)
-					.ToArray();
-				ReferenceManager.SetReferenceForMaster(Roots.Value);
+				var modelFactory = new ModelFactory();
+				Roots.Value = modelFactory.LoadData(dialog.FileName);
 			}
 		}
 	}
