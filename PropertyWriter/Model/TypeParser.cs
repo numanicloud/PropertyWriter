@@ -16,6 +16,7 @@ namespace PropertyWriter.Model
 		BasicCollection,
 		ComplicateCollection,
         SubtypingClass,
+		Array,
 	}
 
 	class TypeParser
@@ -34,6 +35,10 @@ namespace PropertyWriter.Model
 					: PropertyKind.BasicCollection;
 			}
 
+			if (type.IsArray)
+			{
+				return PropertyKind.Array;
+			}
 			if(type.IsEnum)
 			{
 				return PropertyKind.Enum;

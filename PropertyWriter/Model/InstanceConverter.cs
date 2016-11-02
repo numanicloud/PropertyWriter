@@ -9,8 +9,14 @@ namespace PropertyWriter.Model
 	{
 		public static object Convert(object obj, Type type)
 		{
+			if (obj is Array && type.IsArray)
+			{
+				var arrayObj = obj as Array;
+				var array = Array.CreateInstance(type.GetElementType(), arrayObj.Length);
+			}
 			if(obj is IEnumerable<object> && IsIEnumerable(type))
 			{
+				// 第一型引数が要素の型とは限らない……
 				return Convert((IEnumerable<object>)obj, type.GenericTypeArguments[0]);
 			}
 			return obj;

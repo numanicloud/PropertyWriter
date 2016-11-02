@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyWriterTest", "Prope
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyWriter.Annotation", "PropertyWriter.Annotation\PropertyWriter.Annotation.csproj", "{D150E57F-6501-4679-9094-368EFC4F2129}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgData", "RpgData\RpgData.csproj", "{130B60DF-E9CD-432E-8016-5ACA316A8864}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D150E57F-6501-4679-9094-368EFC4F2129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D150E57F-6501-4679-9094-368EFC4F2129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D150E57F-6501-4679-9094-368EFC4F2129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{130B60DF-E9CD-432E-8016-5ACA316A8864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{130B60DF-E9CD-432E-8016-5ACA316A8864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{130B60DF-E9CD-432E-8016-5ACA316A8864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{130B60DF-E9CD-432E-8016-5ACA316A8864}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

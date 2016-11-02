@@ -20,8 +20,8 @@ namespace PropertyWriter.Model.Instance
             {
                 property.Model.Value.Subscribe(x =>
                 {
-                    var value = InstanceConverter.Convert(x, property.Type);
-                    property.SetValue(Value.Value, value);
+                    //var value = InstanceConverter.Convert(x, property.Type);
+                    property.SetValue(Value.Value, x);
                 });
             }
         }

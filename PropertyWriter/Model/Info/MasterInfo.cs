@@ -28,11 +28,5 @@ namespace PropertyWriter.Model
 			var collectionType = typeof(IEnumerable<>).MakeGenericType(type);
 			return new MasterInfo(type, modelFactory.Create(collectionType));
 		}
-
-		public static MasterInfo ForSubtypingMaster(Type type)
-		{
-			var model = new BasicCollectionModel(type);
-			return new MasterInfo(type, model);
-		}
 	}
 }

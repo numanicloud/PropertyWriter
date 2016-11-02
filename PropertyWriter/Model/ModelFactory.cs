@@ -80,6 +80,14 @@ namespace PropertyWriter.Model
 					{
 						AvailableTypes = subtypings_[type]
 					};
+				case PropertyKind.Array:
+				{
+					var element = TypeParser.ParseType(type.GetElementType());
+					var ienumerable = typeof(IEnumerable<>).MakeGenericType(type.GetElementType());
+					return element == PropertyKind.Class || element == PropertyKind.Struct
+						? new ComplicateCollectionModel(ienumerable, this)
+						: (IPropertyModel)new BasicCollectionModel(ienumerable, this);
+				}
 
 				case PropertyKind.Unknown: return null;
 				default: return null;

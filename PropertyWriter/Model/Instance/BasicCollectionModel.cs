@@ -7,17 +7,10 @@ namespace PropertyWriter.Model.Instance
 {
 	class BasicCollectionModel : PropertyModel
 	{
-        private ModelFactory modelFactory;
-
-        public BasicCollectionModel(Type type)
-		{
+        public BasicCollectionModel(Type type, ModelFactory modelFactory)
+        {
 			CollectionValue = new CollectionHolder(type, modelFactory);
 		}
-
-        public BasicCollectionModel(Type type, ModelFactory modelFactory) : this(type)
-        {
-            this.modelFactory = modelFactory;
-        }
 
         public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
 
