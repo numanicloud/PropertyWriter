@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PropertyWriter.Model;
-using MvvmHelper;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Reactive.Bindings;

@@ -60,13 +60,8 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:ReferenceByIntModel}">
-		<ComboBox ItemsSource="{Binding Source}" SelectedItem="{Binding SelectedObject.Value}" VerticalAlignment="Center">
-			<ComboBox.ItemTemplate>
-				<DataTemplate DataType="{x:Type instance:PropertyModel}">
-					<TextBlock Text="{Binding FormatedString.Value}"/>
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
-	</DataTemplate>
+        <ComboBox ItemsSource="{Binding Source}" SelectedItem="{Binding SelectedObject.Value}" VerticalAlignment="Center"/>
+
+    </DataTemplate>
 
 </ResourceDictionary>

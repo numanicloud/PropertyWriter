@@ -66,7 +66,7 @@ namespace PropertyWriter.Model
 				var collectionModel = masters.First(x => x.Type == referenceIntModel.Type).Master as ComplicateCollectionModel;
 				if (collectionModel != null)
 				{
-					referenceIntModel.Source = collectionModel.Collection.ToReadOnlyReactiveCollection(x => (object)x);
+					referenceIntModel.Source = collectionModel.Collection.ToReadOnlyReactiveCollection(x => x.Value.Value);
 				}
 				return;
 			}

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MvvmHelper;
 using PropertyWriter.Model.Instance;
 
 namespace PropertyWriter.Model

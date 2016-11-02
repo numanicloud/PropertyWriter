@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Reactive.Bindings;
+using System.Diagnostics;
 
 namespace PropertyWriter.Model.Instance
 {
@@ -17,7 +18,8 @@ namespace PropertyWriter.Model.Instance
 
 		public ReadOnlyReactiveCollection<object> Source { get; set; }
 		public ReactiveProperty<object> SelectedObject { get; } = new ReactiveProperty<object>();
-		public ReactiveProperty<int> IntValue => SelectedObject.Select(x => (int)(memberInfo_?.GetValue(x) ?? -1))
+		public ReactiveProperty<int> IntValue => SelectedObject.Where(x => x != null)
+            .Select(x => (int)(memberInfo_?.GetValue(x) ?? -1))
 			.ToReactiveProperty();
 		public override ReactiveProperty<object> Value => IntValue.Select(x => (object)x).ToReactiveProperty();
 
@@ -35,6 +37,8 @@ namespace PropertyWriter.Model.Instance
 			{
 				memberInfo_ = InstanceAndFieldInfo.ForMember(field);
 			}
+
+            SelectedObject.Subscribe(x => Debugger.Log(0, "", "SelectedObject.Change"));
 		}
 	}
 }
