@@ -68,5 +68,7 @@ namespace TestDll
 		public int FileNum;
 		[PwReferenceMember(typeof(AppleAnnotatedData), nameof(AppleAnnotatedData.Id))]
 		public int AppleId { get; set; }
+		[PwMember]
+		public AtherAnnotatedData Ather { get; set; }
 	}
 }

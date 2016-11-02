@@ -8,5 +8,7 @@ namespace PropertyWriter.Model.Instance
 		public abstract ReactiveProperty<object> Value { get; }
 		public virtual ReactiveProperty<string> FormatedString => Value.Select(x => x?.ToString())
 			.ToReactiveProperty();
+
+		public override string ToString() => $"<{GetType()}: {Value}>";
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -16,27 +17,23 @@ namespace PropertyWriter.Model.Instance
         public Type BaseType { get; }
         public Type[] AvailableTypes { get; set; }
         public ReactiveProperty<Type> SelectedType { get; } = new ReactiveProperty<Type>();
-        public ReactiveProperty<IPropertyModel> Model => SelectedType.Where(x => x != null)
-            .Select(x => modelFactory.Create(x))
-            .ToReactiveProperty();
+        public ReactiveProperty<IPropertyModel> Model { get; } = new ReactiveProperty<IPropertyModel>();
         public override ReactiveProperty<object> Value => Model.Where(x => x != null)
             .Select(x => x.Value.Value)
             .ToReactiveProperty();
 
         public ReactiveCommand<PropertyModel> EditCommand { get; } = new ReactiveCommand<PropertyModel>();
 
-        public SubtypingModel(Type baseType)
-        {
-            BaseType = baseType;
-            EditCommand.Subscribe(x =>
-            {
-                Messenger.Raise(new TransitionMessage(x, "SubtypeEditor"));
-            });
-        }
-
-        public SubtypingModel(Type baseType, ModelFactory modelFactory) : this(baseType)
+        public SubtypingModel(Type baseType, ModelFactory modelFactory)
         {
             this.modelFactory = modelFactory;
-        }
+			BaseType = baseType;
+
+	        SelectedType.Where(x => x != null).Subscribe(x => Model.Value = modelFactory.Create(x));
+			EditCommand.Subscribe(x =>
+			{
+				Messenger.Raise(new TransitionMessage(x, "SubtypeEditor"));
+			});
+		}
     }
 }

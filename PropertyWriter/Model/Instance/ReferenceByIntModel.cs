@@ -38,8 +38,6 @@ namespace PropertyWriter.Model.Instance
 			{
 				_selectId = obj => (int)field.GetValue(obj);
 			}
-
-            SelectedObject.Subscribe(x => Debugger.Log(0, "", "SelectedObject.Change"));
 		}
 	}
 }

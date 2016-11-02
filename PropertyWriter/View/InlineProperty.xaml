@@ -82,7 +82,7 @@
             </ComboBox>
             <StackPanel Orientation="Horizontal">
                 <Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}"/>
-                <TextBlock Text="{Binding Path=FormatedString.Value}" />
+                <TextBlock Text="{Binding Path=Model.Value.FormatedString.Value, Mode=OneWay}" />
             </StackPanel>
         </StackPanel>
     </DataTemplate>
