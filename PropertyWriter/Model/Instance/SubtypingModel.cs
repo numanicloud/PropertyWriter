@@ -29,7 +29,9 @@ namespace PropertyWriter.Model.Instance
             this.modelFactory = modelFactory;
 			BaseType = baseType;
 
-	        SelectedType.Where(x => x != null).Subscribe(x => Model.Value = modelFactory.Create(x));
+	        SelectedType.Do(x => Debugger.Log(0, "Info", $"SelectedType: {x}\n"))
+				.Where(x => x != null)
+				.Subscribe(x => Model.Value = modelFactory.Create(x));
 			EditCommand.Subscribe(x =>
 			{
 				Messenger.Raise(new TransitionMessage(x, "SubtypeEditor"));

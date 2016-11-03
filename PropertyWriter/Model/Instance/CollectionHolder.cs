@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,24 +31,24 @@ namespace PropertyWriter.Model.Instance
 				throw new ArgumentException("配列または IEnumerable<T> を指定する必要があります。", nameof(type));
 			}
 
-			Value = new ReactiveProperty<IEnumerable<object>>();
-			Value.Value = Array.CreateInstance(ItemType, 0).Cast<object>();
+			Value = new ReactiveProperty<IEnumerable>();
+			Value.Value = Array.CreateInstance(ItemType, 0);
 
 			Collection = new ObservableCollection<IPropertyModel>();
 			Collection.ToCollectionChanged()
 				.Subscribe(x => Value.Value = MakeValue(Collection));
 		}
 
-		public ReactiveProperty<IEnumerable<object>> Value { get; }
+		public ReactiveProperty<IEnumerable> Value { get; }
 
-		private IEnumerable<object> MakeValue(ObservableCollection<IPropertyModel> collection)
+		private IEnumerable MakeValue(ObservableCollection<IPropertyModel> collection)
 		{
 			var array = Array.CreateInstance(ItemType, collection.Count);
 			for(int i = 0; i < collection.Count; i++)
 			{
 				array.SetValue(collection[i].Value.Value, i);
 			}
-			return array.Cast<object>();
+			return array;
 		}
 
 		public ObservableCollection<IPropertyModel> Collection { get; }
@@ -56,6 +57,7 @@ namespace PropertyWriter.Model.Instance
 		{
 			var instance = _modelFactory.Create(ItemType);
 			Collection.Add(instance);
+			instance.Value.Subscribe(x => Value.Value = MakeValue(Collection));
 		}
 
 		public void RemoveAt(int index)

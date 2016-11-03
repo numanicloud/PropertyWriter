@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using Reactive.Bindings;
 
@@ -15,9 +16,10 @@ namespace PropertyWriter.Model.Instance
         public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
 
 		public override ReactiveProperty<object> Value => CollectionValue.Value
+			.Do(x => Debugger.Log(0, "Info", $"BasicCollectionModel.Value = {x}\n"))
 			.Cast<object>()
 			.ToReactiveProperty();
-		public override ReactiveProperty<string> FormatedString => Collection.ToCollectionChanged()
+		public override ReactiveProperty<string> FormatedString => CollectionValue.Value
 			.Select(x => "Count = " + Collection.Count)
 			.ToReactiveProperty();
 

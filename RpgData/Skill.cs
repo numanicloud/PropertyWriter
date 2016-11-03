@@ -1,4 +1,5 @@
 ﻿using PropertyWriter.Annotation;
+using RpgData.Behaviors;
 
 namespace RpgData
 {
@@ -11,8 +12,8 @@ namespace RpgData
 		public string Name;
 		[PwMember]
 		public int Pain;
-		[PwMember]
-		public string BehaviorId;
+		[PwMember("効果")]
+		public ActiveBehavior ActiveEffect;
 		[PwMember]
 		public string Brief;
 		[PwMember]
