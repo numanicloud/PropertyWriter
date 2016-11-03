@@ -6,49 +6,17 @@
 				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
 				xmlns:v="clr-namespace:PropertyWriter.View"
 				xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
-				xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-				xmlns:chrome="clr-namespace:MetroRadiance.Chrome;assembly=MetroRadiance.Chrome"
-				xmlns:controls="http://schemes.grabacr.net/winfx/2014/controls"
 				TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal"
-        TextOptions.TextRenderingMode="Auto"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-				Title="PropertyWriter" Height="600" Width="800"
-				x:Name="Window">
+				Title="PropertyWriter" Height="400" Width="640">
 
 	<Window.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="BlockProperty.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-			<Style TargetType="TabItem">
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type TabItem}">
-							<Grid>
-								<Border Name="Border">
-									<ContentPresenter VerticalAlignment="Center"
-                          HorizontalAlignment="Center"
-													ContentSource="Header"/>
-								</Border>
-							</Grid>
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsSelected" Value="True">
-									<Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-									<Setter TargetName="Border" Property="mat:ColorZoneAssist.Mode" Value="Inverted"/>
-								</Trigger>
-								<Trigger Property="IsSelected" Value="False">
-									<Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignDarkSeparatorBackground}" />
-								</Trigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-		</ResourceDictionary>
+		<ResourceDictionary Source="BlockProperty.xaml"/>
 	</Window.Resources>
 
 	<Window.InputBindings>
@@ -61,17 +29,17 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
-		<Menu Grid.Row="0">
-			<MenuItem Header="ファイル">
-				<MenuItem Header="新規作成" InputGestureText="Ctrl+N"
+		<mat:ColorZone Grid.Row="0" Mode="Inverted">
+			<Menu>
+				<MenuItem Header="ファイル">
+					<MenuItem Header="新規作成" InputGestureText="Ctrl+N"
 													Command="{Binding NewFileCommand}" VerticalAlignment="Center"/>
-				<MenuItem Header="開く" InputGestureText="Ctrl+O" VerticalAlignment="Center"/>
-			</MenuItem>
-		</Menu>
-
-		<TabControl Grid.Row="1" ItemsSource="{Binding Roots.Value}" TabStripPlacement="Left"
-								Background="{DynamicResource MaterialDesignDarkSeparatorBackground}"
-								BorderThickness="0">
+					<MenuItem Header="開く" InputGestureText="Ctrl+O" VerticalAlignment="Center"/>
+				</MenuItem>
+			</Menu>
+		</mat:ColorZone>
+		
+		<TabControl Grid.Row="1" ItemsSource="{Binding Roots.Value}" TabStripPlacement="Left">
 			<TabControl.ItemTemplate>
 				<DataTemplate DataType="model:MasterInfo">
 					<TextBlock Text="{Binding Name}" Margin="6"/>
@@ -86,6 +54,4 @@
 
 	</Grid>
 </Window>
-
-
 

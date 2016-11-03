@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using MetroRadiance.UI.Controls;
 using PropertyWriter.ViewModel;
 
 namespace PropertyWriter.View
@@ -19,7 +18,7 @@ namespace PropertyWriter.View
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
-	public partial class MainWindow
+	public partial class MainWindow : Window
 	{
 		public MainWindow()
 		{
