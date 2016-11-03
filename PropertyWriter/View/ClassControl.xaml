@@ -12,7 +12,7 @@
 		<ResourceDictionary Source="InlineProperty.xaml"/>
 	</UserControl.Resources>
 
-	<ItemsControl ItemsSource="{Binding Members}" Grid.IsSharedSizeScope="True">
+	<ItemsControl ItemsSource="{Binding Members}" Grid.IsSharedSizeScope="True" Focusable="False">
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
 				<WrapPanel Orientation="Vertical"/>
@@ -20,14 +20,14 @@
 		</ItemsControl.ItemsPanel>
 		<ItemsControl.ItemTemplate>
 			<DataTemplate DataType="model:InstanceAndMemberInfo">
-				<Grid MinHeight="26" Margin="4,4,20,4">
+				<Grid MinHeight="26" Margin="0,0,20,0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
 						<ColumnDefinition Width="Auto" SharedSizeGroup="ColonColumn"/>
 						<ColumnDefinition Width="*" SharedSizeGroup="ValueColumn"/>
 					</Grid.ColumnDefinitions>
-					<TextBlock Text="{Binding Title}" TextAlignment="Right" VerticalAlignment="Top"/>
-					<TextBlock Text=":" Margin="4 0" Grid.Column="1" VerticalAlignment="Top"/>
+					<Label Content="{Binding Title}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+					<Label Content=":" Grid.Column="1" VerticalAlignment="Top"/>
 					<ContentControl Content="{Binding Model}" Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
 				</Grid>
 			</DataTemplate>

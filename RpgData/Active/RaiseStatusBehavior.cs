@@ -9,7 +9,7 @@ using RpgData.Passive;
 
 namespace RpgData.Active
 {
-	[PwSubtype]
+	[PwSubtype("パッシブ付与")]
 	class RaiseStatusBehavior : ActiveBehavior
 	{
 		[PwMember("パッシブ名")]

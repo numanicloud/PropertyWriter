@@ -18,6 +18,8 @@ namespace PropertyWriter.Model.Instance
 			ClassValue = new StructureHolder(type, modelFactory);
 		}
 
+		private StructureHolder ClassValue { get; set; }
+
 		public InstanceAndMemberInfo[] Members => ClassValue.Properties.ToArray();
 		public override ReactiveProperty<object> Value => ClassValue.Value;
 
@@ -34,7 +36,5 @@ namespace PropertyWriter.Model.Instance
 					.ToReactiveProperty();
 			}
 		}
-
-		private StructureHolder ClassValue { get; set; }
 	}
 }

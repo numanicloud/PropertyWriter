@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using PropertyWriter.Annotation;
+using PropertyWriter.Model.Info;
 using PropertyWriter.Model.Instance;
 using Reactive.Bindings;
 
@@ -75,11 +76,7 @@ namespace PropertyWriter.Model
 				case PropertyKind.Struct: return new StructModel(type, this);
 				case PropertyKind.BasicCollection: return new BasicCollectionModel(type, this);
 				case PropertyKind.ComplicateCollection: return new ComplicateCollectionModel(type, this);
-				case PropertyKind.SubtypingClass:
-					return new SubtypingModel(type, this)
-					{
-						AvailableTypes = subtypings_[type]
-					};
+				case PropertyKind.SubtypingClass: return new SubtypingModel(type, this, subtypings_[type]);
 
 				case PropertyKind.Unknown: return null;
 				default: return null;

@@ -7,7 +7,7 @@ using PropertyWriter.Annotation;
 
 namespace RpgData.Behaviors
 {
-	[PwSubtype]
+	[PwSubtype("攻撃")]
 	public class AttackBehavior : ActiveBehavior
 	{
 		[PwMember("攻撃力")]

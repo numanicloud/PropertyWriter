@@ -24,9 +24,9 @@ namespace RpgData
 
 		[PwMember("ドロップアイテム")]
 		public ItemDrop[] ItemDrop;
-		[PwMember("討伐ドロップ")]
-		public Item ItemOnDefeated;
+		[PwReferenceMember(typeof(Item), nameof(Item.Id), "討伐ドロップ")]
+		public int ItemIdOnDefeated;
 
-		public override string ToString() => $"Enemy: Item={ItemDrop.Length}";
+		public override string ToString() => $"{Id}: {Name}";
 	}
 }

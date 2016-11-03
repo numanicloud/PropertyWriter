@@ -126,6 +126,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EditorStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\InlineProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -146,6 +150,7 @@
     <Compile Include="Model\Helpers.cs" />
     <Compile Include="Model\Info\InstanceAndFieldInfo.cs" />
     <Compile Include="Model\Info\InstanceAndPropertyInfo.cs" />
+    <Compile Include="Model\Info\SubTypeInfo.cs" />
     <Compile Include="Model\InstanceConverter.cs" />
     <Compile Include="Model\Instance\BasicCollectionModel.cs" />
     <Compile Include="Model\Instance\BoolModel.cs" />

@@ -13,10 +13,14 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-				Title="PropertyWriter" Height="400" Width="640">
+				Title="PropertyWriter" Height="540" Width="960">
 
 	<Window.Resources>
-		<ResourceDictionary Source="BlockProperty.xaml"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="BlockProperty.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</Window.Resources>
 
 	<Window.InputBindings>
