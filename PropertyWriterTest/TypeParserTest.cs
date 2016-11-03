@@ -36,7 +36,7 @@ namespace PropertyWriterTest
 		{
 			var type = typeof( int );
 
-			var result = TypeParser.ParseType( type );
+			var result = TypeRecognizer.ParseType( type );
 
 			Assert.AreEqual( PropertyKind.Integer, result );
 		}
@@ -46,7 +46,7 @@ namespace PropertyWriterTest
 		{
 			var type = typeof( bool );
 
-			var result = TypeParser.ParseType( type );
+			var result = TypeRecognizer.ParseType( type );
 
 			Assert.AreEqual( PropertyKind.Boolean, result );
 		}
@@ -104,7 +104,7 @@ namespace PropertyWriterTest
 		{
 			var type = typeof( TypeForParse );
 
-			var actual = TypeParser.ParseType( type );
+			var actual = TypeRecognizer.ParseType( type );
 
 			Assert.AreEqual( expected, actual );
 		}

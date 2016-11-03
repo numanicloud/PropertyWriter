@@ -8,8 +8,8 @@ namespace PropertyWriter.Model
 	{
 		private readonly FieldInfo field_;
 
-		public InstanceAndFieldInfo(FieldInfo field, IPropertyModel model)
-			: base(field.Name, model)
+		public InstanceAndFieldInfo(FieldInfo field, IPropertyModel model, string name)
+			: base(name ?? field.Name, model)
 		{
 			field_ = field;
 		}

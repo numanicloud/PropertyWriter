@@ -43,7 +43,7 @@ namespace PropertyWriter.Model
 
 		public IPropertyModel CreateReference(Type type, Type targetType, string idMemberName)
 		{
-			var propertyType = TypeParser.ParseType(type);
+			var propertyType = TypeRecognizer.ParseType(type);
 			switch (propertyType)
 			{
 				case PropertyKind.Integer:
@@ -58,7 +58,7 @@ namespace PropertyWriter.Model
 
 		public IPropertyModel Create(Type type)
 		{
-			var propertyType = TypeParser.ParseType(type);
+			var propertyType = TypeRecognizer.ParseType(type);
 			return Create(propertyType, type);
 		}
 
@@ -80,14 +80,6 @@ namespace PropertyWriter.Model
 					{
 						AvailableTypes = subtypings_[type]
 					};
-				case PropertyKind.Array:
-				{
-					var element = TypeParser.ParseType(type.GetElementType());
-					var ienumerable = typeof(IEnumerable<>).MakeGenericType(type.GetElementType());
-					return element == PropertyKind.Class || element == PropertyKind.Struct
-						? new ComplicateCollectionModel(ienumerable, this)
-						: (IPropertyModel)new BasicCollectionModel(ienumerable, this);
-				}
 
 				case PropertyKind.Unknown: return null;
 				default: return null;

@@ -31,7 +31,7 @@
         <TabControl Grid.Row="1" ItemsSource="{Binding Roots.Value}" TabStripPlacement="Left">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="model:MasterInfo">
-                    <TextBlock Text="{Binding Type.Name}" Margin="6"/>
+                    <TextBlock Text="{Binding Name}" Margin="6"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>

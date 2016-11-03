@@ -10,7 +10,7 @@
 
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="2*" MinWidth="100"/>
+			<ColumnDefinition Width="150"/>
 			<ColumnDefinition Width="3*" MinWidth="100"/>
 		</Grid.ColumnDefinitions>
 
@@ -28,7 +28,8 @@
 				ItemsSource="{Binding Collection}"
 				Grid.Row="0"
 				Grid.ColumnSpan="2"
-				IsSynchronizedWithCurrentItem="True">
+				IsSynchronizedWithCurrentItem="True"
+				Name="MasterList">
 				<ListBox.Resources>
 					<DataTemplate DataType="{x:Type instance:ClassModel}">
 						<TextBlock Text="{Binding FormatedString.Value}"/>
@@ -37,7 +38,8 @@
 			</ListBox>
 
 			<Button Content="追加" Command="{Binding AddCommand}" Grid.Row="1" Grid.Column="0"/>
-			<Button Content="削除" Command="{Binding RemoveCommand}" Grid.Row="1" Grid.Column="1"/>
+			<Button Content="削除" Command="{Binding RemoveCommand}"
+							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="1" Grid.Column="1"/>
 		</Grid>
 
 		<ContentControl Content="{Binding Collection/}" Focusable="False" Grid.Column="1" Margin="5,0,0,0">

@@ -2,29 +2,31 @@
 
 namespace RpgData
 {
-	[PwMaster]
+	[PwMaster(name:"敵キャラ")]
 	public class EnemiesAbility
 	{
-		[PwMember]
+		[PwMember(name:"ID")]
 		public int Id;
-		[PwMember]
+		[PwMember("名前")]
 		public string Name;
-		[PwMember]
+		[PwMember("最大HP")]
 		public int MaxHp;
-		[PwMember]
+		[PwMember("痛み耐久力")]
 		public int MaxPain;
-		[PwMember]
+		[PwMember("痛みゲージ数")]
 		public int PainToleranceTimes;
-		[PwMember]
+		[PwMember("属性耐性")]
 		public Tolerance Tolerance;
-		[PwMember]
+		[PwMember("AI ID")]
 		public string AiId;
-		[PwMember]
+		[PwMember("画像パス")]
 		public string ImagePath;
 
-		[PwMember]
+		[PwMember("ドロップアイテム")]
 		public ItemDrop[] ItemDrop;
-		[PwMember]
+		[PwMember("討伐ドロップ")]
 		public Item ItemOnDefeated;
+
+		public override string ToString() => $"Enemy: Item={ItemDrop.Length}";
 	}
 }

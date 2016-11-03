@@ -16,10 +16,9 @@ namespace PropertyWriter.Model
 		BasicCollection,
 		ComplicateCollection,
         SubtypingClass,
-		Array,
 	}
 
-	class TypeParser
+	class TypeRecognizer
 	{
 		public static PropertyKind ParseType(Type type)
 		{
@@ -30,14 +29,16 @@ namespace PropertyWriter.Model
 			case "String": return PropertyKind.String;
 			case "Single": return PropertyKind.Float;
 			case "IEnumerable`1":
-				return IsComplecateCollection(type)
+				return IsComplecateCollection(type.GenericTypeArguments[0])
 					? PropertyKind.ComplicateCollection
 					: PropertyKind.BasicCollection;
 			}
 
 			if (type.IsArray)
 			{
-				return PropertyKind.Array;
+				return IsComplecateCollection(type.GetElementType())
+					? PropertyKind.ComplicateCollection
+					: PropertyKind.BasicCollection;
 			}
 			if(type.IsEnum)
 			{
@@ -59,9 +60,9 @@ namespace PropertyWriter.Model
 			return PropertyKind.Unknown;
 		}
 
-		private static bool IsComplecateCollection(Type type)
+		private static bool IsComplecateCollection(Type elementType)
 		{
-			var element = ParseType(type.GenericTypeArguments[0]);
+			var element = ParseType(elementType);
 			return element == PropertyKind.Class || element == PropertyKind.Struct;
 		}
 	}

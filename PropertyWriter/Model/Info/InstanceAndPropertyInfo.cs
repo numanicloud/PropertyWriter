@@ -8,8 +8,8 @@ namespace PropertyWriter.Model
 	{
 		private readonly PropertyInfo property_;
 
-		public InstanceAndPropertyInfo(PropertyInfo property, IPropertyModel model)
-			: base(property.Name, model)
+		public InstanceAndPropertyInfo(PropertyInfo property, IPropertyModel model, string name)
+			: base(name ?? property.Name, model)
 		{
 			property_ = property;
 		}
