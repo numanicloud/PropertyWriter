@@ -3,14 +3,13 @@ using System.Linq;
 using System.Reactive.Linq;
 using Livet.Messaging;
 using PropertyWriter.ViewModel;
+using PropertyWriter.ViewModel.Instance;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	internal class StructModel : PropertyModel
+	internal class StructModel : PropertyModel, IStructureModel
 	{
-		private ModelFactory modelFactory;
-
 		public InstanceAndMemberInfo[] Members => StructValue.Properties.ToArray();
 		public override ReactiveProperty<object> Value { get; }
 
@@ -38,7 +37,6 @@ namespace PropertyWriter.Model.Instance
 				throw new ArgumentException("type が構造体を表す Type クラスではありません。");
 			}
 
-			this.modelFactory = modelFactory;
 			StructValue = new StructureHolder(type, modelFactory);
 			EditCommand.Subscribe(x => Messenger.Raise(
 				new TransitionMessage(

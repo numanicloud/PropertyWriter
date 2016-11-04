@@ -20,29 +20,46 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="BlockProperty.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
+			<Style TargetType="StatusBar">
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding IsError.Value}" Value="True">
+						<Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
+						<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentForegroundBrush}"/>
+					</DataTrigger>
+					<DataTrigger Binding="{Binding IsError.Value}" Value="False">
+						<Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
+						<Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
 		</ResourceDictionary>
 	</Window.Resources>
 
 	<Window.InputBindings>
 		<KeyBinding Command="{Binding NewFileCommand}" Modifiers="Control" Key="N"/>
+		<KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
 	</Window.InputBindings>
 
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition/>
+			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
 		<mat:ColorZone Grid.Row="0" Mode="Inverted">
 			<Menu>
 				<MenuItem Header="ファイル">
 					<MenuItem Header="新規作成" InputGestureText="Ctrl+N"
-													Command="{Binding NewFileCommand}" VerticalAlignment="Center"/>
-					<MenuItem Header="開く" InputGestureText="Ctrl+O" VerticalAlignment="Center"/>
+										Command="{Binding NewFileCommand}" VerticalAlignment="Center"/>
+					<MenuItem Header="データを読み込み" InputGestureText="Ctrl+O"
+										Command="{Binding LoadDataCommand}" VerticalAlignment="Center"/>
+					<MenuItem Header="プロジェクトを保存" InputGestureText="Ctrl+S"
+										Command="{Binding SaveCommand}" VerticalAlignment="Center"/>
 				</MenuItem>
 			</Menu>
 		</mat:ColorZone>
-		
+
 		<TabControl Grid.Row="1" ItemsSource="{Binding Roots.Value}" TabStripPlacement="Left">
 			<TabControl.ItemTemplate>
 				<DataTemplate DataType="model:MasterInfo">
@@ -55,6 +72,10 @@
 				</DataTemplate>
 			</TabControl.ContentTemplate>
 		</TabControl>
+
+		<StatusBar Grid.Row="2">
+			<TextBlock Text="{Binding StatusMessage.Value}"/>
+		</StatusBar>
 
 	</Grid>
 </Window>

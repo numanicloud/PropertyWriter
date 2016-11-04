@@ -20,6 +20,7 @@ namespace PropertyWriter.Model
 		public IPropertyModel Model { get; }
 		public string Title { get; }
 		public abstract Type Type { get; }
+		public abstract string MemberName { get; }
 
 		public abstract void SetValue(object obj, object value);
 		public abstract object GetValue(object obj);

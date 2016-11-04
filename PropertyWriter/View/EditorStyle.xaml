@@ -20,7 +20,7 @@
 	</Style>
 
 	<Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
-		<Setter Property="Margin" Value="3,3,3,3"/>
+		<Setter Property="Margin" Value="0,3"/>
 	</Style>
 
 	<Style TargetType="TextBlock" x:Key="Revealer" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">

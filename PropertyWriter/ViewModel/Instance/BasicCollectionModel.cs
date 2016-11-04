@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Reactive.Linq;
 using Livet.Messaging;
 using PropertyWriter.ViewModel;
+using PropertyWriter.ViewModel.Instance;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	internal class BasicCollectionModel : PropertyModel
+	internal class BasicCollectionModel : PropertyModel, ICollectionModel
 	{
 		public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
 
@@ -33,14 +34,14 @@ namespace PropertyWriter.Model.Instance
 				new TransitionMessage(
 					new BlockViewModel(this),
 					"BlockWindow")));
-			AddCommand.Subscribe(x => CollectionValue.AddNewProperty());
+			AddCommand.Subscribe(x => CollectionValue.AddNewElement());
 			RemoveCommand.Subscribe(x => CollectionValue.RemoveAt(x));
 		}
 
 
-		public void AddNewProperty()
+		public IPropertyModel AddNewElement()
 		{
-			CollectionValue.AddNewProperty();
+			return CollectionValue.AddNewElement();
 		}
 
 		public void RemoveAt(int index)

@@ -51,6 +51,10 @@
       <HintPath>..\packages\LivetCask.1.3.1.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ReactiveProperty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveProperty.3.2.0\lib\net46\ReactiveProperty.dll</HintPath>
       <Private>True</Private>
@@ -146,32 +150,35 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Model\Helpers.cs" />
     <Compile Include="Model\Info\InstanceAndFieldInfo.cs" />
     <Compile Include="Model\Info\InstanceAndPropertyInfo.cs" />
     <Compile Include="Model\Info\SubTypeInfo.cs" />
     <Compile Include="Model\InstanceConverter.cs" />
-    <Compile Include="Model\Instance\BasicCollectionModel.cs" />
-    <Compile Include="Model\Instance\BoolModel.cs" />
-    <Compile Include="Model\Instance\ClassModel.cs" />
-    <Compile Include="Model\Instance\CollectionHolder.cs" />
+    <Compile Include="Model\JsonSerializer.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="ViewModel\Instance\BasicCollectionModel.cs" />
+    <Compile Include="ViewModel\Instance\BoolModel.cs" />
+    <Compile Include="ViewModel\Instance\ClassModel.cs" />
+    <Compile Include="ViewModel\Instance\CollectionHolder.cs" />
     <Compile Include="Model\EntityLoader.cs" />
-    <Compile Include="Model\Instance\EnumModel.cs" />
-    <Compile Include="Model\Instance\FloatModel.cs" />
-    <Compile Include="Model\Instance\IntModel.cs" />
-    <Compile Include="Model\Instance\IPropertyModel.cs" />
-    <Compile Include="Model\Instance\PropertyModel.cs" />
-    <Compile Include="Model\Instance\ReferenceByIntModel.cs" />
-    <Compile Include="Model\Instance\SubtypingModel.cs" />
+    <Compile Include="ViewModel\Instance\EnumModel.cs" />
+    <Compile Include="ViewModel\Instance\FloatModel.cs" />
+    <Compile Include="ViewModel\Instance\ICollectionModel.cs" />
+    <Compile Include="ViewModel\Instance\IntModel.cs" />
+    <Compile Include="ViewModel\Instance\IPropertyModel.cs" />
+    <Compile Include="ViewModel\Instance\IStructureModel.cs" />
+    <Compile Include="ViewModel\Instance\PropertyModel.cs" />
+    <Compile Include="ViewModel\Instance\ReferenceByIntModel.cs" />
+    <Compile Include="ViewModel\Instance\SubtypingModel.cs" />
     <Compile Include="Model\ModelFactory.cs" />
     <Compile Include="Model\Info\InstanceAndMemberInfo.cs" />
-    <Compile Include="Model\Instance\StringModel.cs" />
-    <Compile Include="Model\Instance\StructModel.cs" />
-    <Compile Include="Model\Instance\StructureHolder.cs" />
-    <Compile Include="Model\Info\MasterInfo.cs" />
+    <Compile Include="ViewModel\Instance\StringModel.cs" />
+    <Compile Include="ViewModel\Instance\StructModel.cs" />
+    <Compile Include="ViewModel\Instance\StructureHolder.cs" />
+    <Compile Include="ViewModel\MasterInfo.cs" />
     <Compile Include="Model\TypeParser.cs" />
-    <Compile Include="Model\Instance\ComplicateCollectionModel.cs" />
+    <Compile Include="ViewModel\Instance\ComplicateCollectionModel.cs" />
     <Compile Include="ViewModel\BlockViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\BasicCollectionControl.xaml.cs">

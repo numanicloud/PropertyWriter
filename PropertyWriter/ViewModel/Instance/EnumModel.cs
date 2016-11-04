@@ -6,8 +6,11 @@ namespace PropertyWriter.Model.Instance
 {
 	class EnumModel : PropertyModel
 	{
+		public Type Type { get; private set; }
+
 		public EnumModel(Type type)
 		{
+			Type = type;
 			if(!type.IsEnum)
 			{
 				throw new ArgumentException("type が列挙型を表す Type クラスではありません。");

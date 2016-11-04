@@ -34,7 +34,7 @@ namespace PropertyWriter.View
 
 		private void addButton_Click( object sender, RoutedEventArgs e )
 		{
-			property.AddNewProperty();
+			property.AddNewElement();
 		}
 
 		private void removeButton_Click( object sender, RoutedEventArgs e )

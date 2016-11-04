@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reactive.Linq;
 using Livet.Messaging;
 using PropertyWriter.ViewModel;
+using PropertyWriter.ViewModel.Instance;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	class ClassModel : PropertyModel
+	class ClassModel : PropertyModel, IStructureModel
 	{
 		public ClassModel(Type type, ModelFactory modelFactory)
 		{

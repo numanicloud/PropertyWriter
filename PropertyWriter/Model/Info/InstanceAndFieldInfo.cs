@@ -15,6 +15,7 @@ namespace PropertyWriter.Model
 		}
 
 		public override Type Type => field_.FieldType;
+		public override string MemberName => field_.Name;
 		public override object GetValue(object obj) => field_.GetValue(obj);
 		public override void SetValue(object obj, object value) => field_.SetValue(obj, value);
 	}

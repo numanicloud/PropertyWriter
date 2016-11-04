@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Reactive.Linq;
 using Livet.Messaging;
 using PropertyWriter.ViewModel;
+using PropertyWriter.ViewModel.Instance;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	internal class ComplicateCollectionModel : PropertyModel
+	internal class ComplicateCollectionModel : PropertyModel, ICollectionModel
 	{
 		public ObservableCollection<IPropertyModel> Collection => ComplicateCollectionValue.Collection;
 		public override ReactiveProperty<object> Value { get; }
@@ -30,12 +31,14 @@ namespace PropertyWriter.Model.Instance
 		        .Select(x => "Count = " + Collection.Count)
 		        .ToReactiveProperty();
 
-			AddCommand.Subscribe(x => ComplicateCollectionValue.AddNewProperty());
+			AddCommand.Subscribe(x => ComplicateCollectionValue.AddNewElement());
 			RemoveCommand.Subscribe(x => ComplicateCollectionValue.RemoveAt(x));
 			EditCommand.Subscribe(x => Messenger.Raise(
 				new TransitionMessage(
 					new BlockViewModel(this),
 					"BlockWindow")));
 		}
-    }
+
+		public IPropertyModel AddNewElement() => ComplicateCollectionValue.AddNewElement();
+	}
 }

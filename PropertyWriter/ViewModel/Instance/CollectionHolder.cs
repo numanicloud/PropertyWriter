@@ -49,11 +49,12 @@ namespace PropertyWriter.Model.Instance
 			return array;
 		}
 
-		public void AddNewProperty()
+		public IPropertyModel AddNewElement()
 		{
 			var instance = modelFactory_.Create(ItemType, "Element");
 			Collection.Add(instance);
 			instance.Value.Subscribe(x => Value.Value = MakeValue(Collection));
+			return instance;
 		}
 
 		public void RemoveAt(int index)
