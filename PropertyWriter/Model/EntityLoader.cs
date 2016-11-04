@@ -55,7 +55,10 @@ namespace PropertyWriter.Model
 			var memberAttr = info.GetCustomAttribute<PwMemberAttribute>();
 			if (memberAttr != null)
 			{
-				return new InstanceAndPropertyInfo(info, modelFactory.Create(info.PropertyType), memberAttr.Name);
+				return new InstanceAndPropertyInfo(
+					info,
+					modelFactory.Create(info.PropertyType, memberAttr.Name),
+					memberAttr.Name);
 			}
 
 			var attr = info.GetCustomAttribute<PwReferenceMemberAttribute>();
@@ -63,7 +66,7 @@ namespace PropertyWriter.Model
             {
                 return new InstanceAndPropertyInfo(
 					info,
-					modelFactory.CreateReference(info.PropertyType, attr.TargetType, attr.IdFieldName),
+					modelFactory.CreateReference(info.PropertyType, attr.TargetType, attr.IdFieldName, attr.Name),
 					attr.Name);
 			}
 
@@ -75,7 +78,10 @@ namespace PropertyWriter.Model
 			var memberAttr = info.GetCustomAttribute<PwMemberAttribute>();
 			if (memberAttr != null)
 	        {
-                return new InstanceAndFieldInfo(info, modelFactory.Create(info.FieldType), memberAttr.Name);
+                return new InstanceAndFieldInfo(
+					info,
+					modelFactory.Create(info.FieldType, memberAttr.Name),
+					memberAttr.Name);
             }
 
 	        var attr = info.GetCustomAttribute<PwReferenceMemberAttribute>();
@@ -83,7 +89,7 @@ namespace PropertyWriter.Model
             {
                 return new InstanceAndFieldInfo(
 					info,
-					modelFactory.CreateReference(info.FieldType, attr.TargetType, attr.IdFieldName),
+					modelFactory.CreateReference(info.FieldType, attr.TargetType, attr.IdFieldName, attr.Name),
 					attr.Name);
             }
 

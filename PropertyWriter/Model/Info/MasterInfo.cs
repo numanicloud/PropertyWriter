@@ -22,13 +22,13 @@ namespace PropertyWriter.Model
 
 		internal static MasterInfo ForGlobal(Type type, ModelFactory modelFactory, string name)
 		{
-			return new MasterInfo(type, modelFactory.Create(type), name);
+			return new MasterInfo(type, modelFactory.Create(type, "Global"), name);
 		}
 
 		public static MasterInfo ForMaster(Type type, ModelFactory modelFactory, string name)
 		{
 			var collectionType = typeof(IEnumerable<>).MakeGenericType(type);
-			return new MasterInfo(type, modelFactory.Create(collectionType), name);
+			return new MasterInfo(type, modelFactory.Create(collectionType, "Master"), name);
 		}
 	}
 }

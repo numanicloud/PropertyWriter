@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using Livet.Messaging;
+using PropertyWriter.ViewModel;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	class StructModel : PropertyModel
+	internal class StructModel : PropertyModel
 	{
 		private ModelFactory modelFactory;
 
-		public StructModel(Type type, ModelFactory modelFactory)
-		{
-			if (!type.IsValueType)
-			{
-				throw new ArgumentException("type が構造体を表す Type クラスではありません。");
-			}
-
-			this.modelFactory = modelFactory;
-			StructValue = new StructureHolder(type, modelFactory);
-		}
-
 		public InstanceAndMemberInfo[] Members => StructValue.Properties.ToArray();
-		public override ReactiveProperty<object> Value => StructValue.Value;
+		public override ReactiveProperty<object> Value { get; }
 
 		public override ReactiveProperty<string> FormatedString
 		{
@@ -38,6 +28,26 @@ namespace PropertyWriter.Model.Instance
 			}
 		}
 
-		private StructureHolder StructValue { get; set; }
+		private StructureHolder StructValue { get; }
+		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
+
+		public StructModel(Type type, ModelFactory modelFactory)
+		{
+			if (!type.IsValueType)
+			{
+				throw new ArgumentException("type が構造体を表す Type クラスではありません。");
+			}
+
+			this.modelFactory = modelFactory;
+			StructValue = new StructureHolder(type, modelFactory);
+			EditCommand.Subscribe(x => Messenger.Raise(
+				new TransitionMessage(
+					new BlockViewModel(this),
+					"BlockWindow")));
+
+			Value = StructValue.ValueChanged
+				.Select(x => StructValue.Value.Value)
+				.ToReactiveProperty();
+		}
 	}
 }

@@ -172,6 +172,7 @@
     <Compile Include="Model\Info\MasterInfo.cs" />
     <Compile Include="Model\TypeParser.cs" />
     <Compile Include="Model\Instance\ComplicateCollectionModel.cs" />
+    <Compile Include="ViewModel\BlockViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\BasicCollectionControl.xaml.cs">
       <DependentUpon>BasicCollectionControl.xaml</DependentUpon>
@@ -185,12 +186,9 @@
     <Compile Include="View\ComplicateCollectionControl.xaml.cs">
       <DependentUpon>ComplicateCollectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GridHelpers.cs" />
-    <Compile Include="View\InlineProperty.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PhantomPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -12,9 +12,9 @@ namespace RpgData.Active
 	[PwSubtype("パッシブ付与")]
 	class RaiseStatusBehavior : ActiveBehavior
 	{
-		[PwMember("パッシブ名")]
-		public string StatusName { get; set; }
 		[PwMember("パッシブ効果")]
 		public PassiveBehavior PassiveEffect { get; set; }
+
+		public override string ToString() => $"パッシブ：{PassiveEffect}";
 	}
 }

@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using Livet.Messaging;
+using PropertyWriter.ViewModel;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
@@ -16,12 +18,23 @@ namespace PropertyWriter.Model.Instance
 			}
 
 			ClassValue = new StructureHolder(type, modelFactory);
+
+			Value = new ReactiveProperty<object>(ClassValue.Value.Value, ReactivePropertyMode.RaiseLatestValueOnSubscribe);
+			ClassValue.ValueChanged
+				.Do(x => Debugger.Log(0, "Info", $"StructureHolder {Title.Value}: {ClassValue.Value.Value}\n"))
+				.Subscribe(x => Value.Value = ClassValue.Value.Value);
+
+			EditCommand.Subscribe(x => Messenger.Raise(
+				new TransitionMessage(
+					new BlockViewModel(this),
+					"BlockWindow")));
 		}
 
 		private StructureHolder ClassValue { get; set; }
 
 		public InstanceAndMemberInfo[] Members => ClassValue.Properties.ToArray();
-		public override ReactiveProperty<object> Value => ClassValue.Value;
+		public override ReactiveProperty<object> Value { get; }
+		public ReactiveCommand<PropertyModel> EditCommand { get; } = new ReactiveCommand<PropertyModel>();
 
 		public override ReactiveProperty<string> FormatedString
 		{

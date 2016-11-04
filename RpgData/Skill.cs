@@ -20,5 +20,7 @@ namespace RpgData
 		public string FullDescription;
 		[PwMember]
 		public string EffectId;
+
+		public override string ToString() => $"{Id}: {Name}";
 	}
 }

@@ -24,7 +24,7 @@ namespace PropertyWriter.Model
 		public MasterInfo[] LoadData(string assemblyPath)
 		{
 			var types = Assembly.LoadFrom(assemblyPath).GetTypes();
-			
+
 			var subtypings = types.Where(Helpers.IsAnnotatedType<PwSubtypingAttribute>).ToArray();
 			var subtypes = types.Where(Helpers.IsAnnotatedType<PwSubtypeAttribute>).ToArray();
 			subtypings_ = subtypings.ToDictionary(x => x, x => subtypes.Where(y => y.BaseType == x).ToArray());
@@ -42,44 +42,47 @@ namespace PropertyWriter.Model
 			return globals.Concat(masters).ToArray();
 		}
 
-		public IPropertyModel CreateReference(Type type, Type targetType, string idMemberName)
+		public IPropertyModel CreateReference(Type type, Type targetType, string idMemberName, string title)
 		{
 			var propertyType = TypeRecognizer.ParseType(type);
-			switch (propertyType)
+			switch(propertyType)
 			{
-				case PropertyKind.Integer:
-					return new ReferenceByIntModel(targetType, idMemberName)
-					{
-						Source = masters_[targetType]
-					};
-				default:
-					throw new InvalidOperationException("ID参照はInt32のみがサポートされます。");
+			case PropertyKind.Integer:
+				return new ReferenceByIntModel(targetType, idMemberName)
+				{
+					Source = masters_[targetType],
+					Title = {Value = title}
+				};
+			default:
+				throw new InvalidOperationException("ID参照はInt32のみがサポートされます。");
 			}
 		}
 
-		public IPropertyModel Create(Type type)
+		public IPropertyModel Create(Type type, string title)
 		{
 			var propertyType = TypeRecognizer.ParseType(type);
-			return Create(propertyType, type);
+			var model = Create(propertyType, type);
+			model.Title.Value = title;
+			return model;
 		}
 
 		private IPropertyModel Create(PropertyKind propertyType, Type type)
 		{
-			switch (propertyType)
+			switch(propertyType)
 			{
-				case PropertyKind.Integer: return new IntModel();
-				case PropertyKind.Boolean: return new BoolModel();
-				case PropertyKind.String: return new StringModel();
-				case PropertyKind.Float: return new FloatModel();
-				case PropertyKind.Enum: return new EnumModel(type);
-				case PropertyKind.Class: return new ClassModel(type, this);
-				case PropertyKind.Struct: return new StructModel(type, this);
-				case PropertyKind.BasicCollection: return new BasicCollectionModel(type, this);
-				case PropertyKind.ComplicateCollection: return new ComplicateCollectionModel(type, this);
-				case PropertyKind.SubtypingClass: return new SubtypingModel(type, this, subtypings_[type]);
+			case PropertyKind.Integer: return new IntModel();
+			case PropertyKind.Boolean: return new BoolModel();
+			case PropertyKind.String: return new StringModel();
+			case PropertyKind.Float: return new FloatModel();
+			case PropertyKind.Enum: return new EnumModel(type);
+			case PropertyKind.Class: return new ClassModel(type, this);
+			case PropertyKind.Struct: return new StructModel(type, this);
+			case PropertyKind.BasicCollection: return new BasicCollectionModel(type, this);
+			case PropertyKind.ComplicateCollection: return new ComplicateCollectionModel(type, this);
+			case PropertyKind.SubtypingClass: return new SubtypingModel(type, this, subtypings_[type]);
 
-				case PropertyKind.Unknown: return null;
-				default: return null;
+			case PropertyKind.Unknown: return null;
+			default: return null;
 			}
 		}
 	}

@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Subjects;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
 	class StructureHolder
 	{
-        private ModelFactory modelFactory;
-        
-        public StructureHolder(Type type, ModelFactory modelFactory)
+		public IEnumerable<InstanceAndMemberInfo> Properties { get; }
+		public ReactiveProperty<object> Value { get; }
+		public Subject<Unit> ValueChanged { get; } = new Subject<Unit>();
+
+		public StructureHolder(Type type, ModelFactory modelFactory)
         {
-            this.modelFactory = modelFactory;
-            Properties = EntityLoader.LoadMembers(type, modelFactory);
+			Properties = EntityLoader.LoadMembers(type, modelFactory);
 
             Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
 
@@ -21,12 +25,9 @@ namespace PropertyWriter.Model.Instance
                 property.Model.Value.Subscribe(x =>
                 {
                     property.SetValue(Value.Value, x);
+					ValueChanged.OnNext(Unit.Default);
                 });
             }
         }
-
-        public IEnumerable<InstanceAndMemberInfo> Properties { get; }
-
-		public ReactiveProperty<object> Value { get; }
 	}
 }

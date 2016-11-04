@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive.Linq;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	class CollectionHolder
+	internal class CollectionHolder
 	{
+		private readonly ModelFactory modelFactory_;
 		public Type Type { get; }
-		private readonly ModelFactory _modelFactory;
+		public Type ItemType { get; }
+		public ObservableCollection<IPropertyModel> Collection { get; }
+		public ReactiveProperty<IEnumerable> Value { get; }
 
 		public CollectionHolder(Type type, ModelFactory modelFactory)
 		{
 			Type = type;
-			_modelFactory = modelFactory;
+			modelFactory_ = modelFactory;
 
-			if(type.Name == "IEnumerable`1")
+			if (type.Name == "IEnumerable`1")
 			{
-				this.ItemType = type.GenericTypeArguments[0];
+				ItemType = type.GenericTypeArguments[0];
 			}
-			else if(type.IsArray)
+			else if (type.IsArray)
 			{
 				ItemType = type.GetElementType();
 			}
@@ -39,23 +39,19 @@ namespace PropertyWriter.Model.Instance
 				.Subscribe(x => Value.Value = MakeValue(Collection));
 		}
 
-		public ReactiveProperty<IEnumerable> Value { get; }
-
 		private IEnumerable MakeValue(ObservableCollection<IPropertyModel> collection)
 		{
 			var array = Array.CreateInstance(ItemType, collection.Count);
-			for(int i = 0; i < collection.Count; i++)
+			for (var i = 0; i < collection.Count; i++)
 			{
 				array.SetValue(collection[i].Value.Value, i);
 			}
 			return array;
 		}
 
-		public ObservableCollection<IPropertyModel> Collection { get; }
-
 		public void AddNewProperty()
 		{
-			var instance = _modelFactory.Create(ItemType);
+			var instance = modelFactory_.Create(ItemType, "Element");
 			Collection.Add(instance);
 			instance.Value.Subscribe(x => Value.Value = MakeValue(Collection));
 		}
@@ -64,7 +60,5 @@ namespace PropertyWriter.Model.Instance
 		{
 			Collection.RemoveAt(index);
 		}
-
-		public Type ItemType { get; }
 	}
 }

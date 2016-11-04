@@ -10,38 +10,41 @@ using Livet.Messaging;
 using Livet.Messaging.Windows;
 using PropertyWriter.Annotation;
 using PropertyWriter.Model.Info;
+using PropertyWriter.ViewModel;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-    class SubtypingModel : PropertyModel
-    {
-	    public Type BaseType { get; }
-        public SubTypeInfo[] AvailableTypes { get; set; }
-        public ReactiveProperty<SubTypeInfo> SelectedType { get; } = new ReactiveProperty<SubTypeInfo>();
-        public ReactiveProperty<IPropertyModel> Model { get; } = new ReactiveProperty<IPropertyModel>();
-        public override ReactiveProperty<object> Value => Model.Where(x => x != null)
-            .Select(x => x.Value.Value)
-            .ToReactiveProperty();
+	class SubtypingModel : PropertyModel
+	{
+		public Type BaseType { get; }
+		public SubTypeInfo[] AvailableTypes { get; set; }
+		public ReactiveProperty<SubTypeInfo> SelectedType { get; } = new ReactiveProperty<SubTypeInfo>();
+		public ReactiveProperty<IPropertyModel> Model { get; } = new ReactiveProperty<IPropertyModel>();
+		public override ReactiveProperty<object> Value { get; }
 
-        public ReactiveCommand<PropertyModel> EditCommand { get; } = new ReactiveCommand<PropertyModel>();
+		public ReactiveCommand<PropertyModel> EditCommand { get; } = new ReactiveCommand<PropertyModel>();
 
-        public SubtypingModel(Type baseType, ModelFactory modelFactory, Type[] availableTypes)
-        {
-	        AvailableTypes = availableTypes.Select(x =>
-	        {
-		        var attr = x.GetCustomAttribute<PwSubtypeAttribute>();
+		public SubtypingModel(Type baseType, ModelFactory modelFactory, Type[] availableTypes)
+		{
+			AvailableTypes = availableTypes.Select(x =>
+			{
+				var attr = x.GetCustomAttribute<PwSubtypeAttribute>();
 				return new SubTypeInfo(x, attr.Name);
-	        }).ToArray();
-	        BaseType = baseType;
+			}).ToArray();
+			BaseType = baseType;
 
-	        SelectedType.Do(x => Debugger.Log(0, "Info", $"SelectedType: {x}\n"))
-				.Where(x => x != null)
-				.Subscribe(x => Model.Value = modelFactory.Create(x.Type));
+			SelectedType.Where(x => x != null)
+				.Subscribe(x => Model.Value = modelFactory.Create(x.Type, Title.Value));
 			EditCommand.Subscribe(x =>
 			{
-				Messenger.Raise(new TransitionMessage(x, "SubtypeEditor"));
+				Messenger.Raise(new TransitionMessage(new BlockViewModel(Model.Value), "SubtypeEditor"));
 			});
+
+			Value = Model.Where(x => x != null)
+				.SelectMany(x => x.Value)
+				.Do(x => Debugger.Log(0, "Info", $"Subtype {Title.Value}: {x}\n"))
+				.ToReactiveProperty(mode: ReactivePropertyMode.RaiseLatestValueOnSubscribe);
 		}
-    }
+	}
 }

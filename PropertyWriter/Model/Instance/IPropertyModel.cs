@@ -6,5 +6,6 @@ namespace PropertyWriter.Model.Instance
 	{
 		ReactiveProperty<object> Value { get; }
 		ReactiveProperty<string> FormatedString { get; }
+		ReactiveProperty<string> Title { get; set; }
 	}
 }

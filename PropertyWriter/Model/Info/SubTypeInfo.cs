@@ -11,7 +11,7 @@ namespace PropertyWriter.Model.Info
 		public SubTypeInfo(Type type, string name)
 		{
 			Type = type;
-			Name = name;
+			Name = name ?? type.Name;
 		}
 
 		public string Name { get; private set; }
