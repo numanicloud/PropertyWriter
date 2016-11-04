@@ -10,5 +10,6 @@ namespace PropertyWriter.ViewModel.Instance
 	interface IStructureModel
 	{
 		InstanceAndMemberInfo[] Members { get; }
+		Type Type { get; }
 	}
 }

@@ -11,8 +11,11 @@ namespace PropertyWriter.Model.Instance
 {
 	class ClassModel : PropertyModel, IStructureModel
 	{
+		public Type Type { get; private set; }
+
 		public ClassModel(Type type, ModelFactory modelFactory)
 		{
+			Type = type;
 			if (!type.IsClass)
 			{
 				throw new ArgumentException("type がクラスを表す Type クラスではありません。");

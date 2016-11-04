@@ -10,6 +10,7 @@ namespace PropertyWriter.Model.Instance
 {
 	internal class StructModel : PropertyModel, IStructureModel
 	{
+		public Type Type { get; private set; }
 		public InstanceAndMemberInfo[] Members => StructValue.Properties.ToArray();
 		public override ReactiveProperty<object> Value { get; }
 
@@ -32,6 +33,7 @@ namespace PropertyWriter.Model.Instance
 
 		public StructModel(Type type, ModelFactory modelFactory)
 		{
+			Type = type;
 			if (!type.IsValueType)
 			{
 				throw new ArgumentException("type が構造体を表す Type クラスではありません。");

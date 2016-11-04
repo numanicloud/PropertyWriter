@@ -95,7 +95,7 @@ namespace PropertyWriter.Model
 					var val = obj.GetValue(property.MemberName);
 					if (val == null)
 					{
-						return false;
+						throw new PwObjectMissmatchException(classModel.Type.Name, property.MemberName);
 					}
 					result &= WriteToModel(property.Model, val, references);
 				}
@@ -113,44 +113,52 @@ namespace PropertyWriter.Model
 
 			try
 			{
-				if(WriteValueIfMatches<IntModel>(model, token, (m, x) => m.IntValue.Value = (int)(long)x)) return true;
-				if(WriteValueIfMatches<StringModel>(model, token, (m, x) => m.StringValue.Value = (string)x)) return true;
-				if(WriteValueIfMatches<BoolModel>(model, token, (m, x) => m.BoolValue.Value = (bool)x)) return true;
-				if(WriteValueIfMatches<FloatModel>(model, token, (m, x) => m.FloatValue.Value = (float)(double)x)) return true;
+				if (WriteValueIfMatches<IntModel>(model, token, (m, x) => m.IntValue.Value = (int) (long) x)) return true;
+				if (WriteValueIfMatches<StringModel>(model, token, (m, x) => m.StringValue.Value = (string) x)) return true;
+				if (WriteValueIfMatches<BoolModel>(model, token, (m, x) => m.BoolValue.Value = (bool) x)) return true;
+				if (WriteValueIfMatches<FloatModel>(model, token, (m, x) => m.FloatValue.Value = (float) (double) x)) return true;
 				if (WriteValueIfMatches<EnumModel>(model, token, ConvertEnum)) return true;
 
-				if(WriteObjectIfMatches<ClassModel>(model, token, references)) return true;
-				if(WriteObjectIfMatches<StructModel>(model, token, references)) return true;
+				if (WriteObjectIfMatches<ClassModel>(model, token, references)) return true;
+				if (WriteObjectIfMatches<StructModel>(model, token, references)) return true;
 
 				var refByIntModel = model as ReferenceByIntModel;
-				if(refByIntModel != null)
+				if (refByIntModel != null)
 				{
-					var val = (JValue)token;
-					references.Add(new Tuple<ReferenceByIntModel, int>(refByIntModel, (int)(long)val.Value));
+					var val = (JValue) token;
+					references.Add(new Tuple<ReferenceByIntModel, int>(refByIntModel, (int) (long) val.Value));
 					return true;
 				}
 
 				var subtypingModel = model as SubtypingModel;
-				if(subtypingModel != null)
+				if (subtypingModel != null)
 				{
-					foreach(var type in subtypingModel.AvailableTypes)
+					foreach (var type in subtypingModel.AvailableTypes)
 					{
 						subtypingModel.SelectedType.Value = type;
-						bool success = WriteToModel(subtypingModel.Model.Value, token, references);
-						if(success)
+						try
 						{
-							return true;
+							WriteToModel(subtypingModel.Model.Value, token, references);
 						}
+						catch (PwObjectMissmatchException)
+						{
+							continue;
+						}
+						return true;
 					}
-					return false;
+					throw new PwSubtypeNotFoundException(subtypingModel.Title.Value, subtypingModel.BaseType.Name);
 				}
 
-				if(WriteArrayIfMatches<ComplicateCollectionModel>(model, token, references)) return true;
-				if(WriteArrayIfMatches<BasicCollectionModel>(model, token, references)) return true;
+				if (WriteArrayIfMatches<ComplicateCollectionModel>(model, token, references)) return true;
+				if (WriteArrayIfMatches<BasicCollectionModel>(model, token, references)) return true;
 
 				return false;
 			}
-			catch(Exception e)
+			catch (PwJsonDeserializeException)
+			{
+				throw;
+			}
+			catch (Exception e)
 			{
 				Debugger.Log(0, "Info", e.Message + "\n");
 				Debugger.Log(0, "Info", e.StackTrace + "\n");

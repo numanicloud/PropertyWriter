@@ -155,6 +155,7 @@
     <Compile Include="Model\Info\InstanceAndPropertyInfo.cs" />
     <Compile Include="Model\Info\SubTypeInfo.cs" />
     <Compile Include="Model\InstanceConverter.cs" />
+    <Compile Include="Model\PwJsonDeserializeException.cs" />
     <Compile Include="Model\JsonSerializer.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="ViewModel\Instance\BasicCollectionModel.cs" />

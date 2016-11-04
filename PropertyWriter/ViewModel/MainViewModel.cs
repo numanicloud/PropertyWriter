@@ -26,8 +26,21 @@ namespace PropertyWriter.ViewModel
 		{
 			NewFileCommand.Subscribe(x => OnNewFile());
 			SaveCommand.SelectMany(x => SaveFile().ToObservable()).Subscribe();
-			LoadDataCommand.SelectMany(x => LoadData().ToObservable()).Subscribe();
+			SubscribeLoadDataCommand();
 			IsError.Value = false;
+		}
+
+		private void SubscribeLoadDataCommand()
+		{
+			LoadDataCommand.SelectMany(x => LoadData().ToObservable())
+				.Subscribe(
+					unit => { },
+					exception =>
+					{
+						StatusMessage.Value = $"データを完全には読み込めませんでした。{exception.Message}";
+						IsError.Value = true;
+						SubscribeLoadDataCommand();
+					});
 		}
 
 		private async Task LoadData()
@@ -36,16 +49,8 @@ namespace PropertyWriter.ViewModel
 			Roots.Value = modelFactory.LoadData(AssemblyPath.Value);
 			StatusMessage.Value = "データを読み込み中…";
 			var result = await JsonSerializer.LoadData(Roots.Value, "SaveData/");
-			if (result)
-			{
-				StatusMessage.Value = "データを読み込みました。";
-				IsError.Value = false;
-			}
-			else
-			{
-				StatusMessage.Value = "データを読み込めませんでした。";
-				IsError.Value = true;
-			}
+			StatusMessage.Value = "データを読み込みました。";
+			IsError.Value = false;
 		}
 
 		private async Task SaveFile()
