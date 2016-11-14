@@ -3,7 +3,6 @@ using RpgData.Behaviors;
 
 namespace RpgData
 {
-	[PwMaster]
 	public class Skill
 	{
 		[PwMember]

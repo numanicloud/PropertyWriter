@@ -64,6 +64,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -114,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\ProjectViewModel.cs" />
+    <Compile Include="View\NewProjectWindow.xaml.cs">
+      <DependentUpon>NewProjectWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\BasicCollectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -162,7 +167,6 @@
     <Compile Include="ViewModel\Instance\BoolModel.cs" />
     <Compile Include="ViewModel\Instance\ClassModel.cs" />
     <Compile Include="ViewModel\Instance\CollectionHolder.cs" />
-    <Compile Include="Model\EntityLoader.cs" />
     <Compile Include="ViewModel\Instance\EnumModel.cs" />
     <Compile Include="ViewModel\Instance\FloatModel.cs" />
     <Compile Include="ViewModel\Instance\ICollectionModel.cs" />
@@ -197,6 +201,10 @@
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\NewProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

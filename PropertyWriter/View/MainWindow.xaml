@@ -39,6 +39,12 @@
 		<KeyBinding Command="{Binding NewFileCommand}" Modifiers="Control" Key="N"/>
 		<KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
 	</Window.InputBindings>
+    
+    <i:Interaction.Triggers>
+        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="NewProject">
+            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:NewProjectWindow}" Mode="Modal"/>
+        </messaging:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -50,8 +56,8 @@
 		<mat:ColorZone Grid.Row="0" Mode="Inverted">
 			<Menu>
 				<MenuItem Header="ファイル">
-					<MenuItem Header="新規作成" InputGestureText="Ctrl+N"
-										Command="{Binding NewFileCommand}" VerticalAlignment="Center"/>
+					<MenuItem Header="新規プロジェクト" InputGestureText="Ctrl+N"
+										Command="{Binding NewProjectCommand}" VerticalAlignment="Center"/>
 					<MenuItem Header="データを読み込み" InputGestureText="Ctrl+O"
 										Command="{Binding LoadDataCommand}" VerticalAlignment="Center"/>
 					<MenuItem Header="プロジェクトを保存" InputGestureText="Ctrl+S"

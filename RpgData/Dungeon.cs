@@ -2,7 +2,6 @@
 
 namespace RpgData
 {
-	[PwMaster]
 	public class Dungeon
 	{
 		[PwMember]

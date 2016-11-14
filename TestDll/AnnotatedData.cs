@@ -7,7 +7,6 @@ using PropertyWriter.Annotation;
 
 namespace TestDll
 {
-	[PwMaster]
 	class AppleAnnotatedData
 	{
 		[PwMember]
@@ -19,8 +18,7 @@ namespace TestDll
 
 		public override string ToString() => $"Apple: {Id}, {X}";
 	}
-
-    [PwMaster]
+	
     class OrangeAnnotatedData
     {
         [PwReferenceMember(typeof(AppleAnnotatedData), nameof(AppleAnnotatedData.Id))]
@@ -30,7 +28,6 @@ namespace TestDll
     }
 
 	[PwSubtyping]
-	[PwMinor]
 	class AtherAnnotatedData
 	{
 		[PwMember]
@@ -40,7 +37,6 @@ namespace TestDll
 	}
 
 	[PwSubtype]
-	[PwMinor]
 	class IgnisAnnotatedData : AtherAnnotatedData
 	{
 		[PwMember]
@@ -50,7 +46,6 @@ namespace TestDll
 	}
 
 	[PwSubtype]
-	[PwMinor]
 	class AquaAnnotatedData : AtherAnnotatedData
 	{
 		[PwMember]
@@ -58,8 +53,7 @@ namespace TestDll
 
 		public override string ToString() => $"Aqua: {Title}, {Volume}";
 	}
-
-	[PwGlobal]
+	
 	struct UniverseAnnotatedData
 	{
 		[PwMember]

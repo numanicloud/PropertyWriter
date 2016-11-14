@@ -2,7 +2,6 @@
 
 namespace RpgData
 {
-	[PwMaster(name:"敵キャラ")]
 	public class EnemiesAbility
 	{
 		[PwMember(name:"ID")]

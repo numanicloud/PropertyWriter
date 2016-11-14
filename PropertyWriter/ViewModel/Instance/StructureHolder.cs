@@ -16,7 +16,7 @@ namespace PropertyWriter.Model.Instance
 
 		public StructureHolder(Type type, ModelFactory modelFactory)
         {
-			Properties = EntityLoader.LoadMembers(type, modelFactory);
+			Properties = modelFactory.LoadMembersInfo(type);
 
             Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
 

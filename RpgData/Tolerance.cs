@@ -7,7 +7,6 @@ using PropertyWriter.Annotation;
 
 namespace RpgData
 {
-	[PwMinor]
 	public class Tolerance
 	{
 		[PwMember]

@@ -2,7 +2,6 @@
 
 namespace RpgData
 {
-	[PwMinor]
 	public class ItemDrop
 	{
 		[PwReferenceMember(typeof(Item), nameof(Item.Id), "アイテム")]
