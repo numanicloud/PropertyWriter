@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using PropertyWriter.Model.Instance;
@@ -9,26 +10,15 @@ namespace PropertyWriter.Model
 {
 	class MasterInfo
 	{
-		public Type Type { get; private set; }
-		public string Name { get; private set; }
-		public IPropertyModel Master { get; private set; }
+		public string Key { get; }
+		public PropertyInfo Property { get; }
+		public IPropertyModel Master { get; }
 
-		public MasterInfo(Type type, IPropertyModel master, string name)
+		public MasterInfo(string key, PropertyInfo property, IPropertyModel master)
 		{
-			Type = type;
+			Property = property;
 			Master = master;
-			Name = name ?? type.Name;
-		}        
-
-		internal static MasterInfo ForGlobal(Type type, ModelFactory modelFactory, string name)
-		{
-			return new MasterInfo(type, modelFactory.Create(type, "Global"), name);
-		}
-
-		public static MasterInfo ForMaster(Type type, ModelFactory modelFactory, string name)
-		{
-			var collectionType = typeof(IEnumerable<>).MakeGenericType(type);
-			return new MasterInfo(type, modelFactory.Create(collectionType, "Master"), name);
+			Key = key ?? Property.Name;
 		}
 	}
 }

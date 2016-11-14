@@ -18,16 +18,33 @@ namespace PropertyWriter.Model.Instance
         {
 			Properties = modelFactory.LoadMembersInfo(type);
 
-            Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
+			Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
 
-            foreach (var property in Properties)
-            {
-                property.Model.Value.Subscribe(x =>
-                {
-                    property.SetValue(Value.Value, x);
+			foreach(var property in Properties)
+			{
+				property.Model.Value.Subscribe(x =>
+				{
+					property.SetValue(Value.Value, x);
 					ValueChanged.OnNext(Unit.Default);
-                });
-            }
-        }
+				});
+			}
+		}
+
+		public StructureHolder(Type type, MasterInfo[] masters)
+		{
+			Properties = masters.Select(x => new InstanceAndPropertyInfo(x.Property, x.Master, x.Master.Title.Value))
+				.ToArray();
+
+			Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
+
+			foreach(var property in Properties)
+			{
+				property.Model.Value.Subscribe(x =>
+				{
+					property.SetValue(Value.Value, x);
+					ValueChanged.OnNext(Unit.Default);
+				});
+			}
+		}
 	}
 }

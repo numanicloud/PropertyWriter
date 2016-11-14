@@ -6,22 +6,29 @@ using System.Text;
 using PropertyWriter.Annotation;
 using PropertyWriter.Model.Info;
 using PropertyWriter.Model.Instance;
+using PropertyWriter.ViewModel;
 using Reactive.Bindings;
 
 namespace PropertyWriter.Model
 {
+	class ReferencableMasterInfo
+	{
+		public Type Type { get; set; }
+		public ReadOnlyReactiveCollection<object> Collection { get; set; }
+	}
+
 	class ModelFactory
 	{
-		private Dictionary<Type, ReadOnlyReactiveCollection<object>> masters_;
+		private Dictionary<string, ReferencableMasterInfo> masters_;
 		private Dictionary<Type, Type[]> subtypings_;
 
 		public ModelFactory()
 		{
-			masters_ = new Dictionary<Type, ReadOnlyReactiveCollection<object>>();
+			masters_ = new Dictionary<string, ReferencableMasterInfo>();
 			subtypings_ = new Dictionary<Type, Type[]>();
 		}
 
-		public MasterInfo[] LoadStructure(Assembly assembly, Type projectType)
+		public RootViewModel LoadStructure(Assembly assembly, Type projectType)
 		{
 			var types = assembly.GetTypes();
 			var subtypings = types.Where(Helpers.IsAnnotatedType<PwSubtypingAttribute>).ToArray();
@@ -29,33 +36,50 @@ namespace PropertyWriter.Model
 			subtypings_ = subtypings.ToDictionary(x => x, x => subtypes.Where(y => y.BaseType == x).ToArray());
 
 			var masterMembers = projectType.GetMembers();
-			var masters = LoadMastersInfo(masterMembers).ToArray();
+			var masters = LoadMastersInfo(masterMembers, true).ToArray();
 			masters_ = masters.Where(x => x.Master is ComplicateCollectionModel)
-				.ToDictionary(x => x.Type, x =>
+				.ToDictionary(x => x.Key, x =>
 				{
 					var collection = x.Master as ComplicateCollectionModel;
-					return collection?.Collection?.ToReadOnlyReactiveCollection(y => y.Value.Value);
+					return new ReferencableMasterInfo()
+					{
+						Collection = collection?.Collection?.ToReadOnlyReactiveCollection(y => y.Value.Value),
+						Type = x.Property.PropertyType.GetElementType(),
+					};
 				});
 
-			return masters;
+			var globals = LoadMastersInfo(masterMembers, false);
+			var models = globals.Concat(masters).ToArray();
+
+			return new RootViewModel(projectType, models.ToArray());
 		}
 
-
-		private IEnumerable<MasterInfo> LoadMastersInfo(MemberInfo[] masterMembers)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="masterMembers"></param>
+		/// <param name="filterArrayType"></param>
+		/// <returns></returns>
+		/// <remarks>リストマスターが読み込まれていない場合<paramref name="filterArrayType"/>をfalseにすると例外を投げる</remarks>
+		private IEnumerable<MasterInfo> LoadMastersInfo(MemberInfo[] masterMembers, bool filterArrayType)
 		{
-			foreach (var member in masterMembers)
+			foreach(var member in masterMembers)
 			{
 				var attr = member.GetCustomAttribute<PwMasterAttribute>();
-				if (attr != null)
+				if (attr == null)
 				{
-					if (member.DeclaringType?.IsArray == true)
-					{
-						yield return MasterInfo.ForMaster(member.DeclaringType, this, attr.Name);
-					}
-					else
-					{
-						yield return MasterInfo.ForGlobal(member.DeclaringType, this, attr.Name);
-					}
+					continue;
+				}
+
+				if (member.MemberType != MemberTypes.Property)
+				{
+					continue;
+				}
+
+				var property = (PropertyInfo) member;
+				if(property.PropertyType.IsArray == filterArrayType)
+				{
+					yield return new MasterInfo(attr.Key, property, Create(property.PropertyType, attr.Name));
 				}
 			}
 		}
@@ -65,17 +89,14 @@ namespace PropertyWriter.Model
 			var properties = type.GetProperties()
 				.Select(MakeModelAndInfo)
 				.Where(x => x != null);
-			var fields = type.GetFields()
-				.Select(MakeModelAndInfo)
-				.Where(x => x != null);
 
-			return properties.Cast<InstanceAndMemberInfo>().Concat(fields).ToArray();
+			return properties.Cast<InstanceAndMemberInfo>().ToArray();
 		}
 
 		private InstanceAndPropertyInfo MakeModelAndInfo(PropertyInfo info)
 		{
 			var memberAttr = info.GetCustomAttribute<PwMemberAttribute>();
-			if (memberAttr != null)
+			if(memberAttr != null)
 			{
 				return new InstanceAndPropertyInfo(
 					info,
@@ -84,34 +105,11 @@ namespace PropertyWriter.Model
 			}
 
 			var attr = info.GetCustomAttribute<PwReferenceMemberAttribute>();
-			if (attr != null)
+			if(attr != null)
 			{
 				return new InstanceAndPropertyInfo(
 					info,
-					CreateReference(info.PropertyType, attr.TargetType, attr.IdFieldName, attr.Name),
-					attr.Name);
-			}
-
-			return null;
-		}
-
-		private InstanceAndFieldInfo MakeModelAndInfo(FieldInfo info)
-		{
-			var memberAttr = info.GetCustomAttribute<PwMemberAttribute>();
-			if (memberAttr != null)
-			{
-				return new InstanceAndFieldInfo(
-					info,
-					Create(info.FieldType, memberAttr.Name),
-					memberAttr.Name);
-			}
-
-			var attr = info.GetCustomAttribute<PwReferenceMemberAttribute>();
-			if (attr != null)
-			{
-				return new InstanceAndFieldInfo(
-					info,
-					CreateReference(info.FieldType, attr.TargetType, attr.IdFieldName, attr.Name),
+					CreateReference(info.PropertyType, attr.MasterKey, attr.IdFieldName, attr.Name),
 					attr.Name);
 			}
 
@@ -119,19 +117,18 @@ namespace PropertyWriter.Model
 		}
 
 
-		public IPropertyModel CreateReference(Type type, Type targetType, string idMemberName, string title)
+		public IPropertyModel CreateReference(Type type, string masterKey, string idMemberName, string title)
 		{
 			var propertyType = TypeRecognizer.ParseType(type);
-			switch (propertyType)
+			switch(propertyType)
 			{
-				case PropertyKind.Integer:
-					return new ReferenceByIntModel(targetType, idMemberName)
-					{
-						Source = masters_[targetType],
-						Title = { Value = title }
-					};
-				default:
-					throw new InvalidOperationException("ID参照はInt32のみがサポートされます。");
+			case PropertyKind.Integer:
+				return new ReferenceByIntModel(masters_[masterKey], idMemberName)
+				{
+					Title = { Value = title }
+				};
+			default:
+				throw new InvalidOperationException("ID参照はInt32のみがサポートされます。");
 			}
 		}
 
@@ -145,21 +142,21 @@ namespace PropertyWriter.Model
 
 		private IPropertyModel Create(PropertyKind propertyType, Type type)
 		{
-			switch (propertyType)
+			switch(propertyType)
 			{
-				case PropertyKind.Integer: return new IntModel();
-				case PropertyKind.Boolean: return new BoolModel();
-				case PropertyKind.String: return new StringModel();
-				case PropertyKind.Float: return new FloatModel();
-				case PropertyKind.Enum: return new EnumModel(type);
-				case PropertyKind.Class: return new ClassModel(type, this);
-				case PropertyKind.Struct: return new StructModel(type, this);
-				case PropertyKind.BasicCollection: return new BasicCollectionModel(type, this);
-				case PropertyKind.ComplicateCollection: return new ComplicateCollectionModel(type, this);
-				case PropertyKind.SubtypingClass: return new SubtypingModel(type, this, subtypings_[type]);
+			case PropertyKind.Integer: return new IntModel();
+			case PropertyKind.Boolean: return new BoolModel();
+			case PropertyKind.String: return new StringModel();
+			case PropertyKind.Float: return new FloatModel();
+			case PropertyKind.Enum: return new EnumModel(type);
+			case PropertyKind.Class: return new ClassModel(type, this);
+			case PropertyKind.Struct: return new StructModel(type, this);
+			case PropertyKind.BasicCollection: return new BasicCollectionModel(type, this);
+			case PropertyKind.ComplicateCollection: return new ComplicateCollectionModel(type, this);
+			case PropertyKind.SubtypingClass: return new SubtypingModel(type, this, subtypings_[type]);
 
-				case PropertyKind.Unknown: return null;
-				default: return null;
+			case PropertyKind.Unknown: return null;
+			default: return null;
 			}
 		}
 	}

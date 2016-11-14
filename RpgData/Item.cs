@@ -5,23 +5,23 @@ namespace RpgData
 	public class Item
 	{
 		[PwMember]
-		public int Id;
+		public int Id { get; set; }
 		[PwMember]
-		public string Name;
+		public string Name { get; set; }
 		[PwMember]
-		public int Price;
+		public int Price { get; set; }
 		[PwMember]
-		public string BehaviorId;
+		public string BehaviorId { get; set; }
 		[PwMember]
-		public bool IsUsable;
+		public bool IsUsable { get; set; }
 		[PwMember]
-		public bool IsUsableInMenu;
+		public bool IsUsableInMenu { get; set; }
 		[PwMember]
-		public string Brief;
+		public string Brief { get; set; }
 		[PwMember]
-		public string FullDescription;
+		public string FullDescription { get; set; }
 		[PwMember]
-		public string EffectId;
+		public string EffectId { get; set; }
 
 		public override string ToString() => $"{Id}: {Name}";
 	}

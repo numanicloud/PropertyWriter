@@ -2,7 +2,7 @@ using System;
 
 namespace PropertyWriter.Annotation
 {
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class PwMasterAttribute : Attribute
 	{
 		public PwMasterAttribute(string name = null, string key = null)
@@ -15,7 +15,7 @@ namespace PropertyWriter.Annotation
 		public string Key { get; }
 	}
 
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class PwMemberAttribute : Attribute
 	{
 		public PwMemberAttribute(string name = null)
@@ -26,17 +26,17 @@ namespace PropertyWriter.Annotation
 		public string Name { get; private set; }
 	}
 
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class PwReferenceMemberAttribute : Attribute
 	{
 		public string Name { get; }
-		public Type TargetType { get; }
+		public string MasterKey { get; }
 		public string IdFieldName { get; }
 
-		public PwReferenceMemberAttribute(Type targetType, string idFieldName, string name = null)
+		public PwReferenceMemberAttribute(string masterKey, string idFieldName, string name = null)
 		{
-			TargetType = targetType;
-			this.IdFieldName = idFieldName;
+			MasterKey = masterKey;
+			IdFieldName = idFieldName;
 			Name = name;
 		}
 	}

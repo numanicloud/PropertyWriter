@@ -21,7 +21,7 @@ namespace PropertyWriter.Model
 		public string ObjectName { get; }
 		public string PropertyName { get; }
 
-		public override string Message => $"<{ObjectName}> の {PropertyName} がJson内に見つかりませんでした。";
+		public override string Message => $"<{ObjectName}> の \"{PropertyName}\" に対応するデータがJson内に見つかりませんでした。";
 	}
 
 	class PwSubtypeNotFoundException : PwJsonDeserializeException
@@ -35,6 +35,6 @@ namespace PropertyWriter.Model
 		public string PropertyName { get; }
 		public string TypeName { get; private set; }
 
-		public override string Message => $"<{PropertyName}> に設定できる {TypeName} 型のオブジェクトがJson内に見つかりませんでした。";
+		public override string Message => $"<{PropertyName}> に設定できる \"{TypeName}\" 型のオブジェクトがJson内に見つかりませんでした。";
 	}
 }

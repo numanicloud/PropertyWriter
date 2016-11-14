@@ -5,18 +5,18 @@ namespace RpgData
 	public class PlayersAbility
 	{
 		[PwMember]
-		public int Id;
+		public int Id { get; set; }
 		[PwMember]
-		public string Name;
+		public string Name { get; set; }
 		[PwMember]
-		public int MaxHp;
+		public int MaxHp { get; set; }
 		[PwMember]
-		public int MaxPain;
+		public int MaxPain { get; set; }
 		[PwMember]
-		public Tolerance Tolerance;
+		public Tolerance Tolerance { get; set; }
 		[PwMember]
-		public string FighterImagePath;
+		public string FighterImagePath { get; set; }
 		[PwMember]
-		public string TumbnailPath;
+		public string TumbnailPath { get; set; }
 	}
 }

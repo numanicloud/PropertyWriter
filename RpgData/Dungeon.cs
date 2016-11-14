@@ -5,12 +5,12 @@ namespace RpgData
 	public class Dungeon
 	{
 		[PwMember]
-		public int Id;
+		public int Id { get; set; }
 		[PwMember]
-		public string Name;
+		public string Name { get; set; }
 		[PwMember]
-		public string EventMapId;
+		public string EventMapId { get; set; }
 		[PwMember]
-		public string BackgroundPath;
+		public string BackgroundPath { get; set; }
 	}
 }

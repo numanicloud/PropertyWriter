@@ -53,5 +53,10 @@ namespace PropertyWriter.Model.Instance
 					.ToReactiveProperty();
 			}
 		}
+
+		public override string ToString()
+		{
+			return $"ClassModel: {FormatedString.Value}";
+		}
 	}
 }

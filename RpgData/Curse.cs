@@ -5,16 +5,16 @@ namespace RpgData
 	public class Curse
 	{
 		[PwMember]
-		public int Id;
+		public int Id { get; set; }
 		[PwMember]
-		public string Name;
+		public string Name { get; set; }
 		[PwMember]
-		public string EffectId;
+		public string EffectId { get; set; }
 		[PwMember]
-		public string Description;
+		public string Description { get; set; }
 		[PwMember]
-		public int ItemDropLevel;
+		public int ItemDropLevel { get; set; }
 		[PwMember]
-		public int Price;
+		public int Price { get; set; }
 	}
 }

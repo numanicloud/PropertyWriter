@@ -21,7 +21,7 @@ namespace TestDll
 	
     class OrangeAnnotatedData
     {
-        [PwReferenceMember(typeof(AppleAnnotatedData), nameof(AppleAnnotatedData.Id))]
+        [PwReferenceMember("Apple", nameof(AppleAnnotatedData.Id))]
         public int AppleId { get; set; }
 
         public override string ToString() => $"Orange: {AppleId}";
@@ -60,7 +60,7 @@ namespace TestDll
 		public string ProjectName { get; set; }
 		[PwMember]
 		public int FileNum;
-		[PwReferenceMember(typeof(AppleAnnotatedData), nameof(AppleAnnotatedData.Id))]
+		[PwReferenceMember("Apple", nameof(AppleAnnotatedData.Id))]
 		public int AppleId { get; set; }
 		[PwMember]
 		public AtherAnnotatedData Ather { get; set; }

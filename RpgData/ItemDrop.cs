@@ -4,12 +4,12 @@ namespace RpgData
 {
 	public class ItemDrop
 	{
-		[PwReferenceMember(typeof(Item), nameof(Item.Id), "アイテム")]
-		public int ItemId;
+		[PwReferenceMember("Item", nameof(Item.Id), "アイテム")]
+		public int ItemId { get; set; }
 		[PwMember]
-		public int Point;
+		public int Point { get; set; }
 		[PwMember]
-		public int RequiredCurseLevel;
+		public int RequiredCurseLevel { get; set; }
 
 		public override string ToString() => $"{ItemId}, {Point}pt, lv.{RequiredCurseLevel}";
 	}

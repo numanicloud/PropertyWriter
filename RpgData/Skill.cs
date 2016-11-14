@@ -6,19 +6,19 @@ namespace RpgData
 	public class Skill
 	{
 		[PwMember]
-		public int Id;
+		public int Id { get; set; }
 		[PwMember]
-		public string Name;
+		public string Name { get; set; }
 		[PwMember]
-		public int Pain;
+		public int Pain { get; set; }
 		[PwMember("効果")]
-		public ActiveBehavior ActiveEffect;
+		public ActiveBehavior ActiveEffect { get; set; }
 		[PwMember]
-		public string Brief;
+		public string Brief { get; set; }
 		[PwMember]
-		public string FullDescription;
+		public string FullDescription { get; set; }
 		[PwMember]
-		public string EffectId;
+		public string EffectId { get; set; }
 
 		public override string ToString() => $"{Id}: {Name}";
 	}

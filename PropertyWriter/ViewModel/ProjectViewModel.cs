@@ -18,10 +18,11 @@ namespace PropertyWriter.ViewModel
 		public ReactiveProperty<string> AssemblyPath => project_.AssemblyPath;
 		public ReactiveProperty<string> ProjectTypeName => project_.ProjectTypeName;
 		public ReactiveProperty<string> ExportPath => project_.SavePath;
+		public ReactiveProperty<bool> IsValid => project_.IsValid;
 		public ReactiveProperty<bool> Confirmed { get; } = new ReactiveProperty<bool>(false);
 		public ReactiveCommand OpenAssemblyCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand SelectExportPathCommand { get; } = new ReactiveCommand();
-		public ReactiveCommand ConfirmCommand { get; set; } = new ReactiveCommand();
+		public ReactiveCommand ConfirmCommand { get; set; }
 
 		public ReactiveProperty<IEnumerable<Type>> AvailableProjectTypes { get; } = new ReactiveProperty<IEnumerable<Type>>();
 		public ReactiveProperty<Type> ProjectType { get; } = new ReactiveProperty<Type>();
@@ -33,6 +34,8 @@ namespace PropertyWriter.ViewModel
 			ProjectType.Subscribe(x => project_.ProjectTypeName.Value = x?.Name);
 			OpenAssemblyCommand.Subscribe(x => OpenAssembly());
 			SelectExportPathCommand.Subscribe(x => SelectExportPath());
+
+			ConfirmCommand = IsValid.ToReactiveCommand();
 			ConfirmCommand.Subscribe(x => Confirm());
 		}
 

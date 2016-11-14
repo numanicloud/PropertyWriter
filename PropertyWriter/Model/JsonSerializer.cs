@@ -4,49 +4,51 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using PropertyWriter.Model.Instance;
+using PropertyWriter.ViewModel;
 using PropertyWriter.ViewModel.Instance;
 
 namespace PropertyWriter.Model
 {
 	class JsonSerializer
 	{
-		public static async Task SaveData(MasterInfo[] roots, string savePath)
+		public static async Task SaveData(RootViewModel root, string savePath)
 		{
-			foreach(var masterInfo in roots)
+			using(var file = new StreamWriter(savePath))
 			{
-				var path = Path.Combine(savePath, masterInfo.Type.Name + ".json");
-				using(var file = new StreamWriter(path))
-				{
-					var json = JsonConvert.SerializeObject(masterInfo.Master.Value.Value, Formatting.Indented);
-					await file.WriteLineAsync(json);
-				}
+				var json = JsonConvert.SerializeObject(root.Structure.Value.Value, Formatting.Indented);
+				await file.WriteLineAsync(json);
 			}
 		}
 
-		public static async Task<bool> LoadData(MasterInfo[] roots, string savePath)
+		public static async Task LoadData(RootViewModel root, string savePath)
 		{
-			bool result = true;
 			var references = new List<Tuple<ReferenceByIntModel, int>>();
-			foreach(var masterInfo in roots)
+
+			using (var file = new StreamReader(savePath))
 			{
-				var path = Path.Combine(savePath, masterInfo.Type.Name + ".json");
-				using(var file = new StreamReader(path))
+				var obj = (JObject)JToken.Parse(await file.ReadToEndAsync());
+
+				foreach(var p in root.Structure.Properties)
 				{
-					var obj = JToken.Parse(await file.ReadToEndAsync());
-					result &= WriteToModel(masterInfo.Master, obj, references);
+					var token = obj.GetValue(p.MemberName);
+					if (token == null)
+					{
+						throw new PwObjectMissmatchException("Root", p.Title);
+					}
+					WriteToModel(p.Model, token, references);
 				}
-				foreach (var reference in references)
+				foreach(var reference in references)
 				{
 					reference.Item1.SetItemById(reference.Item2);
 				}
 			}
-			return result;
 		}
 
 

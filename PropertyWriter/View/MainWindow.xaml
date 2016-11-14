@@ -6,6 +6,7 @@
 				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
 				xmlns:v="clr-namespace:PropertyWriter.View"
 				xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
+				xmlns:instance="clr-namespace:PropertyWriter.Model.Instance"
 				TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -13,7 +14,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-				Title="PropertyWriter" Height="540" Width="960">
+				Title="{Binding Title.Value}" Height="540" Width="960">
 
 	<Window.Resources>
 		<ResourceDictionary>
@@ -36,7 +37,8 @@
 	</Window.Resources>
 
 	<Window.InputBindings>
-		<KeyBinding Command="{Binding NewFileCommand}" Modifiers="Control" Key="N"/>
+		<KeyBinding Command="{Binding NewProjectCommand}" Modifiers="Control" Key="N"/>
+		<KeyBinding Command="{Binding OpenProjectCommand}" Modifiers="Control" Key="O"/>
 		<KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
 	</Window.InputBindings>
     
@@ -58,23 +60,23 @@
 				<MenuItem Header="ファイル">
 					<MenuItem Header="新規プロジェクト" InputGestureText="Ctrl+N"
 										Command="{Binding NewProjectCommand}" VerticalAlignment="Center"/>
-					<MenuItem Header="データを読み込み" InputGestureText="Ctrl+O"
-										Command="{Binding LoadDataCommand}" VerticalAlignment="Center"/>
+					<MenuItem Header="プロジェクトを開く" InputGestureText="Ctrl+O"
+										Command="{Binding OpenProjectCommand}" VerticalAlignment="Center"/>
 					<MenuItem Header="プロジェクトを保存" InputGestureText="Ctrl+S"
 										Command="{Binding SaveCommand}" VerticalAlignment="Center"/>
 				</MenuItem>
 			</Menu>
 		</mat:ColorZone>
 
-		<TabControl Grid.Row="1" ItemsSource="{Binding Roots.Value}" TabStripPlacement="Left">
+		<TabControl Grid.Row="1" ItemsSource="{Binding Masters.Value}" TabStripPlacement="Left">
 			<TabControl.ItemTemplate>
-				<DataTemplate DataType="model:MasterInfo">
-					<TextBlock Text="{Binding Name}" Margin="6"/>
+				<DataTemplate DataType="instance:PropertyModel">
+					<TextBlock Text="{Binding Title.Value}" Margin="6"/>
 				</DataTemplate>
 			</TabControl.ItemTemplate>
 			<TabControl.ContentTemplate>
-				<DataTemplate DataType="model:MasterInfo">
-					<ContentControl Content="{Binding Master}" Focusable="False"/>
+				<DataTemplate DataType="instance:PropertyModel">
+					<ContentControl Content="{Binding}" Focusable="False"/>
 				</DataTemplate>
 			</TabControl.ContentTemplate>
 		</TabControl>

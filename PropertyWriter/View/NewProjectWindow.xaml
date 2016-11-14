@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         mc:Ignorable="d"
-        Title="NewProjectWindow" Height="200" Width="480">
+        Title="{Binding ProjectPath.Value}" Height="200" Width="480">
     
     <i:Interaction.Triggers>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">

@@ -16,25 +16,19 @@ namespace PropertyWriter.Model.Instance
 		public Type Type { get; }
 		private readonly Func<object, int> _selectId;
 
-		public ReadOnlyReactiveCollection<object> Source { get; set; }
+		public ReferencableMasterInfo Source { get; set; }
 		public ReactiveProperty<object> SelectedObject { get; } = new ReactiveProperty<object>();
 		public ReactiveProperty<int> IntValue { get; }
 		public override ReactiveProperty<object> Value => IntValue.Select(x => (object)x).ToReactiveProperty();
 
-		public ReferenceByIntModel(Type type, string idFieldName)
+		public ReferenceByIntModel(ReferencableMasterInfo source, string idFieldName)
 		{
-			Type = type;
-			
-			var property = type.GetProperty(idFieldName);
+			Source = source;
+
+			var property = Source.Type.GetProperty(idFieldName);
 			if (property != null)
 			{
 				_selectId = obj => (int)property.GetValue(obj);
-			}
-
-			var field = type.GetField(idFieldName);
-			if (field != null)
-			{
-				_selectId = obj => (int)field.GetValue(obj);
 			}
 
 			IntValue = SelectedObject.Where(x => x != null)
@@ -44,7 +38,7 @@ namespace PropertyWriter.Model.Instance
 
 		public void SetItemById(int id)
 		{
-			var obj = Source.FirstOrDefault(x => _selectId(x) == id);
+			var obj = Source.Collection.FirstOrDefault(x => _selectId(x) == id);
 			if (obj != null)
 			{
 				SelectedObject.Value = obj;
