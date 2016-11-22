@@ -11,40 +11,38 @@ namespace PropertyWriter.Model.Instance
 	class StructureHolder
 	{
 		public IEnumerable<InstanceAndMemberInfo> Properties { get; }
-		public ReactiveProperty<object> Value { get; }
+		public ReactiveProperty<object> Value { get; private set; }
 		public Subject<Unit> ValueChanged { get; } = new Subject<Unit>();
 
 		public StructureHolder(Type type, ModelFactory modelFactory)
         {
 			Properties = modelFactory.LoadMembersInfo(type);
-
-			Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
-
-			foreach(var property in Properties)
-			{
-				property.Model.Value.Subscribe(x =>
-				{
-					property.SetValue(Value.Value, x);
-					ValueChanged.OnNext(Unit.Default);
-				});
-			}
+            Initialize(type);
 		}
 
 		public StructureHolder(Type type, MasterInfo[] masters)
-		{
-			Properties = masters.Select(x => new InstanceAndPropertyInfo(x.Property, x.Master, x.Master.Title.Value))
-				.ToArray();
+        {
+            Properties = masters.Select(x => new InstanceAndPropertyInfo(x.Property, x.Master, x.Master.Title.Value))
+                .ToArray();
+            Initialize(type);
+        }
 
-			Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
+        private void Initialize(Type type)
+        {
+            Value = new ReactiveProperty<object> { Value = Activator.CreateInstance(type) };
 
-			foreach(var property in Properties)
-			{
-				property.Model.Value.Subscribe(x =>
-				{
-					property.SetValue(Value.Value, x);
-					ValueChanged.OnNext(Unit.Default);
-				});
-			}
-		}
-	}
+            foreach (var property in Properties)
+            {
+                property.Model.Value.Subscribe(x =>
+                {
+                    property.SetValue(Value.Value, x);
+                    if(property.Model is ReferenceByIntModel refModel)
+                    {
+                        refModel.PropertyToBindBack?.SetValue(Value.Value, refModel.SelectedObject.Value);
+                    }
+                    ValueChanged.OnNext(Unit.Default);
+                });
+            }
+        }
+    }
 }

@@ -24,9 +24,7 @@ namespace PropertyWriter.Model.Instance
 			ClassValue = new StructureHolder(type, modelFactory);
 
 			Value = new ReactiveProperty<object>(ClassValue.Value.Value, ReactivePropertyMode.RaiseLatestValueOnSubscribe);
-			ClassValue.ValueChanged
-				.Do(x => Debugger.Log(0, "Info", $"StructureHolder {Title.Value}: {ClassValue.Value.Value}\n"))
-				.Subscribe(x => Value.Value = ClassValue.Value.Value);
+			ClassValue.ValueChanged.Subscribe(x => Value.Value = ClassValue.Value.Value);
 
 			EditCommand.Subscribe(x => Messenger.Raise(
 				new TransitionMessage(

@@ -19,9 +19,10 @@ namespace PropertyWriter.Model.Instance
 		public ReferencableMasterInfo Source { get; set; }
 		public ReactiveProperty<object> SelectedObject { get; } = new ReactiveProperty<object>();
 		public ReactiveProperty<int> IntValue { get; }
-		public override ReactiveProperty<object> Value => IntValue.Select(x => (object)x).ToReactiveProperty();
+		public override ReactiveProperty<object> Value { get; }
+        public PropertyInfo PropertyToBindBack { get; set; }
 
-		public ReferenceByIntModel(ReferencableMasterInfo source, string idFieldName)
+        public ReferenceByIntModel(ReferencableMasterInfo source, string idFieldName)
 		{
 			Source = source;
 
@@ -33,8 +34,9 @@ namespace PropertyWriter.Model.Instance
 
 			IntValue = SelectedObject.Where(x => x != null)
 				.Select(x => _selectId?.Invoke(x) ?? -1)
-				.ToReactiveProperty();
-		}
+				.ToReactiveProperty(-1);
+            Value = IntValue.Select(x => (object)x).ToReactiveProperty();
+        }
 
 		public void SetItemById(int id)
 		{

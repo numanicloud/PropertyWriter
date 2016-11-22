@@ -75,7 +75,7 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:ReferenceByIntModel}">
-		<ComboBox ItemsSource="{Binding Source}" SelectedItem="{Binding SelectedObject.Value}" VerticalAlignment="Center"/>
+		<ComboBox ItemsSource="{Binding Source.Collection}" SelectedItem="{Binding SelectedObject.Value}" VerticalAlignment="Center"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:SubtypingModel}">

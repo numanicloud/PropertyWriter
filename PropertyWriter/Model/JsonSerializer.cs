@@ -44,6 +44,7 @@ namespace PropertyWriter.Model
 					}
 					WriteToModel(p.Model, token, references);
 				}
+                await Task.Delay(100);
 				foreach(var reference in references)
 				{
 					reference.Item1.SetItemById(reference.Item2);

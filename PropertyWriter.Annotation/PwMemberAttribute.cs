@@ -40,4 +40,15 @@ namespace PropertyWriter.Annotation
 			Name = name;
 		}
 	}
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class PwBindBackAttribute : Attribute
+    {
+        public string PropertyName { get; set; }
+
+        public PwBindBackAttribute(string propertyName)
+        {
+            PropertyName = propertyName;
+        }
+    }
 }

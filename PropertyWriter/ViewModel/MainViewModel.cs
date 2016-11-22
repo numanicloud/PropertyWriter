@@ -111,9 +111,10 @@ namespace PropertyWriter.ViewModel
 
 				var modelFactory = new ModelFactory();
 				var assembly = Project.Value.GetAssembly();
-				Root.Value = modelFactory.LoadStructure(assembly, Project.Value.GetProjectType(assembly));
+				var root = modelFactory.LoadStructure(assembly, Project.Value.GetProjectType(assembly));
 
-				await JsonSerializer.LoadData(Root.Value, Project.Value.SavePath.Value);
+				await JsonSerializer.LoadData(root, Project.Value.SavePath.Value);
+                Root.Value = root;
 
 				StatusMessage.Value = "プロジェクトを読み込みました。";
 				IsError.Value = false;
