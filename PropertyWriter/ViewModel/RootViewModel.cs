@@ -12,9 +12,11 @@ namespace PropertyWriter.ViewModel
 	{
 		public RootViewModel(Type type, MasterInfo[] masters)
 		{
+            Type = type;
 			Structure = new StructureHolder(type, masters);
 		}
 
-		public StructureHolder Structure { get; set; }
+        public Type Type { get; }
+        public StructureHolder Structure { get; }
 	}
 }

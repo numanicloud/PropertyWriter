@@ -10,4 +10,14 @@ namespace PropertyWriter.Annotation
 	public class PwProjectAttribute : Attribute
 	{
 	}
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public class PwSerializerAttribute : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public class PwDeserializerAttribute : Attribute
+    {
+    }
 }

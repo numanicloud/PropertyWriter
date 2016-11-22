@@ -28,7 +28,6 @@ namespace PropertyWriter.ViewModel
 		public ReactiveProperty<string> Title { get; set; }
 
 		public ReactiveProperty<Project> Project { get; } = new ReactiveProperty<Project>();
-		public ReactiveProperty<RootViewModel> Root { get; } = new ReactiveProperty<RootViewModel>();
 		public ReactiveProperty<IPropertyModel[]> Masters { get; }
 
 		public ReactiveCommand NewProjectCommand { get; set; } = new ReactiveCommand();
@@ -39,7 +38,9 @@ namespace PropertyWriter.ViewModel
 		{
 			SaveCommand = Project.Select(x => x?.IsValid?.Value == true)
 				.ToReactiveCommand();
-			Masters = Root.Where(x => x != null)
+			Masters = Project.Where(x => x != null)
+                .SelectMany(x => x.Root)
+                .Where(x => x != null)
 				.Select(x => x.Structure.Properties.Select(y => y.Model).ToArray())
 				.ToReactiveProperty();
 
@@ -53,12 +54,25 @@ namespace PropertyWriter.ViewModel
 
 			NewProjectCommand.Subscribe(x => CreateNewProject());
 			SubscribeOpenCommand();
-			SaveCommand.SelectMany(x => SaveFile().ToObservable()).Subscribe();
+            SubscribeSaveCommand();
 
 			IsError.Value = false;
 		}
 
-		private void SubscribeOpenCommand()
+        private void SubscribeSaveCommand()
+        {
+            SaveCommand.SelectMany(x => SaveFile().ToObservable())
+                .Subscribe(
+                    unit => { },
+                    exception =>
+                    {
+                        StatusMessage.Value = $"保存を中止し、以前のファイルに復元しました。{exception.Message}";
+                        IsError.Value = true;
+                        SubscribeSaveCommand();
+                    }); ;
+        }
+
+        private void SubscribeOpenCommand()
 		{
 			OpenProjectCommand.SelectMany(x => OpenProject().ToObservable())
 				.Subscribe(
@@ -80,10 +94,7 @@ namespace PropertyWriter.ViewModel
 			if (vm.Confirmed.Value)
 			{
 				Project.Value = project;
-
-				var modelFactory = new ModelFactory();
-				var assembly = Project.Value.GetAssembly();
-				Root.Value = modelFactory.LoadStructure(assembly, Project.Value.GetProjectType(assembly));
+                Project.Value.Initialize();
 
 				StatusMessage.Value = "プロジェクトを作成しました。";
 				IsError.Value = false;
@@ -104,17 +115,7 @@ namespace PropertyWriter.ViewModel
 			{
 				StatusMessage.Value = "プロジェクトを読み込み中…";
 
-				using (var file = new StreamReader(dialog.FileName))
-				{
-					Project.Value = JsonConvert.DeserializeObject<Project>(await file.ReadToEndAsync());
-				}
-
-				var modelFactory = new ModelFactory();
-				var assembly = Project.Value.GetAssembly();
-				var root = modelFactory.LoadStructure(assembly, Project.Value.GetProjectType(assembly));
-
-				await JsonSerializer.LoadData(root, Project.Value.SavePath.Value);
-                Root.Value = root;
+                Project.Value = await Model.Project.Load(dialog.FileName);
 
 				StatusMessage.Value = "プロジェクトを読み込みました。";
 				IsError.Value = false;
@@ -145,13 +146,8 @@ namespace PropertyWriter.ViewModel
 			}
 
 			StatusMessage.Value = "データを保存中…";
-
-			using (var file = new StreamWriter(ProjectPath.Value))
-			{
-				var json = JsonConvert.SerializeObject(Project.Value);
-				await file.WriteLineAsync(json);
-			}
-			await JsonSerializer.SaveData(Root.Value, Project.Value.SavePath.Value);
+            
+            await Project.Value.Save(ProjectPath.Value);
 
 			StatusMessage.Value = "データを保存しました。";
 			IsError.Value = false;
