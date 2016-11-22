@@ -78,6 +78,10 @@ namespace PropertyWriter.Model
                         var resultProperty = typeof(Task<>).MakeGenericType(rootType).GetProperty(nameof(Task<object>.Result));
                         value = resultProperty.GetValue(t);
                     }
+                    if(value == null)
+                    {
+                        throw new Exception("データ ファイルが壊れています。");
+                    }
                 }
                 await ModelConverter.LoadValueToRoot(project.Root.Value, value);
             }

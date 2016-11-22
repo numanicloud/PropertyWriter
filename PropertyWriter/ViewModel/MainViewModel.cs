@@ -79,7 +79,7 @@ namespace PropertyWriter.ViewModel
 					unit => { },
 					exception =>
 					{
-						StatusMessage.Value = $"データを完全には読み込めませんでした。{exception.Message}";
+						StatusMessage.Value = $"データを読み込めませんでした。{exception.Message}";
 						IsError.Value = true;
 						SubscribeOpenCommand();
 					});
