@@ -13,7 +13,7 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void EnumCtor()
 		{
-			var enumProp = new EnumModel(typeof(TestEnum));
+			var enumProp = new EnumViewModel(typeof(TestEnum));
 			enumProp.EnumValues.Is(TestEnum.Red, TestEnum.Green);
 			enumProp.Value.Value.Is(TestEnum.Red);
 		}
@@ -21,7 +21,7 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void ClassProperties()
 		{
-			var classProp = new ClassModel(typeof(TestClass), new ModelFactory());
+			var classProp = new ClassViewModel(typeof(TestClass), new ModelFactory());
 			classProp.Members.ElementAt(0).Model.IsInstanceOf<IntModel>();
 			classProp.Members.ElementAt(1).Model.IsInstanceOf<StringModel>();
 		}

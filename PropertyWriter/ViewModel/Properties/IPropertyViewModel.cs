@@ -2,7 +2,7 @@
 
 namespace PropertyWriter.Model.Instance
 {
-	interface IPropertyModel
+	interface IPropertyViewModel
 	{
 		ReactiveProperty<object> Value { get; }
 		ReactiveProperty<string> FormatedString { get; }

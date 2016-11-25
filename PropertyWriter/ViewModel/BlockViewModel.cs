@@ -11,12 +11,12 @@ namespace PropertyWriter.ViewModel
 {
 	class BlockViewModel : Livet.ViewModel
 	{
-		public ReactiveProperty<IPropertyModel> Model { get; set; } = new ReactiveProperty<IPropertyModel>();
+		public ReactiveProperty<IPropertyViewModel> Model { get; set; } = new ReactiveProperty<IPropertyViewModel>();
 		public ReactiveProperty<string> Title => Model.Value.Title;
 
 		public ReactiveCommand CloseCommand { get; private set; } = new ReactiveCommand();
 
-		public BlockViewModel(IPropertyModel model)
+		public BlockViewModel(IPropertyViewModel model)
 		{
 			Model.Value = model;
 			CloseCommand.Subscribe(x => Messenger.Raise(new WindowActionMessage(WindowAction.Close, "Close")));

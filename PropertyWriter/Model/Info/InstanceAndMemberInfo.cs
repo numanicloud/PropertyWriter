@@ -11,15 +11,12 @@ namespace PropertyWriter.Model
 {
 	abstract class InstanceAndMemberInfo
 	{
-		public InstanceAndMemberInfo(string title, IPropertyModel model)
+		public InstanceAndMemberInfo(string title, IPropertyViewModel model)
 		{
-			Title = title;
 			Model = model;
 		}
 
-		public IPropertyModel Model { get; }
-		public string Title { get; }
-		public abstract Type Type { get; }
+		public IPropertyViewModel Model { get; }
 		public abstract string MemberName { get; }
 
 		public abstract void SetValue(object obj, object value);

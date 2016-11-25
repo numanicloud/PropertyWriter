@@ -38,10 +38,10 @@ namespace PropertyWriter.Model
 
             var masterMembers = projectType.GetMembers();
             var masters = LoadMastersInfo(masterMembers, true).ToArray();
-            masters_ = masters.Where(x => x.Master is ComplicateCollectionModel)
+            masters_ = masters.Where(x => x.Master is ComplicateCollectionViewModel)
                 .ToDictionary(x => x.Key, x =>
                 {
-                    if (x.Master is ComplicateCollectionModel masterModel)
+                    if (x.Master is ComplicateCollectionViewModel masterModel)
                     {
                         return new ReferencableMasterInfo()
                         {
@@ -134,7 +134,7 @@ namespace PropertyWriter.Model
         }
 
 
-        public IPropertyModel CreateReference(Type type, string masterKey, string idMemberName, string title)
+        public IPropertyViewModel CreateReference(Type type, string masterKey, string idMemberName, string title)
         {
             var propertyType = TypeRecognizer.ParseType(type);
             switch (propertyType)
@@ -150,7 +150,7 @@ namespace PropertyWriter.Model
             }
         }
 
-        public IPropertyModel Create(Type type, string title)
+        public IPropertyViewModel Create(Type type, string title)
         {
             var propertyType = TypeRecognizer.ParseType(type);
             var model = Create(propertyType, type);
@@ -158,19 +158,19 @@ namespace PropertyWriter.Model
             return model;
         }
 
-        private IPropertyModel Create(PropertyKind propertyType, Type type)
+        private IPropertyViewModel Create(PropertyKind propertyType, Type type)
         {
             switch (propertyType)
             {
             case PropertyKind.Integer: return new IntModel();
-            case PropertyKind.Boolean: return new BoolModel();
+            case PropertyKind.Boolean: return new BoolViewModel(null);
             case PropertyKind.String: return new StringModel();
-            case PropertyKind.Float: return new FloatModel();
-            case PropertyKind.Enum: return new EnumModel(type);
-            case PropertyKind.Class: return new ClassModel(type, this);
+            case PropertyKind.Float: return new FloatViewModel();
+            case PropertyKind.Enum: return new EnumViewModel(type);
+            case PropertyKind.Class: return new ClassViewModel(type, this);
             case PropertyKind.Struct: return new StructModel(type, this);
-            case PropertyKind.BasicCollection: return new BasicCollectionModel(type, this);
-            case PropertyKind.ComplicateCollection: return new ComplicateCollectionModel(type, this);
+            case PropertyKind.BasicCollection: return new BasicCollectionViewModel(type, this);
+            case PropertyKind.ComplicateCollection: return new ComplicateCollectionViewModel(type, this);
             case PropertyKind.SubtypingClass: return new SubtypingModel(type, this, subtypings_[type]);
 
             case PropertyKind.Unknown: return null;

@@ -10,7 +10,7 @@ namespace PropertyWriter.Model.Instance
 		private readonly ModelFactory modelFactory_;
 		public Type Type { get; }
 		public Type ItemType { get; }
-		public ObservableCollection<IPropertyModel> Collection { get; }
+		public ObservableCollection<IPropertyViewModel> Collection { get; }
 		public ReactiveProperty<IEnumerable> Value { get; }
 
 		public CollectionHolder(Type type, ModelFactory modelFactory)
@@ -34,12 +34,12 @@ namespace PropertyWriter.Model.Instance
 			Value = new ReactiveProperty<IEnumerable>();
 			Value.Value = Array.CreateInstance(ItemType, 0);
 
-			Collection = new ObservableCollection<IPropertyModel>();
+			Collection = new ObservableCollection<IPropertyViewModel>();
 			Collection.ToCollectionChanged()
 				.Subscribe(x => Value.Value = MakeValue(Collection));
 		}
 
-		private IEnumerable MakeValue(ObservableCollection<IPropertyModel> collection)
+		private IEnumerable MakeValue(ObservableCollection<IPropertyViewModel> collection)
 		{
 			var array = Array.CreateInstance(ItemType, collection.Count);
 			for (var i = 0; i < collection.Count; i++)
@@ -49,7 +49,7 @@ namespace PropertyWriter.Model.Instance
 			return array;
 		}
 
-		public IPropertyModel AddNewElement()
+		public IPropertyViewModel AddNewElement()
 		{
 			var instance = modelFactory_.Create(ItemType, "Element");
 			Collection.Add(instance);

@@ -3,7 +3,7 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	abstract class PropertyModel : Livet.ViewModel, IPropertyModel
+	abstract class PropertyViewModel : Livet.ViewModel, IPropertyViewModel
 	{
 		public ReactiveProperty<string> Title { get; set; } = new ReactiveProperty<string>();
 		public abstract ReactiveProperty<object> Value { get; }

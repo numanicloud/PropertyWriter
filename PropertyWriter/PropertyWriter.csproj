@@ -120,6 +120,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ModelConverter.cs" />
+    <Compile Include="Model\Properties\BasicCollectionProperty.cs" />
+    <Compile Include="Model\Properties\BoolProperty.cs" />
+    <Compile Include="Model\Properties\ClassProperty.cs" />
+    <Compile Include="Model\Properties\CollectionHolder.cs" />
+    <Compile Include="Model\Properties\ComplicateCollectionProperty.cs" />
+    <Compile Include="Model\Interfaces\IPropertyModel.cs" />
+    <Compile Include="Model\Interfaces\IStructureProperty.cs" />
+    <Compile Include="Model\Properties\EnumProperty.cs" />
+    <Compile Include="Model\Properties\FloatProperty.cs" />
+    <Compile Include="Model\Properties\IntProperty.cs" />
+    <Compile Include="Model\Properties\PropertyContents.cs" />
+    <Compile Include="Model\Properties\StructureHolder.cs" />
     <Compile Include="Model\PwSerializeException.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\RootViewModel.cs" />
@@ -170,27 +182,27 @@
     <Compile Include="Model\PwJsonDeserializeException.cs" />
     <Compile Include="Model\JsonSerializer.cs" />
     <Compile Include="Model\Project.cs" />
-    <Compile Include="ViewModel\Instance\BasicCollectionModel.cs" />
-    <Compile Include="ViewModel\Instance\BoolModel.cs" />
-    <Compile Include="ViewModel\Instance\ClassModel.cs" />
-    <Compile Include="ViewModel\Instance\CollectionHolder.cs" />
-    <Compile Include="ViewModel\Instance\EnumModel.cs" />
-    <Compile Include="ViewModel\Instance\FloatModel.cs" />
-    <Compile Include="ViewModel\Instance\ICollectionModel.cs" />
-    <Compile Include="ViewModel\Instance\IntModel.cs" />
-    <Compile Include="ViewModel\Instance\IPropertyModel.cs" />
-    <Compile Include="ViewModel\Instance\IStructureModel.cs" />
-    <Compile Include="ViewModel\Instance\PropertyModel.cs" />
-    <Compile Include="ViewModel\Instance\ReferenceByIntModel.cs" />
-    <Compile Include="ViewModel\Instance\SubtypingModel.cs" />
+    <Compile Include="ViewModel\Properties\BasicCollectionViewModel.cs" />
+    <Compile Include="ViewModel\Properties\BoolViewModel.cs" />
+    <Compile Include="ViewModel\Properties\ClassViewModel.cs" />
+    <Compile Include="ViewModel\Properties\CollectionHolder.cs" />
+    <Compile Include="ViewModel\Properties\EnumViewModel.cs" />
+    <Compile Include="ViewModel\Properties\FloatViewModel.cs" />
+    <Compile Include="ViewModel\Properties\ICollectionModel.cs" />
+    <Compile Include="ViewModel\Properties\IntViewModel.cs" />
+    <Compile Include="ViewModel\Properties\IPropertyViewModel.cs" />
+    <Compile Include="ViewModel\Properties\IStructureModel.cs" />
+    <Compile Include="ViewModel\Properties\PropertyViewModel.cs" />
+    <Compile Include="ViewModel\Properties\ReferenceByIntModel.cs" />
+    <Compile Include="ViewModel\Properties\SubtypingModel.cs" />
     <Compile Include="Model\ModelFactory.cs" />
     <Compile Include="Model\Info\InstanceAndMemberInfo.cs" />
-    <Compile Include="ViewModel\Instance\StringModel.cs" />
-    <Compile Include="ViewModel\Instance\StructModel.cs" />
-    <Compile Include="ViewModel\Instance\StructureHolder.cs" />
+    <Compile Include="ViewModel\Properties\StringModel.cs" />
+    <Compile Include="ViewModel\Properties\StructModel.cs" />
+    <Compile Include="ViewModel\Properties\StructureHolder.cs" />
     <Compile Include="ViewModel\MasterInfo.cs" />
     <Compile Include="Model\TypeParser.cs" />
-    <Compile Include="ViewModel\Instance\ComplicateCollectionModel.cs" />
+    <Compile Include="ViewModel\Properties\ComplicateCollectionViewModel.cs" />
     <Compile Include="ViewModel\BlockViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\BasicCollectionControl.xaml.cs">
@@ -247,6 +259,7 @@
       <Name>PropertyWriter.Annotation</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,6 +9,6 @@ namespace PropertyWriter.ViewModel.Instance
 {
 	interface ICollectionModel
 	{
-		IPropertyModel AddNewElement();
+		IPropertyViewModel AddNewElement();
 	}
 }

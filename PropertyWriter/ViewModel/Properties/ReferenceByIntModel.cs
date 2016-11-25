@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace PropertyWriter.Model.Instance
 {
-	class ReferenceByIntModel : PropertyModel
+	class ReferenceByIntModel : PropertyViewModel
 	{
 		public Type Type { get; }
 		private readonly Func<object, int> _selectId;

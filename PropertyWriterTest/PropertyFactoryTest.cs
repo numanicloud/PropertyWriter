@@ -20,7 +20,7 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void CreateBoolType()
 		{
-			TestCreateInstance<BoolModel>(typeof(bool));
+			TestCreateInstance<BoolViewModel>(typeof(bool));
 		}
 
 		[TestMethod]
@@ -32,19 +32,19 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void CreateFloatType()
 		{
-			TestCreateInstance<FloatModel>(typeof(float));
+			TestCreateInstance<FloatViewModel>(typeof(float));
 		}
 
 		[TestMethod]
 		public void CreateEnumType()
 		{
-			TestCreateInstance<EnumModel>(typeof(TestEnum));
+			TestCreateInstance<EnumViewModel>(typeof(TestEnum));
 		}
 
 		[TestMethod]
 		public void CreateClassType()
 		{
-			TestCreateInstance<ClassModel>(typeof(TestClass));
+			TestCreateInstance<ClassViewModel>(typeof(TestClass));
 		}
 
 		[TestMethod]
@@ -56,13 +56,13 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void CreateBasicCollectionType()
 		{
-			TestCreateInstance<BasicCollectionModel>(typeof(IEnumerable<int>));
+			TestCreateInstance<BasicCollectionViewModel>(typeof(IEnumerable<int>));
 		}
 
 		[TestMethod]
 		public void CreateComplicateCollectionType()
 		{
-			TestCreateInstance<ComplicateCollectionModel>(typeof(IEnumerable<TestClass>));
+			TestCreateInstance<ComplicateCollectionViewModel>(typeof(IEnumerable<TestClass>));
 		}
 
 		private void TestCreateInstance<Expected>(Type type)

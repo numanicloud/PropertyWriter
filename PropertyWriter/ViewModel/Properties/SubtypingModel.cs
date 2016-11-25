@@ -15,15 +15,15 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	class SubtypingModel : PropertyModel
+	class SubtypingModel : PropertyViewModel
 	{
 		public Type BaseType { get; }
 		public SubTypeInfo[] AvailableTypes { get; set; }
 		public ReactiveProperty<SubTypeInfo> SelectedType { get; } = new ReactiveProperty<SubTypeInfo>();
-		public ReactiveProperty<IPropertyModel> Model { get; } = new ReactiveProperty<IPropertyModel>();
+		public ReactiveProperty<IPropertyViewModel> Model { get; } = new ReactiveProperty<IPropertyViewModel>();
 		public override ReactiveProperty<object> Value { get; }
 
-		public ReactiveCommand<PropertyModel> EditCommand { get; } = new ReactiveCommand<PropertyModel>();
+		public ReactiveCommand<PropertyViewModel> EditCommand { get; } = new ReactiveCommand<PropertyViewModel>();
 
 		public SubtypingModel(Type baseType, ModelFactory modelFactory, Type[] availableTypes)
 		{

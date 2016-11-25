@@ -10,7 +10,7 @@
 		<TextBox Text="{Binding Path=IntValue.Value}" MinWidth="100" Height="24"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:BoolModel}">
+	<DataTemplate DataType="{x:Type instance:BoolViewModel}">
 		<CheckBox IsChecked="{Binding Path=BoolValue.Value}" VerticalAlignment="Center"/>
 	</DataTemplate>
 
@@ -18,15 +18,15 @@
 		<TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="24" MinWidth="100"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:FloatModel}">
+	<DataTemplate DataType="{x:Type instance:FloatViewModel}">
 		<TextBox Text="{Binding Path=FloatValue.Value}" Height="24" MinWidth="100"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:EnumModel}">
+	<DataTemplate DataType="{x:Type instance:EnumViewModel}">
 		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:ClassModel}">
+	<DataTemplate DataType="{x:Type instance:ClassViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
 				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
@@ -50,7 +50,7 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:BasicCollectionModel}">
+	<DataTemplate DataType="{x:Type instance:BasicCollectionViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
 				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
@@ -62,7 +62,7 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:ComplicateCollectionModel}">
+	<DataTemplate DataType="{x:Type instance:ComplicateCollectionViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
 				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">

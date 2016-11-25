@@ -12,9 +12,9 @@ namespace PropertyWriter.Model
 	{
 		public string Key { get; }
 		public PropertyInfo Property { get; }
-		public IPropertyModel Master { get; }
+		public IPropertyViewModel Master { get; }
 
-		public MasterInfo(string key, PropertyInfo property, IPropertyModel master)
+		public MasterInfo(string key, PropertyInfo property, IPropertyViewModel master)
 		{
 			Property = property;
 			Master = master;

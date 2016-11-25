@@ -27,9 +27,9 @@ namespace PropertyWriter.View
 			InitializeComponent();
 		}
 
-		private BasicCollectionModel property
+		private BasicCollectionViewModel property
 		{
-			get { return DataContext as BasicCollectionModel; }
+			get { return DataContext as BasicCollectionViewModel; }
 		}
 
 		private void addButton_Click( object sender, RoutedEventArgs e )

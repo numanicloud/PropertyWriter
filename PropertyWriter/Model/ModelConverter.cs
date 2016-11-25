@@ -29,7 +29,7 @@ namespace PropertyWriter.Model
         }
 
         private static void LoadValueToModel(
-            IPropertyModel model,
+            IPropertyViewModel model,
             object value,
             List<(ReferenceByIntModel reference, int id)> references)
         {
@@ -41,16 +41,16 @@ namespace PropertyWriter.Model
             case StringModel m:
                 m.StringValue.Value = (string)value;
                 break;
-            case BoolModel m:
+            case BoolViewModel m:
                 m.BoolValue.Value = (bool)value;
                 break;
-            case FloatModel m:
+            case FloatViewModel m:
                 m.FloatValue.Value = (float)value;
                 break;
-            case EnumModel m:
+            case EnumViewModel m:
                 ConvertEnum(m, value);
                 break;
-            case ClassModel m:
+            case ClassViewModel m:
                 LoadObjectToModel(m, value, references);
                 break;
             case StructModel m:
@@ -69,10 +69,10 @@ namespace PropertyWriter.Model
                     }
                 }
                 break;
-            case ComplicateCollectionModel m:
+            case ComplicateCollectionViewModel m:
                 LoadCollectionToModel(m, value, references);
                 break;
-            case BasicCollectionModel m:
+            case BasicCollectionViewModel m:
                 LoadCollectionToModel(m, value, references);
                 break;
             default:
@@ -122,7 +122,7 @@ namespace PropertyWriter.Model
             }
         }
 
-        private static void ConvertEnum(EnumModel model, object obj)
+        private static void ConvertEnum(EnumViewModel model, object obj)
         {
             var val = model.EnumValues.FirstOrDefault(x => x.ToString() == model.Type.GetEnumName(obj));
             model.EnumValue.Value = val;

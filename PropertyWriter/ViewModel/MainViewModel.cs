@@ -28,7 +28,7 @@ namespace PropertyWriter.ViewModel
 		public ReactiveProperty<string> Title { get; set; }
 
 		public ReactiveProperty<Project> Project { get; } = new ReactiveProperty<Project>();
-		public ReactiveProperty<IPropertyModel[]> Masters { get; }
+		public ReactiveProperty<IPropertyViewModel[]> Masters { get; }
 
 		public ReactiveCommand NewProjectCommand { get; set; } = new ReactiveCommand();
 		public ReactiveCommand OpenProjectCommand { get; set; } = new ReactiveCommand();

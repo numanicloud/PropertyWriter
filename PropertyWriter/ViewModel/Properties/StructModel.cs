@@ -8,7 +8,7 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Model.Instance
 {
-	internal class StructModel : PropertyModel, IStructureModel
+	internal class StructModel : PropertyViewModel, IStructureModel
 	{
 		public Type Type { get; private set; }
 		public InstanceAndMemberInfo[] Members => StructValue.Properties.ToArray();
