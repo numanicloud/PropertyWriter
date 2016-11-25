@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+										xmlns:s="clr-namespace:System;assembly=mscorlib"
+										xmlns:instance="clr-namespace:PropertyWriter.ViewModels.Properties"
+										xmlns:views="clr-namespace:PropertyWriter.Views">
+
+	<DataTemplate DataType="{x:Type instance:ComplicateCollectionViewModel}">
+		<views:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type instance:ClassViewModel}">
+		<views:ClassControl DataContext="{Binding Path=.}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type instance:StructViewModel}">
+		<views:ClassControl DataContext="{Binding Path=.}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type instance:IntViewModel}">
+		<TextBox Text="{Binding Path=IntValue.Value}"/>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type instance:BoolViewModel}">
+		<CheckBox IsChecked="{Binding Path=BoolValue.Value}"/>
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type instance:BasicCollectionViewModel}">
+		<views:BasicCollectionControl
+			HorizontalAlignment="Stretch" 
+			VerticalAlignment="Stretch"
+			DataContext="{Binding Path=.}"
+			Padding="8"/>
+	</DataTemplate>
+
+</ResourceDictionary>

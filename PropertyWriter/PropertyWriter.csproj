@@ -119,60 +119,60 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Properties\Interfaces\ICollectionProperty.cs" />
-    <Compile Include="Model\Properties\Interfaces\PropertyModel.cs" />
-    <Compile Include="Model\ModelConverter.cs" />
-    <Compile Include="Model\Properties\BasicCollectionProperty.cs" />
-    <Compile Include="Model\Properties\BoolProperty.cs" />
-    <Compile Include="Model\Properties\ClassProperty.cs" />
-    <Compile Include="Model\Properties\Common\CollectionHolder.cs" />
-    <Compile Include="Model\Properties\ComplicateCollectionProperty.cs" />
-    <Compile Include="Model\Properties\Interfaces\IPropertyModel.cs" />
-    <Compile Include="Model\Properties\Interfaces\IStructureProperty.cs" />
-    <Compile Include="Model\Properties\EnumProperty.cs" />
-    <Compile Include="Model\Properties\FloatProperty.cs" />
-    <Compile Include="Model\Properties\IntProperty.cs" />
-    <Compile Include="Model\Properties\ReferenceByIntProperty.cs" />
-    <Compile Include="Model\Properties\StringProperty.cs" />
-    <Compile Include="Model\Properties\StructProperty.cs" />
-    <Compile Include="Model\Properties\Common\StructureHolder.cs" />
-    <Compile Include="Model\Properties\SubtypingProperty.cs" />
-    <Compile Include="Model\PropertyRoot.cs" />
-    <Compile Include="Model\Exceptions\PwSerializeException.cs" />
-    <Compile Include="ViewModel\ProjectViewModel.cs" />
-    <Compile Include="ViewModel\RootViewModel.cs" />
-    <Compile Include="View\NewProjectWindow.xaml.cs">
+    <Compile Include="Models\Properties\Interfaces\ICollectionProperty.cs" />
+    <Compile Include="Models\Properties\Interfaces\PropertyModel.cs" />
+    <Compile Include="Models\ModelConverter.cs" />
+    <Compile Include="Models\Properties\BasicCollectionProperty.cs" />
+    <Compile Include="Models\Properties\BoolProperty.cs" />
+    <Compile Include="Models\Properties\ClassProperty.cs" />
+    <Compile Include="Models\Properties\Common\CollectionHolder.cs" />
+    <Compile Include="Models\Properties\ComplicateCollectionProperty.cs" />
+    <Compile Include="Models\Properties\Interfaces\IPropertyModel.cs" />
+    <Compile Include="Models\Properties\Interfaces\IStructureProperty.cs" />
+    <Compile Include="Models\Properties\EnumProperty.cs" />
+    <Compile Include="Models\Properties\FloatProperty.cs" />
+    <Compile Include="Models\Properties\IntProperty.cs" />
+    <Compile Include="Models\Properties\ReferenceByIntProperty.cs" />
+    <Compile Include="Models\Properties\StringProperty.cs" />
+    <Compile Include="Models\Properties\StructProperty.cs" />
+    <Compile Include="Models\Properties\Common\StructureHolder.cs" />
+    <Compile Include="Models\Properties\SubtypingProperty.cs" />
+    <Compile Include="Models\PropertyRoot.cs" />
+    <Compile Include="Models\Exceptions\PwSerializeException.cs" />
+    <Compile Include="ViewModels\NewProjectViewModel.cs" />
+    <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="Views\NewProjectWindow.xaml.cs">
       <DependentUpon>NewProjectWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\BasicCollectionControl.xaml">
+    <Page Include="Views\BasicCollectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BlockWindow.xaml">
+    <Page Include="Views\BlockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ClassControl.xaml">
+    <Page Include="Views\ClassControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ComplicateCollectionControl.xaml">
+    <Page Include="Views\ComplicateCollectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditorStyle.xaml">
+    <Page Include="Views\EditorStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\InlineProperty.xaml">
+    <Page Include="Views\InlineProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BlockProperty.xaml">
+    <Page Include="Views\BlockProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,45 +180,45 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Helpers.cs" />
-    <Compile Include="Model\Info\SubTypeInfo.cs" />
-    <Compile Include="Model\Exceptions\PwJsonDeserializeException.cs" />
-    <Compile Include="Model\JsonSerializer.cs" />
-    <Compile Include="Model\Project.cs" />
-    <Compile Include="ViewModel\Properties\BasicCollectionViewModel.cs" />
-    <Compile Include="ViewModel\Properties\BoolViewModel.cs" />
-    <Compile Include="ViewModel\Properties\ClassViewModel.cs" />
-    <Compile Include="ViewModel\Properties\EnumViewModel.cs" />
-    <Compile Include="ViewModel\Properties\FloatViewModel.cs" />
-    <Compile Include="ViewModel\Properties\IntViewModel.cs" />
-    <Compile Include="ViewModel\Properties\Common\IPropertyViewModel.cs" />
-    <Compile Include="ViewModel\Properties\Common\PropertyViewModel.cs" />
-    <Compile Include="ViewModel\Properties\ReferenceByIntViewModel.cs" />
-    <Compile Include="ViewModel\Properties\SubtypingViewModel.cs" />
-    <Compile Include="Model\Properties\Common\PropertyFactory.cs" />
-    <Compile Include="ViewModel\Properties\StringViewModel.cs" />
-    <Compile Include="ViewModel\Properties\StructViewModel.cs" />
-    <Compile Include="ViewModel\MasterInfo.cs" />
-    <Compile Include="Model\Properties\Common\TypeParser.cs" />
-    <Compile Include="ViewModel\Properties\ComplicateCollectionViewModel.cs" />
-    <Compile Include="ViewModel\BlockViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="View\BasicCollectionControl.xaml.cs">
+    <Compile Include="Models\Helpers.cs" />
+    <Compile Include="Models\Info\SubTypeInfo.cs" />
+    <Compile Include="Models\Exceptions\PwJsonDeserializeException.cs" />
+    <Compile Include="Models\JsonSerializer.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="ViewModels\Properties\BasicCollectionViewModel.cs" />
+    <Compile Include="ViewModels\Properties\BoolViewModel.cs" />
+    <Compile Include="ViewModels\Properties\ClassViewModel.cs" />
+    <Compile Include="ViewModels\Properties\EnumViewModel.cs" />
+    <Compile Include="ViewModels\Properties\FloatViewModel.cs" />
+    <Compile Include="ViewModels\Properties\IntViewModel.cs" />
+    <Compile Include="ViewModels\Properties\Common\IPropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\Common\PropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\ReferenceByIntViewModel.cs" />
+    <Compile Include="ViewModels\Properties\SubtypingViewModel.cs" />
+    <Compile Include="Models\Properties\Common\PropertyFactory.cs" />
+    <Compile Include="ViewModels\Properties\StringViewModel.cs" />
+    <Compile Include="ViewModels\Properties\StructViewModel.cs" />
+    <Compile Include="ViewModels\MasterInfo.cs" />
+    <Compile Include="Models\Properties\Common\TypeParser.cs" />
+    <Compile Include="ViewModels\Properties\ComplicateCollectionViewModel.cs" />
+    <Compile Include="ViewModels\BlockViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\BasicCollectionControl.xaml.cs">
       <DependentUpon>BasicCollectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BlockWindow.xaml.cs">
+    <Compile Include="Views\BlockWindow.xaml.cs">
       <DependentUpon>BlockWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ClassControl.xaml.cs">
+    <Compile Include="Views\ClassControl.xaml.cs">
       <DependentUpon>ClassControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ComplicateCollectionControl.xaml.cs">
+    <Compile Include="Views\ComplicateCollectionControl.xaml.cs">
       <DependentUpon>ComplicateCollectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\NewProjectWindow.xaml">
+    <Page Include="Views\NewProjectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

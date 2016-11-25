@@ -100,13 +100,21 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ChainingAssertion.MSTest.cs" />
-    <Compile Include="TestData.cs" />
-    <Compile Include="TypeParserTest.cs" />
+    <Compile Include="Models\BasicCollectionPropertyTest.cs" />
+    <Compile Include="Models\ComplicateCollectionPropertyTest.cs" />
+    <Compile Include="Common\TestData.cs" />
+    <Compile Include="Common\TestResources.cs" />
+    <Compile Include="Models\ModelConverterTest.cs" />
+    <Compile Include="Models\TypeParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyFactoryTest.cs" />
-    <Compile Include="PropertyTest.cs" />
+    <Compile Include="Models\PropertyFactoryTest.cs" />
+    <Compile Include="Models\PropertyTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PropertyWriter.Annotation\PropertyWriter.Annotation.csproj">
+      <Project>{D150E57F-6501-4679-9094-368EFC4F2129}</Project>
+      <Name>PropertyWriter.Annotation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PropertyWriter\PropertyWriter.csproj">
       <Project>{2c581695-dad9-4ca3-ae99-2be5499af25b}</Project>
       <Name>PropertyWriter</Name>
