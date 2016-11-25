@@ -13,11 +13,11 @@
 		<c:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:StructModel}">
+	<DataTemplate DataType="{x:Type instance:StructViewModel}">
 		<c:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:IntModel}">
+	<DataTemplate DataType="{x:Type instance:IntViewModel}">
 		<TextBox Text="{Binding Path=IntValue.Value}"/>
 	</DataTemplate>
 

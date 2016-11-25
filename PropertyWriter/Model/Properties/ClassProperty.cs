@@ -1,4 +1,5 @@
-﻿using Reactive.Bindings;
+﻿using PropertyWriter.Model.Interfaces;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace PropertyWriter.Model.Properties
 {
-    class ClassProperty : IPropertyModel, IStructureProperty
+    class ClassProperty : PropertyModel, IStructureProperty
     {
         private StructureHolder structureValue_;
 
         public Type Type { get; private set; }
-        public ReactiveProperty<object> Value { get; }
-        public InstanceAndMemberInfo[] Members { get; }
+        public override ReactiveProperty<object> Value { get; }
+        public IPropertyModel[] Members { get; }
         
-        public ClassProperty(Type type, ModelFactory modelFactory)
+        public ClassProperty(Type type, PropertyFactory modelFactory)
         {
             Type = type;
             if (!type.IsClass)

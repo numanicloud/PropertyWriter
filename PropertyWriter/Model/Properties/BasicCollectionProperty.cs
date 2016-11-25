@@ -1,4 +1,5 @@
-﻿using Reactive.Bindings;
+﻿using PropertyWriter.Model.Interfaces;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace PropertyWriter.Model.Properties
 {
-    class BasicCollectionProperty : IPropertyModel
+    class BasicCollectionProperty : PropertyModel, ICollectionProperty
     {
         private CollectionHolder collectionValue_;
 
-        public ObservableCollection<Instance.IPropertyViewModel> Collection => collectionValue_.Collection;
-        public ReactiveProperty<object> Value { get; }
+        public ObservableCollection<IPropertyModel> Collection => collectionValue_.Collection;
+        public override ReactiveProperty<object> Value { get; }
 
-        public BasicCollectionProperty(Type type, ModelFactory modelFactory)
+        public BasicCollectionProperty(Type type, PropertyFactory modelFactory)
         {
             collectionValue_ = new CollectionHolder(type, modelFactory);
             Value = collectionValue_.Value.Cast<object>().ToReactiveProperty();
         }
 
-        public Instance.IPropertyViewModel AddNewElement()
+        public IPropertyModel AddNewElement()
         {
             return collectionValue_.AddNewElement();
         }

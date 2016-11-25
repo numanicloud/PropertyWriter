@@ -26,8 +26,8 @@
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 
-			<Button Name="addButton" Content="追加" Click="addButton_Click" Grid.Column="0"/>
-			<Button Name="removeButton" Content="削除" Click="removeButton_Click" Grid.Column="1"/>
+			<Button Content="追加" Grid.Column="0" Command="{Binding AddCommand}"/>
+			<Button Content="削除" Grid.Column="1" Command="{Binding RemoveCommand}" CommandParameter="{Binding ElementName=dataList, Path=SelectedIndex}"/>
 		</Grid>
 	</Grid>
 </UserControl>

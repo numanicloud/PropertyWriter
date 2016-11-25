@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using Livet.Messaging.Windows;
 using PropertyWriter.Model.Instance;
 using Reactive.Bindings;
+using PropertyWriter.Model.Properties;
 
 namespace PropertyWriter.ViewModel
 {
 	class BlockViewModel : Livet.ViewModel
 	{
-		public ReactiveProperty<IPropertyViewModel> Model { get; set; } = new ReactiveProperty<IPropertyViewModel>();
+		public ReactiveProperty<IPropertyModel> Model { get; set; } = new ReactiveProperty<IPropertyModel>();
 		public ReactiveProperty<string> Title => Model.Value.Title;
 
 		public ReactiveCommand CloseCommand { get; private set; } = new ReactiveCommand();
 
-		public BlockViewModel(IPropertyViewModel model)
+		public BlockViewModel(IPropertyModel model)
 		{
 			Model.Value = model;
 			CloseCommand.Subscribe(x => Messenger.Raise(new WindowActionMessage(WindowAction.Close, "Close")));

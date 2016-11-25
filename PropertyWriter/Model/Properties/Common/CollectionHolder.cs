@@ -7,13 +7,13 @@ namespace PropertyWriter.Model.Properties
 {
     internal class CollectionHolder
     {
-        private readonly ModelFactory modelFactory_;
+        private readonly PropertyFactory modelFactory_;
         public Type Type { get; }
         public Type ItemType { get; }
-        public ObservableCollection<Instance.IPropertyViewModel> Collection { get; }
+        public ObservableCollection<IPropertyModel> Collection { get; }
         public ReactiveProperty<IEnumerable> Value { get; }
 
-        public CollectionHolder(Type type, ModelFactory modelFactory)
+        public CollectionHolder(Type type, PropertyFactory modelFactory)
         {
             Type = type;
             modelFactory_ = modelFactory;
@@ -31,15 +31,14 @@ namespace PropertyWriter.Model.Properties
                 throw new ArgumentException("配列または IEnumerable<T> を指定する必要があります。", nameof(type));
             }
 
-            Value = new ReactiveProperty<IEnumerable>();
-            Value.Value = Array.CreateInstance(ItemType, 0);
+            Value = new ReactiveProperty<IEnumerable>(Array.CreateInstance(ItemType, 0));
 
-            Collection = new ObservableCollection<Instance.IPropertyViewModel>();
+            Collection = new ObservableCollection<IPropertyModel>();
             Collection.ToCollectionChanged()
                 .Subscribe(x => Value.Value = MakeValue(Collection));
         }
 
-        private IEnumerable MakeValue(ObservableCollection<Instance.IPropertyViewModel> collection)
+        private IEnumerable MakeValue(ObservableCollection<IPropertyModel> collection)
         {
             var array = Array.CreateInstance(ItemType, collection.Count);
             for (var i = 0; i < collection.Count; i++)
@@ -49,7 +48,7 @@ namespace PropertyWriter.Model.Properties
             return array;
         }
 
-        public Instance.IPropertyViewModel AddNewElement()
+        public IPropertyModel AddNewElement()
         {
             var instance = modelFactory_.Create(ItemType, "Element");
             Collection.Add(instance);

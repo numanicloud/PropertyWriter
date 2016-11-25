@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PropertyWriter.Model;
-using PropertyWriter.Model.Instance;
+using PropertyWriter.Model.Properties;
 
 namespace PropertyWriter.ViewModel
 {
 	class RootViewModel
 	{
-		public RootViewModel(Type type, MasterInfo[] masters)
-		{
-            Type = type;
-			Structure = new StructureHolder(type, masters);
-		}
+        private PropertyRoot Root { get; }
 
-        public Type Type { get; }
-        public StructureHolder Structure { get; }
+        public Type Type => Root.Type;
+        public StructureHolder Structure => Root.Structure;
+
+        public RootViewModel(PropertyRoot root)
+		{
+            Root = root;
+		}
 	}
 }

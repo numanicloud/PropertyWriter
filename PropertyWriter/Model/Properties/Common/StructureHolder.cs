@@ -10,19 +10,20 @@ namespace PropertyWriter.Model.Properties
 {
     internal class StructureHolder
     {
-        public IEnumerable<InstanceAndMemberInfo> Properties { get; }
+        public IEnumerable<IPropertyModel> Properties { get; }
         public ReactiveProperty<object> Value { get; private set; }
         public Subject<Unit> ValueChanged { get; } = new Subject<Unit>();
         
-        public StructureHolder(Type type, ModelFactory modelFactory)
+        public StructureHolder(Type type, PropertyFactory modelFactory)
         {
-            Properties = modelFactory.LoadMembersInfo(type);
+            Properties = modelFactory.GetMembersInfo(type);
             Initialize(type);
         }
 
         public StructureHolder(Type type, MasterInfo[] masters)
         {
-            Properties = masters.Select(x => new InstanceAndPropertyInfo(x.Property, x.Master, ""))
+            Properties = masters.Do(x => x.Master.PropertyInfo = x.Property)
+                .Select(x => x.Master)
                 .ToArray();
             Initialize(type);
         }
@@ -33,10 +34,10 @@ namespace PropertyWriter.Model.Properties
 
             foreach (var property in Properties)
             {
-                property.Model.Value.Subscribe(x =>
+                property.Value.Subscribe(x =>
                 {
-                    property.SetValue(Value.Value, x);
-                    if (property.Model is ReferenceByIntModel refModel)
+                    property.PropertyInfo.SetValue(Value.Value, x);
+                    if (property is ReferenceByIntProperty refModel)
                     {
                         refModel.PropertyToBindBack?.SetValue(Value.Value, refModel.SelectedObject.Value);
                     }

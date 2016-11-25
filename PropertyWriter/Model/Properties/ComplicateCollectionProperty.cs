@@ -1,31 +1,29 @@
-﻿using PropertyWriter.Model.Instance;
+﻿using PropertyWriter.Model.Interfaces;
 using Reactive.Bindings;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyWriter.Model.Properties
 {
-    class ComplicateCollectionProperty : IPropertyModel
+    class ComplicateCollectionProperty : PropertyModel, ICollectionProperty
     {
-        private CollectionHolder ComplicateCollectionValue { get; }
+        private CollectionHolder CollectionValue { get; }
 
-        public ReactiveProperty<object> Value { get; }
-        public ObservableCollection<IPropertyViewModel> Collection => ComplicateCollectionValue.Collection;
-        public Type ElementType => ComplicateCollectionValue.ItemType;
+        public override ReactiveProperty<object> Value { get; }
+        public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
+        public Type ElementType => CollectionValue.ItemType;
 
-        public ComplicateCollectionProperty(Type type, ModelFactory modelFactory)
+        public ComplicateCollectionProperty(Type type, PropertyFactory modelFactory)
         {
-            ComplicateCollectionValue = new CollectionHolder(type, modelFactory);
-            Value = ComplicateCollectionValue.Value
+            CollectionValue = new CollectionHolder(type, modelFactory);
+            Value = CollectionValue.Value
                 .Cast<object>()
                 .ToReactiveProperty();
         }
 
-        public IPropertyViewModel AddNewElement() => ComplicateCollectionValue.AddNewElement();
+        public IPropertyModel AddNewElement() => CollectionValue.AddNewElement();
+        public void RemoveElementAt(int index) => CollectionValue.RemoveAt(index);
     }
 }

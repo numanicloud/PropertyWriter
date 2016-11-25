@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using PropertyWriter.Model.Instance;
 using Reactive.Bindings;
 using JsonSerializer = PropertyWriter.Model.JsonSerializer;
+using PropertyWriter.Model.Properties;
 
 namespace PropertyWriter.ViewModel
 {
@@ -28,7 +29,7 @@ namespace PropertyWriter.ViewModel
 		public ReactiveProperty<string> Title { get; set; }
 
 		public ReactiveProperty<Project> Project { get; } = new ReactiveProperty<Project>();
-		public ReactiveProperty<IPropertyViewModel[]> Masters { get; }
+		public ReactiveProperty<IPropertyModel[]> Masters { get; }  // TODO: ViewModelで差し替え
 
 		public ReactiveCommand NewProjectCommand { get; set; } = new ReactiveCommand();
 		public ReactiveCommand OpenProjectCommand { get; set; } = new ReactiveCommand();
@@ -41,7 +42,7 @@ namespace PropertyWriter.ViewModel
 			Masters = Project.Where(x => x != null)
                 .SelectMany(x => x.Root)
                 .Where(x => x != null)
-				.Select(x => x.Structure.Properties.Select(y => y.Model).ToArray())
+				.Select(x => x.Structure.Properties.ToArray())
 				.ToReactiveProperty();
 
 			var notReady = IsReady.Where(x => !x)
@@ -61,7 +62,7 @@ namespace PropertyWriter.ViewModel
 
         private void SubscribeSaveCommand()
         {
-            SaveCommand.SelectMany(x => SaveFile().ToObservable())
+            SaveCommand.SelectMany(x => SaveFileAsync().ToObservable())
                 .Subscribe(
                     unit => { },
                     exception =>
@@ -74,7 +75,7 @@ namespace PropertyWriter.ViewModel
 
         private void SubscribeOpenCommand()
 		{
-			OpenProjectCommand.SelectMany(x => OpenProject().ToObservable())
+			OpenProjectCommand.SelectMany(x => OpenProjectAsync().ToObservable())
 				.Subscribe(
 					unit => { },
 					exception =>
@@ -103,7 +104,7 @@ namespace PropertyWriter.ViewModel
 			}
 		}
 
-		private async Task OpenProject()
+		private async Task OpenProjectAsync()
 		{
 			var dialog = new OpenFileDialog()
 			{
@@ -115,7 +116,7 @@ namespace PropertyWriter.ViewModel
 			{
 				StatusMessage.Value = "プロジェクトを読み込み中…";
 
-                Project.Value = await Model.Project.Load(dialog.FileName);
+                Project.Value = await Model.Project.LoadAsync(dialog.FileName);
 
 				StatusMessage.Value = "プロジェクトを読み込みました。";
 				IsError.Value = false;
@@ -124,7 +125,7 @@ namespace PropertyWriter.ViewModel
 			}
 		}
 
-		private async Task SaveFile()
+		private async Task SaveFileAsync()
 		{
 			if (ProjectPath.Value == null)
 			{
@@ -147,7 +148,7 @@ namespace PropertyWriter.ViewModel
 
 			StatusMessage.Value = "データを保存中…";
             
-            await Project.Value.Save(ProjectPath.Value);
+            await Project.Value.SaveAsync(ProjectPath.Value);
 
 			StatusMessage.Value = "データを保存しました。";
 			IsError.Value = false;

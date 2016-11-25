@@ -10,6 +10,6 @@ namespace PropertyWriter.Model.Properties
     interface IStructureProperty
     {
         Type Type { get; }
-        InstanceAndMemberInfo[] Members { get; }
+        IPropertyModel[] Members { get; }
     }
 }

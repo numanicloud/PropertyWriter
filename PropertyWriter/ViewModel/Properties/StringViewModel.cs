@@ -4,14 +4,14 @@ using PropertyWriter.Model.Properties;
 
 namespace PropertyWriter.Model.Instance
 {
-	class IntViewModel : PropertyViewModel
+	class StringViewModel : PropertyViewModel
 	{
-        private IntProperty Property { get; }
+        private StringProperty Property { get; }
 
-		public ReactiveProperty<int> IntValue => Property.IntValue;
+		public ReactiveProperty<string> StringValue => Property.StringValue;
 		public override ReactiveProperty<object> Value => Property.Value;
 
-        public IntViewModel(IntProperty property)
+        public StringViewModel(StringProperty property)
         {
             Property = property;
         }

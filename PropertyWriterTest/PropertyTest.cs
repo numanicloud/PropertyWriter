@@ -4,6 +4,7 @@ using PropertyWriter.Model;
 using System.Linq;
 using System.Collections.Generic;
 using PropertyWriter.Model.Instance;
+using PropertyWriter.Model.Properties;
 
 namespace PropertyWriterTest
 {
@@ -13,7 +14,7 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void EnumCtor()
 		{
-			var enumProp = new EnumViewModel(typeof(TestEnum));
+			var enumProp = new EnumProperty(typeof(TestEnum));
 			enumProp.EnumValues.Is(TestEnum.Red, TestEnum.Green);
 			enumProp.Value.Value.Is(TestEnum.Red);
 		}
@@ -21,9 +22,9 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void ClassProperties()
 		{
-			var classProp = new ClassViewModel(typeof(TestClass), new ModelFactory());
-			classProp.Members.ElementAt(0).Model.IsInstanceOf<IntModel>();
-			classProp.Members.ElementAt(1).Model.IsInstanceOf<StringModel>();
+			var classProp = new ClassProperty(typeof(TestClass), new PropertyFactory());
+			classProp.Members.ElementAt(0).IsInstanceOf<IntProperty>();
+			classProp.Members.ElementAt(1).IsInstanceOf<StringProperty>();
 		}
 	}
 }

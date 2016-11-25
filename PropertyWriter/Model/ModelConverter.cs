@@ -1,25 +1,22 @@
-﻿using PropertyWriter.Model.Instance;
-using PropertyWriter.ViewModel;
-using PropertyWriter.ViewModel.Instance;
+﻿using PropertyWriter.Model.Interfaces;
+using PropertyWriter.Model.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PropertyWriter.Model
 {
     class ModelConverter
     {
-        public static async Task LoadValueToRoot(RootViewModel root, object obj)
+        public static async Task LoadValueToRootAsync(PropertyRoot root, object obj)
         {
-            var references = new List<(ReferenceByIntModel model, int id)>();
+            var references = new List<(ReferenceByIntProperty model, int id)>();
             foreach (var p in root.Structure.Properties)
             {
-                var value = p.GetValue(obj);
-                LoadValueToModel(p.Model, value, references);
+                var value = p.PropertyInfo.GetValue(obj);
+                LoadValueToModel(p, value, references);
             }
             await Task.Delay(100);
             foreach (var reference in references)
@@ -29,50 +26,50 @@ namespace PropertyWriter.Model
         }
 
         private static void LoadValueToModel(
-            IPropertyViewModel model,
+            IPropertyModel model,
             object value,
-            List<(ReferenceByIntModel reference, int id)> references)
+            List<(ReferenceByIntProperty reference, int id)> references)
         {
             switch (model)
             {
-            case IntModel m:
+            case IntProperty m:
                 m.IntValue.Value = (int)value;
                 break;
-            case StringModel m:
+            case StringProperty m:
                 m.StringValue.Value = (string)value;
                 break;
-            case BoolViewModel m:
+            case BoolProperty m:
                 m.BoolValue.Value = (bool)value;
                 break;
-            case FloatViewModel m:
+            case FloatProperty m:
                 m.FloatValue.Value = (float)value;
                 break;
-            case EnumViewModel m:
+            case EnumProperty m:
                 ConvertEnum(m, value);
                 break;
-            case ClassViewModel m:
+            case ClassProperty m:
                 LoadObjectToModel(m, value, references);
                 break;
-            case StructModel m:
+            case StructProperty m:
                 LoadObjectToModel(m, value, references);
                 break;
-            case ReferenceByIntModel m:
+            case ReferenceByIntProperty m:
                 references.Add((m, (int)value));
                 break;
-            case SubtypingModel m:
+            case SubtypingProperty m:
                 foreach (var type in m.AvailableTypes)
                 {
                     if (type.Type == value.GetType())
                     {
                         m.SelectedType.Value = type;
-                        LoadObjectToModel((IStructureModel)m.Model, value, references);
+                        LoadObjectToModel((IStructureProperty)m.Model, value, references);
                     }
                 }
                 break;
-            case ComplicateCollectionViewModel m:
+            case ComplicateCollectionProperty m:
                 LoadCollectionToModel(m, value, references);
                 break;
-            case BasicCollectionViewModel m:
+            case BasicCollectionProperty m:
                 LoadCollectionToModel(m, value, references);
                 break;
             default:
@@ -81,9 +78,9 @@ namespace PropertyWriter.Model
         }
 
         private static void LoadCollectionToModel(
-            ICollectionModel model,
+            ICollectionProperty model,
             object value,
-            List<(ReferenceByIntModel reference, int id)> references)
+            List<(ReferenceByIntProperty reference, int id)> references)
         {
             if (value is IEnumerable enumerable)
             {
@@ -100,9 +97,9 @@ namespace PropertyWriter.Model
         }
 
         private static void LoadObjectToModel(
-            IStructureModel model,
+            IStructureProperty model,
             object structureValue,
-            List<(ReferenceByIntModel reference, int id)> references)
+            List<(ReferenceByIntProperty reference, int id)> references)
         {
             var members = model.Members;
             foreach (var property in members)
@@ -111,18 +108,18 @@ namespace PropertyWriter.Model
 
                 try
                 {
-                    value = property.GetValue(structureValue);
+                    value = property.PropertyInfo.GetValue(structureValue);
                 }
                 catch (ArgumentException)
                 {
-                    throw new PwObjectMissmatchException(model.Type.Name, property.MemberName);
+                    throw new PwObjectMissmatchException(model.Type.Name, property.Title.Value);
                 }
 
-                LoadValueToModel(property.Model, value, references);
+                LoadValueToModel(property, value, references);
             }
         }
 
-        private static void ConvertEnum(EnumViewModel model, object obj)
+        private static void ConvertEnum(EnumProperty model, object obj)
         {
             var val = model.EnumValues.FirstOrDefault(x => x.ToString() == model.Type.GetEnumName(obj));
             model.EnumValue.Value = val;

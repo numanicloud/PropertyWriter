@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using PropertyWriter.Model.Instance;
+﻿using System.Reflection;
+using PropertyWriter.Model.Properties;
 
 namespace PropertyWriter.Model
 {
-	class MasterInfo
+    class MasterInfo
 	{
 		public string Key { get; }
 		public PropertyInfo Property { get; }
-		public IPropertyViewModel Master { get; }
+		public IPropertyModel Master { get; }
 
-		public MasterInfo(string key, PropertyInfo property, IPropertyViewModel master)
+		public MasterInfo(string key, PropertyInfo property, IPropertyModel master)
 		{
 			Property = property;
 			Master = master;

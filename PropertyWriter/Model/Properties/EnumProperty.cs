@@ -1,4 +1,5 @@
-﻿using Reactive.Bindings;
+﻿using PropertyWriter.Model.Interfaces;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace PropertyWriter.Model.Properties
 {
-    class EnumProperty : IPropertyModel
+    class EnumProperty : PropertyModel
     {
         public Type Type { get; private set; }
         public object[] EnumValues { get; private set; }
         public ReactiveProperty<object> EnumValue { get; set; } = new ReactiveProperty<object>();
-        public ReactiveProperty<object> Value => EnumValue;
+        public override ReactiveProperty<object> Value => EnumValue;
 
         public EnumProperty(Type type)
         {

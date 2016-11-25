@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PropertyWriter.Model;
 using System.Linq;
 using PropertyWriter.Model.Instance;
+using PropertyWriter.Model.Properties;
 
 namespace PropertyWriterTest
 {
@@ -14,60 +15,60 @@ namespace PropertyWriterTest
 		[TestMethod]
 		public void CreateIntType()
 		{
-			TestCreateInstance<IntModel>(typeof(int));
+			TestCreateInstance<IntProperty>(typeof(int));
 		}
 
 		[TestMethod]
 		public void CreateBoolType()
 		{
-			TestCreateInstance<BoolViewModel>(typeof(bool));
+			TestCreateInstance<BoolProperty>(typeof(bool));
 		}
 
 		[TestMethod]
 		public void CreateStringType()
 		{
-			TestCreateInstance<StringModel>(typeof(string));
+			TestCreateInstance<StringProperty>(typeof(string));
 		}
 
 		[TestMethod]
 		public void CreateFloatType()
 		{
-			TestCreateInstance<FloatViewModel>(typeof(float));
+			TestCreateInstance<FloatProperty>(typeof(float));
 		}
 
 		[TestMethod]
 		public void CreateEnumType()
 		{
-			TestCreateInstance<EnumViewModel>(typeof(TestEnum));
+			TestCreateInstance<EnumProperty>(typeof(TestEnum));
 		}
 
 		[TestMethod]
 		public void CreateClassType()
 		{
-			TestCreateInstance<ClassViewModel>(typeof(TestClass));
+			TestCreateInstance<ClassProperty>(typeof(TestClass));
 		}
 
 		[TestMethod]
 		public void CreateStructType()
 		{
-			TestCreateInstance<StructModel>(typeof(TestStruct));
+			TestCreateInstance<StructProperty>(typeof(TestStruct));
 		}
 
 		[TestMethod]
 		public void CreateBasicCollectionType()
 		{
-			TestCreateInstance<BasicCollectionViewModel>(typeof(IEnumerable<int>));
+			TestCreateInstance<BasicCollectionProperty>(typeof(IEnumerable<int>));
 		}
 
 		[TestMethod]
 		public void CreateComplicateCollectionType()
 		{
-			TestCreateInstance<ComplicateCollectionViewModel>(typeof(IEnumerable<TestClass>));
+			TestCreateInstance<ComplicateCollectionProperty>(typeof(IEnumerable<TestClass>));
 		}
 
 		private void TestCreateInstance<Expected>(Type type)
 		{
-			var factory = new ModelFactory();
+			var factory = new PropertyFactory();
 			factory.Create(type, "Test").IsInstanceOf<Expected>();
 		}
 	}

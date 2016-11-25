@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace PropertyWriter.Model.Properties
 {
-    class FloatProperty : PropertyModel
+    class StringProperty : PropertyModel
     {
-        public ReactiveProperty<float> FloatValue { get; } = new ReactiveProperty<float>();
+        public ReactiveProperty<string> StringValue { get; } = new ReactiveProperty<string>();
         public override ReactiveProperty<object> Value { get; }
 
-        public FloatProperty()
+        public StringProperty()
         {
-            Value = FloatValue.Select(x => (object)x).ToReactiveProperty();
+            Value = StringValue.Select(x => (object)x).ToReactiveProperty();
         }
     }
 }

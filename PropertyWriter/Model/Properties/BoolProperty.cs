@@ -1,4 +1,5 @@
-﻿using Reactive.Bindings;
+﻿using PropertyWriter.Model.Interfaces;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace PropertyWriter.Model.Properties
 {
-    class BoolProperty : IPropertyModel
+    class BoolProperty : PropertyModel
     {
         public ReactiveProperty<bool> BoolValue { get; } = new ReactiveProperty<bool>();
-        public ReactiveProperty<object> Value { get; }
+        public override ReactiveProperty<object> Value { get; }
 
         public BoolProperty()
         {

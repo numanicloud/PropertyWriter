@@ -119,20 +119,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Properties\Interfaces\ICollectionProperty.cs" />
+    <Compile Include="Model\Properties\Interfaces\PropertyModel.cs" />
     <Compile Include="Model\ModelConverter.cs" />
     <Compile Include="Model\Properties\BasicCollectionProperty.cs" />
     <Compile Include="Model\Properties\BoolProperty.cs" />
     <Compile Include="Model\Properties\ClassProperty.cs" />
-    <Compile Include="Model\Properties\CollectionHolder.cs" />
+    <Compile Include="Model\Properties\Common\CollectionHolder.cs" />
     <Compile Include="Model\Properties\ComplicateCollectionProperty.cs" />
-    <Compile Include="Model\Interfaces\IPropertyModel.cs" />
-    <Compile Include="Model\Interfaces\IStructureProperty.cs" />
+    <Compile Include="Model\Properties\Interfaces\IPropertyModel.cs" />
+    <Compile Include="Model\Properties\Interfaces\IStructureProperty.cs" />
     <Compile Include="Model\Properties\EnumProperty.cs" />
     <Compile Include="Model\Properties\FloatProperty.cs" />
     <Compile Include="Model\Properties\IntProperty.cs" />
-    <Compile Include="Model\Properties\PropertyContents.cs" />
-    <Compile Include="Model\Properties\StructureHolder.cs" />
-    <Compile Include="Model\PwSerializeException.cs" />
+    <Compile Include="Model\Properties\ReferenceByIntProperty.cs" />
+    <Compile Include="Model\Properties\StringProperty.cs" />
+    <Compile Include="Model\Properties\StructProperty.cs" />
+    <Compile Include="Model\Properties\Common\StructureHolder.cs" />
+    <Compile Include="Model\Properties\SubtypingProperty.cs" />
+    <Compile Include="Model\PropertyRoot.cs" />
+    <Compile Include="Model\Exceptions\PwSerializeException.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\RootViewModel.cs" />
     <Compile Include="View\NewProjectWindow.xaml.cs">
@@ -175,33 +181,25 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Helpers.cs" />
-    <Compile Include="Model\Info\InstanceAndFieldInfo.cs" />
-    <Compile Include="Model\Info\InstanceAndPropertyInfo.cs" />
     <Compile Include="Model\Info\SubTypeInfo.cs" />
-    <Compile Include="Model\InstanceConverter.cs" />
-    <Compile Include="Model\PwJsonDeserializeException.cs" />
+    <Compile Include="Model\Exceptions\PwJsonDeserializeException.cs" />
     <Compile Include="Model\JsonSerializer.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="ViewModel\Properties\BasicCollectionViewModel.cs" />
     <Compile Include="ViewModel\Properties\BoolViewModel.cs" />
     <Compile Include="ViewModel\Properties\ClassViewModel.cs" />
-    <Compile Include="ViewModel\Properties\CollectionHolder.cs" />
     <Compile Include="ViewModel\Properties\EnumViewModel.cs" />
     <Compile Include="ViewModel\Properties\FloatViewModel.cs" />
-    <Compile Include="ViewModel\Properties\ICollectionModel.cs" />
     <Compile Include="ViewModel\Properties\IntViewModel.cs" />
-    <Compile Include="ViewModel\Properties\IPropertyViewModel.cs" />
-    <Compile Include="ViewModel\Properties\IStructureModel.cs" />
-    <Compile Include="ViewModel\Properties\PropertyViewModel.cs" />
-    <Compile Include="ViewModel\Properties\ReferenceByIntModel.cs" />
-    <Compile Include="ViewModel\Properties\SubtypingModel.cs" />
-    <Compile Include="Model\ModelFactory.cs" />
-    <Compile Include="Model\Info\InstanceAndMemberInfo.cs" />
-    <Compile Include="ViewModel\Properties\StringModel.cs" />
-    <Compile Include="ViewModel\Properties\StructModel.cs" />
-    <Compile Include="ViewModel\Properties\StructureHolder.cs" />
+    <Compile Include="ViewModel\Properties\Common\IPropertyViewModel.cs" />
+    <Compile Include="ViewModel\Properties\Common\PropertyViewModel.cs" />
+    <Compile Include="ViewModel\Properties\ReferenceByIntViewModel.cs" />
+    <Compile Include="ViewModel\Properties\SubtypingViewModel.cs" />
+    <Compile Include="Model\Properties\Common\PropertyFactory.cs" />
+    <Compile Include="ViewModel\Properties\StringViewModel.cs" />
+    <Compile Include="ViewModel\Properties\StructViewModel.cs" />
     <Compile Include="ViewModel\MasterInfo.cs" />
-    <Compile Include="Model\TypeParser.cs" />
+    <Compile Include="Model\Properties\Common\TypeParser.cs" />
     <Compile Include="ViewModel\Properties\ComplicateCollectionViewModel.cs" />
     <Compile Include="ViewModel\BlockViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

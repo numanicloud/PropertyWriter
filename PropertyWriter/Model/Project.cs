@@ -20,7 +20,7 @@ namespace PropertyWriter.Model
 		public ReactiveProperty<string> ProjectTypeName { get; } = new ReactiveProperty<string>();
 		public ReactiveProperty<string> SavePath { get; } = new ReactiveProperty<string>();
 		public ReactiveProperty<bool> IsValid { get; }
-        public ReactiveProperty<RootViewModel> Root { get; } = new ReactiveProperty<RootViewModel>();
+        public ReactiveProperty<PropertyRoot> Root { get; } = new ReactiveProperty<PropertyRoot>();
 
         public Project()
 		{
@@ -36,12 +36,12 @@ namespace PropertyWriter.Model
 
         public void Initialize()
         {
-            var modelFactory = new ModelFactory();
+            var modelFactory = new PropertyFactory();
             var assembly = GetAssembly();
-            Root.Value = modelFactory.LoadStructure(assembly, GetProjectType(assembly));
+            Root.Value = modelFactory.GetStructure(assembly, GetProjectType(assembly));
         }
 
-        public static async Task<Project> Load(string path)
+        public static async Task<Project> LoadAsync(string path)
         {
             Project project;
             using (var file = new StreamReader(path))
@@ -83,17 +83,17 @@ namespace PropertyWriter.Model
                         throw new Exception("データ ファイルが壊れています。");
                     }
                 }
-                await ModelConverter.LoadValueToRoot(project.Root.Value, value);
+                await ModelConverter.LoadValueToRootAsync(project.Root.Value, value);
             }
             else
             {
-                await JsonSerializer.LoadData(project.Root.Value, project.SavePath.Value);
+                await JsonSerializer.LoadDataAsync(project.Root.Value, project.SavePath.Value);
             }
 
             return project;
         }
 
-        public async Task Save(string path)
+        public async Task SaveAsync(string path)
         {
             using (var file = new StreamWriter(path))
             {
@@ -134,7 +134,7 @@ namespace PropertyWriter.Model
             }
             else
             {
-                await JsonSerializer.SaveData(Root.Value, SavePath.Value);
+                await JsonSerializer.SaveDataAsync(Root.Value, SavePath.Value);
             }
         }
 

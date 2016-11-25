@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
-using PropertyWriter.Model.Instance;
-using PropertyWriter.ViewModel;
-using PropertyWriter.ViewModel.Instance;
 
 namespace PropertyWriter.Model
 {
-	class JsonSerializer
+    class JsonSerializer
 	{
-		public static async Task SaveData(RootViewModel root, string savePath)
+		public static async Task SaveDataAsync(PropertyRoot root, string savePath)
 		{
 			using(var file = new StreamWriter(savePath))
 			{
@@ -27,14 +15,14 @@ namespace PropertyWriter.Model
 			}
 		}
 
-        public static async Task LoadData(RootViewModel root, string savePath)
+        public static async Task LoadDataAsync(PropertyRoot root, string savePath)
         {
             object obj;
             using (var file = new StreamReader(savePath))
             {
                 obj = JsonConvert.DeserializeObject(await file.ReadToEndAsync(), root.Type);
             }
-            await ModelConverter.LoadValueToRoot(root, obj);
+            await ModelConverter.LoadValueToRootAsync(root, obj);
         }
 	}
 }

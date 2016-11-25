@@ -26,28 +26,5 @@ namespace PropertyWriter.View
 		{
 			InitializeComponent();
 		}
-
-		private BasicCollectionViewModel property
-		{
-			get { return DataContext as BasicCollectionViewModel; }
-		}
-
-		private void addButton_Click( object sender, RoutedEventArgs e )
-		{
-			property.AddNewElement();
-		}
-
-		private void removeButton_Click( object sender, RoutedEventArgs e )
-		{
-			var index = dataList.SelectedIndex;
-			if( index != -1 )
-			{
-				property.RemoveAt( index );
-				if( index < dataList.Items.Count )
-				{
-					dataList.SelectedIndex = index;
-				}
-			}
-		}
 	}
 }
