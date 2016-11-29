@@ -1,19 +1,20 @@
 ﻿using PropertyWriter.Models.Properties;
 using PropertyWriter.ViewModels.Properties.Common;
 using Reactive.Bindings;
+using System;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class FloatViewModel : PropertyViewModel
+	class FloatViewModel : PropertyViewModel<FloatProperty>
 	{
-        private FloatProperty Property { get; }
-
         public ReactiveProperty<float> FloatValue => Property.FloatValue;
-        public override ReactiveProperty<object> Value => Property.Value;
+		public override IObservable<Unit> OnChanged => Property.FloatValue.Select(x => Unit.Default);
 
-        public FloatViewModel(FloatProperty property)
+		public FloatViewModel(FloatProperty property)
+			: base(property)
         {
-            Property = property;
         }
 	}
 }

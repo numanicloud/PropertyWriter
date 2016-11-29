@@ -3,6 +3,7 @@ using System.Linq;
 using PropertyWriter.Models.Properties.Common;
 using PropertyWriter.Models.Properties.Interfaces;
 using Reactive.Bindings;
+using System.Reactive;
 
 namespace PropertyWriter.Models.Properties
 {
@@ -11,10 +12,11 @@ namespace PropertyWriter.Models.Properties
         private StructureHolder structureValue_;
 
         public Type Type { get; private set; }
-        public override ReactiveProperty<object> Value { get; }
+		public override ReactiveProperty<object> Value { get; }
         public IPropertyModel[] Members => structureValue_.Properties.ToArray();
-        
-        public ClassProperty(Type type, PropertyFactory modelFactory)
+		public IObservable<Unit> OnChanged => structureValue_.ValueChanged;
+
+		public ClassProperty(Type type, PropertyFactory modelFactory)
         {
             Type = type;
             if (!type.IsClass)

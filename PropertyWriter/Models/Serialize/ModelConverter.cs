@@ -7,7 +7,7 @@ using PropertyWriter.Models.Exceptions;
 using PropertyWriter.Models.Properties;
 using PropertyWriter.Models.Properties.Interfaces;
 
-namespace PropertyWriter.Models
+namespace PropertyWriter.Models.Serialize
 {
     class ModelConverter
     {
@@ -78,10 +78,10 @@ namespace PropertyWriter.Models
         {
             foreach (var type in m.AvailableTypes)
             {
-                if (type.Type == value.GetType())
+                if (type.Type == value?.GetType())
                 {
                     m.SelectedType.Value = type;
-                    LoadObjectToModel((IStructureProperty)m.Model, value, references);
+                    LoadObjectToModel((IStructureProperty)m.Model.Value, value, references);
                 }
             }
         }

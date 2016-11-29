@@ -2,21 +2,22 @@
 using PropertyWriter.Models.Properties.Common;
 using PropertyWriter.ViewModels.Properties.Common;
 using Reactive.Bindings;
+using System;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class ReferenceByIntViewModel : PropertyViewModel
+	class ReferenceByIntViewModel : PropertyViewModel<ReferenceByIntProperty>
 	{
-        private ReferenceByIntProperty Property { get; }
-
         public ReferencableMasterInfo Source => Property.Source;
 		public ReactiveProperty<object> SelectedObject => Property.SelectedObject;
         public ReactiveProperty<int> IntValue => Property.IntValue;
-        public override ReactiveProperty<object> Value => Property.Value;
+		public override IObservable<Unit> OnChanged => Property.IntValue.Select(x => Unit.Default);
 
-        public ReferenceByIntViewModel(ReferenceByIntProperty property)
+		public ReferenceByIntViewModel(ReferenceByIntProperty property)
+			: base(property)
         {
-            Property = property;
         }
 	}
 }

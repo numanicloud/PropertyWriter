@@ -1,4 +1,6 @@
 ﻿using Reactive.Bindings;
+using System;
+using System.Reactive;
 
 namespace PropertyWriter.ViewModels.Properties.Common
 {
@@ -6,6 +8,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 	{
 		ReactiveProperty<object> Value { get; }
 		ReactiveProperty<string> FormatedString { get; }
-		ReactiveProperty<string> Title { get; set; }
+		ReactiveProperty<string> Title { get; }
+		IObservable<Unit> OnChanged { get; }
 	}
 }

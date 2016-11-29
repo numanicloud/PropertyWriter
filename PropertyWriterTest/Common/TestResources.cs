@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace PropertyWriterTest
 {
-    enum TestEnum
+    public enum TestEnum
     {
         Red, Green
     }
 
-    class TestClass
+	public class TestClass
     {
         [PwMember]
         public int X { get; set; }
@@ -20,19 +20,19 @@ namespace PropertyWriterTest
         public string Message { get; set; }
     }
 
-    interface ITestInterface
+	public interface ITestInterface
     {
         int F();
     }
 
-    struct TestStruct
+	public struct TestStruct
     {
         [PwMember]
         public bool B { get; set; }
     }
 
     [PwProject]
-    class TestProject
+	public class TestProject
     {
         [PwMaster]
         public TestClass[] Classes { get; set; }

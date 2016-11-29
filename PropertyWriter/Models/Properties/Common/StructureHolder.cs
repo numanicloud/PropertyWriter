@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Subjects;
+using PropertyWriter.Models.Info;
 using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.ViewModels;
 using Reactive.Bindings;
@@ -11,9 +12,11 @@ namespace PropertyWriter.Models.Properties.Common
 {
     internal class StructureHolder
     {
+		private Subject<Unit> ValueChangedSubject { get; } = new Subject<Unit>();
+
         public IEnumerable<IPropertyModel> Properties { get; }
         public ReactiveProperty<object> Value { get; private set; }
-        public Subject<Unit> ValueChanged { get; } = new Subject<Unit>();
+		public IObservable<Unit> ValueChanged => ValueChangedSubject;
         
         public StructureHolder(Type type, PropertyFactory modelFactory)
         {
@@ -42,7 +45,7 @@ namespace PropertyWriter.Models.Properties.Common
                     {
                         refModel.PropertyToBindBack?.SetValue(Value.Value, refModel.SelectedObject.Value);
                     }
-                    ValueChanged.OnNext(Unit.Default);
+                    ValueChangedSubject.OnNext(Unit.Default);
                 });
             }
         }

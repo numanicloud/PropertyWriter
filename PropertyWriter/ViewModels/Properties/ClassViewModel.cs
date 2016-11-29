@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using Livet.Messaging;
 using PropertyWriter.Models.Properties;
@@ -9,35 +10,25 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-    class ClassViewModel : PropertyViewModel
+    class ClassViewModel : PropertyViewModel<ClassProperty>
 	{
-        private ClassProperty Property { get; }
-
-        public IPropertyModel[] Members => Property.Members;
-        public override ReactiveProperty<object> Value => Property.Value;
-        public ReactiveCommand<PropertyViewModel> EditCommand { get; } = new ReactiveCommand<PropertyViewModel>();
-
-        public override ReactiveProperty<string> FormatedString
-        {
-            get
-            {
-                var events = Property.Members
-                    .Select(x => x.Value)
-                    .Cast<IObservable<object>>()
-                    .ToArray();
-                return Observable.Merge(events)
-                    .Select(x => Value.Value.ToString())
-                    .ToReactiveProperty();
-            }
-        }
+        public IPropertyViewModel[] Members { get; }
+		public override ReactiveProperty<string> FormatedString { get; }
+        public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
+		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
 
         public ClassViewModel(ClassProperty property)
+			: base(property)
         {
-            Property = property;
-            EditCommand.Subscribe(x => Messenger.Raise(
+			FormatedString = Property.OnChanged
+				.Select(x => Value.Value.ToString())
+				.ToReactiveProperty(Value.Value.ToString());
+
+			EditCommand.Subscribe(x => Messenger.Raise(
                 new TransitionMessage(
-                    new BlockViewModel(Property),
+                    new BlockViewModel(this),
                     "BlockWindow")));
+			Members = property.Members.Select(ViewModelFactory.Create).ToArray();
         }
 	}
 }

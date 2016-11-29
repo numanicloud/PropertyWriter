@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PropertyWriter.Views.ClassControl"
+﻿<UserControl x:Class="PropertyWriter.Views.Properties.ClassControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,9 +24,9 @@
 						<ColumnDefinition Width="Auto" SharedSizeGroup="ColonColumn"/>
 						<ColumnDefinition Width="*" SharedSizeGroup="ValueColumn"/>
 					</Grid.ColumnDefinitions>
-					<Label Content="{Binding Title}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+					<Label Content="{Binding Title.Value}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
 					<Label Content=":" Grid.Column="1" VerticalAlignment="Top"/>
-					<ContentControl Content="{Binding Model}" Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
+					<ContentControl Content="{Binding}" Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
 				</Grid>
 			</DataTemplate>
 		</ItemsControl.ItemTemplate>

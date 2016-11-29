@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using PropertyWriter.Models.Properties.Interfaces;
 
-namespace PropertyWriter.ViewModels
+namespace PropertyWriter.Models.Info
 {
     class MasterInfo
 	{

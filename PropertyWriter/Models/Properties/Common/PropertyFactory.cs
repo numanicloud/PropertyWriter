@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using PropertyWriter.Annotation;
+using PropertyWriter.Models.Info;
 using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.ViewModels;
 using PropertyWriter.ViewModels.Properties;
@@ -43,19 +44,18 @@ namespace PropertyWriter.Models.Properties.Common
 
         private void LoadMasters(MasterInfo[] masters)
         {
-            masters_ = masters.Where(x => x.Master is ComplicateCollectionViewModel)
-                .ToDictionary(x => x.Key, x =>
-                {
-                    if (x.Master is ComplicateCollectionViewModel masterModel)
-                    {
-                        return new ReferencableMasterInfo()
-                        {
-                            Collection = masterModel.Collection.ToReadOnlyReactiveCollection(y => y.Value.Value),
-                            Type = x.Property.PropertyType.GetElementType(),
-                        };
-                    }
-                    throw new Exception();
-                });
+			masters_ = new Dictionary<string, ReferencableMasterInfo>();
+			foreach (var info in masters)
+			{
+				if (info.Master is ComplicateCollectionProperty prop)
+				{
+					masters_[info.Key] = new ReferencableMasterInfo()
+					{
+						Collection = prop.Collection.ToReadOnlyReactiveCollection(y => y.Value.Value),
+						Type = info.Property.PropertyType.GetElementType(),
+					};
+				}
+			}
         }
 
         private void LoadSubtypes(Assembly assembly)
@@ -115,7 +115,7 @@ namespace PropertyWriter.Models.Properties.Common
             {
                 if (prop is ReferenceByIntProperty refByInt)
                 {
-                    references[prop.Title.Value] = refByInt;
+                    references[prop.PropertyInfo.Name] = refByInt;
                 }
             }
 
@@ -136,13 +136,13 @@ namespace PropertyWriter.Models.Properties.Common
             var memberAttr = info.GetCustomAttribute<PwMemberAttribute>();
             if (memberAttr != null)
             {
-                result = Create(info.PropertyType, memberAttr.Name);
+                result = Create(info.PropertyType, memberAttr.Name ?? info.Name);
             }
 
             var attr = info.GetCustomAttribute<PwReferenceMemberAttribute>();
             if (attr != null)
             {
-                result = CreateReference(info.PropertyType, attr.MasterKey, attr.IdFieldName, attr.Name);
+                result = CreateReference(info.PropertyType, attr.MasterKey, attr.IdFieldName, attr.Name ?? info.Name);
             }
 
             if (result != null)

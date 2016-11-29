@@ -1,13 +1,14 @@
 ﻿<Window x:Class="PropertyWriter.Views.BlockWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
+		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+		xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         Height="450" Width="800"
-				Title="{Binding Title.Value}">
+		Title="{Binding Title.Value}"
+        WindowStartupLocation="CenterOwner">
 
 	<Window.Resources>
-		<ResourceDictionary Source="BlockProperty.xaml"/>
+		<ResourceDictionary Source="Properties/BlockProperty.xaml"/>
 	</Window.Resources>
 
 	<i:Interaction.Triggers>

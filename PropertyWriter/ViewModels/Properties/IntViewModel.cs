@@ -1,19 +1,20 @@
 ﻿using PropertyWriter.Models.Properties;
 using PropertyWriter.ViewModels.Properties.Common;
 using Reactive.Bindings;
+using System;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class IntViewModel : PropertyViewModel
+	class IntViewModel : PropertyViewModel<IntProperty>
 	{
-        private IntProperty Property { get; }
-
 		public ReactiveProperty<int> IntValue => Property.IntValue;
-		public override ReactiveProperty<object> Value => Property.Value;
+		public override IObservable<Unit> OnChanged => Property.IntValue.Select(x => Unit.Default);
 
-        public IntViewModel(IntProperty property)
+		public IntViewModel(IntProperty property)
+			: base(property)
         {
-            Property = property;
         }
 	}
 }

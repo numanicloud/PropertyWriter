@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using Livet.Messaging;
 using PropertyWriter.Models.Properties;
@@ -9,35 +10,25 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-    internal class StructViewModel : PropertyViewModel
+    internal class StructViewModel : PropertyViewModel<StructProperty>
 	{
-        private StructProperty Property { get; }
+		public IPropertyViewModel[] Members { get; }
+		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
+        public override ReactiveProperty<string> FormatedString { get; }
+		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
 
-        public Type Type => Property.Type;
-		public IPropertyModel[] Members => Property.Members;
-        public override ReactiveProperty<object> Value => Property.Value;
-        public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
-
-        public override ReactiveProperty<string> FormatedString
-		{
-			get
-			{
-				var events = Members.Select(x => x.Value)
-					.Cast<IObservable<object>>()
-					.ToArray();
-				return Observable.Merge(events)
-					.Select(x => Value.Value.ToString())
-					.ToReactiveProperty();
-			}
-		}
-
-        public StructViewModel(StructProperty property)
+		public StructViewModel(StructProperty property)
+			: base(property)
         {
-            Property = property;
-            EditCommand.Subscribe(x => Messenger.Raise(
+			FormatedString = Property.OnChanged
+				.Select(x => Value.Value.ToString())
+				.ToReactiveProperty();
+
+			EditCommand.Subscribe(x => Messenger.Raise(
                 new TransitionMessage(
-                    new BlockViewModel(Property),
+                    new BlockViewModel(this),
                     "BlockWindow")));
+			Members = property.Members.Select(ViewModelFactory.Create).ToArray();
         }
 	}
 }

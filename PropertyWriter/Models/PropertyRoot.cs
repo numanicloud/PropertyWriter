@@ -1,4 +1,5 @@
 ﻿using System;
+using PropertyWriter.Models.Info;
 using PropertyWriter.Models.Properties.Common;
 using PropertyWriter.ViewModels;
 

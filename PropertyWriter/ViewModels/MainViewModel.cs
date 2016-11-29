@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -8,23 +9,30 @@ using Livet.Messaging;
 using PropertyWriter.Models;
 using PropertyWriter.Models.Properties.Interfaces;
 using Reactive.Bindings;
+using PropertyWriter.ViewModels.Properties.Common;
+using System.Diagnostics;
+using Livet;
+using Livet.Messaging.Windows;
 
 namespace PropertyWriter.ViewModels
 {
 	class MainViewModel : Livet.ViewModel
 	{
-		public ReactiveProperty<string> StatusMessage { get; set; } = new ReactiveProperty<string>();
-		public ReactiveProperty<bool> IsError { get; set; } = new ReactiveProperty<bool>();
-		public ReactiveProperty<string> ProjectPath { get; set; } = new ReactiveProperty<string>();
-		public ReactiveProperty<bool> IsReady { get; set; } = new ReactiveProperty<bool>();
-		public ReactiveProperty<string> Title { get; set; }
+		public ReactiveProperty<string> StatusMessage { get; private set; } = new ReactiveProperty<string>();
+		public ReactiveProperty<bool> IsError { get; private set; } = new ReactiveProperty<bool>();
+		public ReactiveProperty<string> Title { get; private set; }
+		public ReactiveProperty<string> ProjectPath { get; private set; } = new ReactiveProperty<string>(mode:ReactivePropertyMode.None);
+		public ReactiveProperty<bool> IsReady { get; private set; } = new ReactiveProperty<bool>();
+		public ReactiveProperty<bool> IsModified { get; private set; } = new ReactiveProperty<bool>();
+		public ReactiveProperty<bool> CanClose { get; private set; } = new ReactiveProperty<bool>();
 
 		public ReactiveProperty<Project> Project { get; } = new ReactiveProperty<Project>();
-		public ReactiveProperty<IPropertyModel[]> Masters { get; }  // TODO: ViewModelで差し替え
+		public ReactiveProperty<IPropertyViewModel[]> Masters { get; }  // TODO: ViewModelで差し替え
 
-		public ReactiveCommand NewProjectCommand { get; set; } = new ReactiveCommand();
-		public ReactiveCommand OpenProjectCommand { get; set; } = new ReactiveCommand();
-		public ReactiveCommand SaveCommand { get; set; }
+		public ReactiveCommand NewProjectCommand { get; } = new ReactiveCommand();
+		public ReactiveCommand OpenProjectCommand { get; } = new ReactiveCommand();
+		public ReactiveCommand SaveCommand { get; }
+		public ReactiveCommand CloseCanceledCommand { get; } = new ReactiveCommand();
 
 		public MainViewModel()
 		{
@@ -33,32 +41,81 @@ namespace PropertyWriter.ViewModels
 			Masters = Project.Where(x => x != null)
                 .SelectMany(x => x.Root)
                 .Where(x => x != null)
-				.Select(x => x.Structure.Properties.ToArray())
+				.Select(x => x.Structure.Properties)
+				.Select(x => x.Select(ViewModelFactory.Create).ToArray())
 				.ToReactiveProperty();
 
-			var notReady = IsReady.Where(x => !x)
-				.Select(x => "PropertyWriter");
-			Title = ProjectPath.Where(x => IsReady.Value)
+			var projectTitle = ProjectPath.Where(x => IsReady.Value)
 				.Select(x => x ?? "新規プロジェクト")
-				.Select(x => $"PropertyWriter - {x}")
-				.Merge(notReady)
-				.ToReactiveProperty();
-
+				.Select(x => " - " + x);
+			var modifiedTitle = IsModified.Select(x => x ? " - 変更あり" : "");
+			Title = Observable.Return("PropertyWriter")
+				.CombineLatest(projectTitle, (x, y) => x + y)
+				.CombineLatest(modifiedTitle, (x, y) => x + y)
+				.ToReactiveProperty("PropertyWriter");
+			
 			NewProjectCommand.Subscribe(x => CreateNewProject());
 			SubscribeOpenCommand();
             SubscribeSaveCommand();
+			CloseCanceledCommand.Subscribe(async x => await HandleClose());
+			
+			Masters.Where(xs => xs != null).Subscribe(xs =>
+			{
+				Observable.Merge(xs.Select(x => x.OnChanged))
+					.Subscribe(x => IsModified.Value = true);
+			});
 
 			IsError.Value = false;
+			IsReady.Value = false;
+			IsModified.Value = false;
+			CanClose.Value = false;
 		}
 
-        private void SubscribeSaveCommand()
+		private async Task HandleClose()
+		{
+			if (IsModified.Value)
+			{
+				var vm = new ClosingViewModel();
+				var message = new TransitionMessage(vm, "ConfirmClose");
+				Messenger.Raise(message);
+
+				if (vm.Response == ClosingViewModel.Result.Cancel)
+				{
+					return;
+				}
+
+				if (vm.Response == ClosingViewModel.Result.AfterSave)
+				{
+					try
+					{
+						await SaveFileAsync();
+					}
+					catch (Exception exception)
+					{
+						Debugger.Log(1, "Error", exception + "\n");
+						StatusMessage.Value = $"保存を中止し、以前のファイルに復元しました。{exception.Message}";
+						IsError.Value = true;
+						SubscribeSaveCommand();
+						return;
+					}
+				}
+			}
+			CanClose.Value = true;
+			await DispatcherHelper.UIDispatcher.InvokeAsync(() =>
+			{
+				Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
+			});
+		}
+
+		private void SubscribeSaveCommand()
         {
             SaveCommand.SelectMany(x => SaveFileAsync().ToObservable())
                 .Subscribe(
                     unit => { },
                     exception =>
-                    {
-                        StatusMessage.Value = $"保存を中止し、以前のファイルに復元しました。{exception.Message}";
+					{
+						Debugger.Log(1, "Error", exception + "\n");
+						StatusMessage.Value = $"保存を中止し、以前のファイルに復元しました。{exception.Message}";
                         IsError.Value = true;
                         SubscribeSaveCommand();
                     }); ;
@@ -71,6 +128,7 @@ namespace PropertyWriter.ViewModels
 					unit => { },
 					exception =>
 					{
+						Debugger.Log(1, "Error", exception + "\n");
 						StatusMessage.Value = $"データを読み込めませんでした。{exception.Message}";
 						IsError.Value = true;
 						SubscribeOpenCommand();
@@ -112,6 +170,7 @@ namespace PropertyWriter.ViewModels
 				StatusMessage.Value = "プロジェクトを読み込みました。";
 				IsError.Value = false;
 				IsReady.Value = true;
+				IsModified.Value = false;
 				ProjectPath.Value = dialog.FileName;
 			}
 		}
@@ -143,6 +202,7 @@ namespace PropertyWriter.ViewModels
 
 			StatusMessage.Value = "データを保存しました。";
 			IsError.Value = false;
+			IsModified.Value = false;
 		}
 	}
 }

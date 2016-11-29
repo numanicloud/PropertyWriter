@@ -86,7 +86,7 @@
             </i:Interaction.Triggers>
             <ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}"
 								DisplayMemberPath="Name"/>
-            <TextBlock Text="{Binding Model.Value.FormatedString.Value}" Style="{StaticResource Revealer}"/>
+            <TextBlock Text="{Binding FormatedString.Value}" Style="{StaticResource Revealer}"/>
             <Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}"/>
         </StackPanel>
     </DataTemplate>

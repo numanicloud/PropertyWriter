@@ -2,18 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 										xmlns:s="clr-namespace:System;assembly=mscorlib"
 										xmlns:instance="clr-namespace:PropertyWriter.ViewModels.Properties"
-										xmlns:views="clr-namespace:PropertyWriter.Views">
+										xmlns:views="clr-namespace:PropertyWriter.Views"
+										xmlns:properties="clr-namespace:PropertyWriter.Views.Properties">
 
 	<DataTemplate DataType="{x:Type instance:ComplicateCollectionViewModel}">
-		<views:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
+		<properties:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:ClassViewModel}">
-		<views:ClassControl DataContext="{Binding Path=.}"/>
+		<properties:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:StructViewModel}">
-		<views:ClassControl DataContext="{Binding Path=.}"/>
+		<properties:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:IntViewModel}">
@@ -25,7 +26,7 @@
 	</DataTemplate>
 	
 	<DataTemplate DataType="{x:Type instance:BasicCollectionViewModel}">
-		<views:BasicCollectionControl
+		<properties:BasicCollectionControl
 			HorizontalAlignment="Stretch" 
 			VerticalAlignment="Stretch"
 			DataContext="{Binding Path=.}"

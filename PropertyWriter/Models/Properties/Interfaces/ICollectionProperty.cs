@@ -1,6 +1,6 @@
 ﻿namespace PropertyWriter.Models.Properties.Interfaces
 {
-    interface ICollectionProperty
+    interface ICollectionProperty : IPropertyModel
     {
         IPropertyModel AddNewElement();
     }

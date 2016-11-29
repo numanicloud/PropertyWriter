@@ -9,7 +9,9 @@ using Newtonsoft.Json;
 using PropertyWriter.Annotation;
 using PropertyWriter.Models.Exceptions;
 using PropertyWriter.Models.Properties.Common;
+using PropertyWriter.Models.Serialize;
 using Reactive.Bindings;
+using JsonSerializer = PropertyWriter.Models.Serialize.JsonSerializer;
 
 namespace PropertyWriter.Models
 {
@@ -54,41 +56,20 @@ namespace PropertyWriter.Models
             var rootType = project.Root.Value.Type;
             var deserializer = rootType.GetMethods()
                 .FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
-            if(deserializer != null)
-            {
-                object value;
-                using (var file = File.OpenRead(project.SavePath.Value))
-                {
-                    try
-                    {
-                        value = deserializer.Invoke(null, new object[] { file });
-                    }
-                    catch (ArgumentException)
-                    {
-                        throw new PwSerializeMethodException("デシリアライズ メソッドのシグネチャが不正です。");
-                    }
-                    catch(TargetParameterCountException)
-                    {
-                        throw new PwSerializeMethodException("デシリアライズ メソッドのシグネチャが不正です。");
-                    }
-
-                    if (value is Task t)
-                    {
-                        await t;
-                        var resultProperty = typeof(Task<>).MakeGenericType(rootType).GetProperty(nameof(Task<object>.Result));
-                        value = resultProperty.GetValue(t);
-                    }
-                    if(value == null)
-                    {
-                        throw new Exception("データ ファイルが壊れています。");
-                    }
-                }
-                await ModelConverter.LoadValueToRootAsync(project.Root.Value, value);
-            }
-            else
-            {
-                await JsonSerializer.LoadDataAsync(project.Root.Value, project.SavePath.Value);
-            }
+			try
+			{
+				if (deserializer != null)
+				{
+					await CustomSerializer.LoadDataAsync(deserializer, project.Root.Value, project.SavePath.Value);
+				}
+				else
+				{
+					await JsonSerializer.LoadDataAsync(project.Root.Value, project.SavePath.Value);
+				}
+			}
+			catch (FileNotFoundException)
+			{
+			}
 
             return project;
         }
@@ -105,61 +86,13 @@ namespace PropertyWriter.Models
             var serializer = rootType.GetMethods()
                 .FirstOrDefault(x => x.GetCustomAttribute<PwSerializerAttribute>() != null);
             if (serializer != null)
-            {
-                var backup = MakeBackUp();
-                try
-                {
-                    using (var file = File.OpenWrite(SavePath.Value))
-                    {
-                        var value = Root.Value.Structure.Value.Value;
-                        try
-                        {
-                            var ret = serializer.Invoke(null, new object[] { value, file });
-                            if (ret != null && ret is Task t)
-                            {
-                                await t;
-                            }
-                        }
-                        catch (ArgumentException)
-                        {
-                            throw new PwSerializeMethodException("シリアライズ用メソッドのシグネチャが不正です。");
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    WriteBackUp(backup);
-                    throw;
-                }
+			{
+				await CustomSerializer.SaveDataAsync(serializer, Root.Value, SavePath.Value);
             }
             else
             {
                 await JsonSerializer.SaveDataAsync(Root.Value, SavePath.Value);
             }
-        }
-
-        private void WriteBackUp(byte[] backup)
-        {
-            using (var file = new BinaryWriter(File.OpenWrite(SavePath.Value)))
-            {
-                file.Write(backup);
-            }
-        }
-
-        private byte[] MakeBackUp()
-        {
-            List<byte> bytes = new List<byte>();
-            using (var file = new BinaryReader(File.OpenRead(SavePath.Value)))
-            {
-                int length = 0;
-                do
-                {
-                    var buffer = new byte[1024];
-                    length = file.Read(buffer, 0, 1024);
-                    bytes.AddRange(buffer.Take(length));
-                } while (length == 1024);
-            }
-            return bytes.ToArray();
         }
 
         #region Serialize

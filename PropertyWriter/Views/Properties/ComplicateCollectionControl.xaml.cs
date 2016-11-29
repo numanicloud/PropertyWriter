@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace PropertyWriter.Views
+namespace PropertyWriter.Views.Properties
 {
 	/// <summary>
 	/// ComplicateCollectionControl.xaml の相互作用ロジック
