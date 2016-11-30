@@ -14,12 +14,12 @@
 		<Setter Property="Margin" Value="4"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
-	
-	<Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-		<Setter Property="Margin" Value="0"/>
-	</Style>
 
-	<Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
+    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
 		<Setter Property="Margin" Value="0,3"/>
 	</Style>
 

@@ -40,6 +40,7 @@
     <Compile Include="PwManagementTypeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PwMemberAttribute.cs" />
+    <Compile Include="PwStringMemberAttributes.cs" />
     <Compile Include="PwSubtypingClassAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

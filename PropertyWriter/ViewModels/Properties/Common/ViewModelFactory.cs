@@ -17,7 +17,8 @@ namespace PropertyWriter.ViewModels.Properties.Common
 			case IntProperty p: return new IntViewModel(p);
 			case BoolProperty p: return new BoolViewModel(p);
 			case FloatProperty p: return new FloatViewModel(p);
-			case StringProperty p: return new StringViewModel(p);
+			case StringProperty p when !p.IsMultiLine: return new StringViewModel(p);
+			case StringProperty p when p.IsMultiLine: return new MultilineStringViewModel(p);
 			case EnumProperty p: return new EnumViewModel(p);
 			case ClassProperty p: return new ClassViewModel(p);
 			case StructProperty p: return new StructViewModel(p);

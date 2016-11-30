@@ -11,7 +11,6 @@ namespace TestDll
 	{
 		[PwMember]
 		public int Id { get; set; }
-		[PwMember]
 		public int X;
 		[PwMember]
 		public AtherAnnotatedData Ather { get; set; }

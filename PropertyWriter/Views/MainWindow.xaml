@@ -38,6 +38,7 @@
         <KeyBinding Command="{Binding NewProjectCommand}" Modifiers="Control" Key="N"/>
         <KeyBinding Command="{Binding OpenProjectCommand}" Modifiers="Control" Key="O"/>
         <KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
+        <KeyBinding Command="{Binding SaveAsCommand}" Modifiers="Control+Shift" Key="S"/>
     </Window.InputBindings>
 
     <i:Interaction.Triggers>
@@ -46,6 +47,9 @@
         </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ConfirmClose">
             <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:CloseWindow}" Mode="Modal"/>
+        </messaging:InteractionMessageTrigger>
+        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ProjectSetting">
+            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:OutputPathWindow}" Mode="Modal"/>
         </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
             <messaging:WindowInteractionMessageAction/>
@@ -76,6 +80,11 @@
 										Command="{Binding OpenProjectCommand}" VerticalAlignment="Center"/>
                     <MenuItem Header="プロジェクトを保存" InputGestureText="Ctrl+S"
 										Command="{Binding SaveCommand}" VerticalAlignment="Center"/>
+                    <MenuItem Header="プロジェクトを別名保存" InputGestureText="Ctrl+Shift+S"
+										Command="{Binding SaveAsCommand}" VerticalAlignment="Center"/>
+                </MenuItem>
+                <MenuItem Header="プロジェクト">
+                    <MenuItem Header="プロジェクト設定" Command="{Binding ProjectSettingCommand}"  VerticalAlignment="Center"/>
                 </MenuItem>
             </Menu>
         </mat:ColorZone>

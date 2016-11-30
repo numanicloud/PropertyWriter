@@ -6,11 +6,13 @@ namespace PropertyWriter.Models.Properties
 {
     class StringProperty : PropertyModel
     {
-        public ReactiveProperty<string> StringValue { get; } = new ReactiveProperty<string>();
+		public bool IsMultiLine { get; }
+		public ReactiveProperty<string> StringValue { get; } = new ReactiveProperty<string>();
         public override ReactiveProperty<object> Value { get; }
 
-        public StringProperty()
+        public StringProperty(bool isMultiLine)
         {
+			IsMultiLine = isMultiLine;
             Value = StringValue.Select(x => (object)x).ToReactiveProperty();
         }
     }

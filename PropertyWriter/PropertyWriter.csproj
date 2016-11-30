@@ -158,8 +158,10 @@
     <Compile Include="Models\Exceptions\PwSerializeException.cs" />
     <Compile Include="ViewModels\ClosingViewModel.cs" />
     <Compile Include="ViewModels\NewProjectViewModel.cs" />
+    <Compile Include="ViewModels\OutputPathViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\StructureHolderViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\ViewModelFactory.cs" />
+    <Compile Include="ViewModels\Properties\MultilineStringViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
     <Compile Include="Views\ClosingWindow.xaml.cs">
       <DependentUpon>ClosingWindow.xaml</DependentUpon>
@@ -167,6 +169,10 @@
     <Compile Include="Views\NewProjectWindow.xaml.cs">
       <DependentUpon>NewProjectWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\OutputPathWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Properties\BasicCollectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +236,9 @@
     <Compile Include="ViewModels\Properties\ComplicateCollectionViewModel.cs" />
     <Compile Include="ViewModels\BlockViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\OutputPathWindow.xaml.cs">
+      <DependentUpon>OutputPathWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Properties\BasicCollectionControl.xaml.cs">
       <DependentUpon>BasicCollectionControl.xaml</DependentUpon>
     </Compile>

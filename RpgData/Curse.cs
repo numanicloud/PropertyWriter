@@ -1,4 +1,5 @@
 ﻿using PropertyWriter.Annotation;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace RpgData

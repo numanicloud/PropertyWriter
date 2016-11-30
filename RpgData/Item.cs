@@ -34,7 +34,7 @@ namespace RpgData
 		[DataMember]
 		public string Brief { get; set; }
 
-		[PwMember]
+		[PwMultiLineTextMember]
 		[DataMember]
 		public string FullDescription { get; set; }
 

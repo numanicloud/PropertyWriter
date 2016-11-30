@@ -17,6 +17,10 @@
         <TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="24" MinWidth="100"/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type instance:MultilineStringViewModel}">
+        <TextBox Text="{Binding Path=StringValue.Value}" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="Auto" MinWidth="100"/>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type instance:FloatViewModel}">
         <TextBox Text="{Binding Path=FloatValue.Value}" Height="24" MinWidth="100"/>
     </DataTemplate>
