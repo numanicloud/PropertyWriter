@@ -135,6 +135,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Exceptions\PwProjectException.cs" />
     <Compile Include="Models\Serialize\CustomSerializer.cs" />
     <Compile Include="Models\Properties\Interfaces\ICollectionProperty.cs" />
     <Compile Include="Models\Properties\Interfaces\PropertyModel.cs" />
@@ -157,19 +158,34 @@
     <Compile Include="Models\PropertyRoot.cs" />
     <Compile Include="Models\Exceptions\PwSerializeException.cs" />
     <Compile Include="ViewModels\ClosingViewModel.cs" />
+    <Compile Include="ViewModels\Editor\CleanState.cs" />
+    <Compile Include="ViewModels\Editor\DirtyState.cs" />
+    <Compile Include="ViewModels\Editor\EditorLifecycleManager.cs" />
+    <Compile Include="ViewModels\Editor\EmptyState.cs" />
+    <Compile Include="ViewModels\Editor\NewState.cs" />
     <Compile Include="ViewModels\NewProjectViewModel.cs" />
+    <Compile Include="ViewModels\ObservableHelper.cs" />
     <Compile Include="ViewModels\OutputPathViewModel.cs" />
+    <Compile Include="ViewModels\ProjectTypeViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\StructureHolderViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\ViewModelFactory.cs" />
     <Compile Include="ViewModels\Properties\MultilineStringViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="ViewModels\Editor\EditorState.cs" />
+    <Compile Include="Views\AssemblyPathWindow.xaml.cs">
+      <DependentUpon>AssemblyPathWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ClosingWindow.xaml.cs">
       <DependentUpon>ClosingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewProjectWindow.xaml.cs">
       <DependentUpon>NewProjectWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\OutputPathWindow.xaml">
+    <Page Include="Views\AssemblyPathWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExportPathWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -236,8 +252,8 @@
     <Compile Include="ViewModels\Properties\ComplicateCollectionViewModel.cs" />
     <Compile Include="ViewModels\BlockViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Views\OutputPathWindow.xaml.cs">
-      <DependentUpon>OutputPathWindow.xaml</DependentUpon>
+    <Compile Include="Views\ExportPathWindow.xaml.cs">
+      <DependentUpon>ExportPathWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Properties\BasicCollectionControl.xaml.cs">
       <DependentUpon>BasicCollectionControl.xaml</DependentUpon>

@@ -13,7 +13,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
 		Title="{Binding Title.Value}" Height="540" Width="960">
-
+    
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,11 +21,11 @@
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="StatusBar">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsError.Value}" Value="True">
+                    <DataTrigger Binding="{Binding Manager.Value.IsError.Value}" Value="True">
                         <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
                         <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentForegroundBrush}"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsError.Value}" Value="False">
+                    <DataTrigger Binding="{Binding Manager.Value.IsError.Value}" Value="False">
                         <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
                         <Setter Property="Foreground" Value="White"/>
                     </DataTrigger>
@@ -51,6 +51,9 @@
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ProjectSetting">
             <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:OutputPathWindow}" Mode="Modal"/>
         </messaging:InteractionMessageTrigger>
+        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="MissingProjectType">
+            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:AssemblyPathWindow}" Mode="Modal"/>
+        </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
             <messaging:WindowInteractionMessageAction/>
         </messaging:InteractionMessageTrigger>
@@ -60,7 +63,7 @@
     </i:Interaction.Triggers>
 
     <i:Interaction.Behaviors>
-        <messaging:WindowCloseCancelBehavior CanClose="{Binding CanClose.Value}"
+        <messaging:WindowCloseCancelBehavior CanClose="{Binding State.Value.CanClose.Value}"
                                              CloseCanceledCallbackCommand="{Binding CloseCanceledCommand}"/>
     </i:Interaction.Behaviors>
 
@@ -103,7 +106,7 @@
         </TabControl>
 
         <StatusBar Grid.Row="2">
-            <TextBlock Text="{Binding StatusMessage.Value}"/>
+            <TextBlock Text="{Binding Manager.Value.StatusMessage.Value}"/>
         </StatusBar>
 
     </Grid>

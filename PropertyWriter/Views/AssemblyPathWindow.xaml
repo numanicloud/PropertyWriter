@@ -1,14 +1,14 @@
-﻿<Window x:Class="PropertyWriter.Views.NewProjectWindow"
+﻿<Window x:Class="PropertyWriter.Views.AssemblyPathWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PropertyWriter.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         mc:Ignorable="d"
-        Title="{Binding ProjectPath.Value}" Height="200" Width="480"
-        WindowStartupLocation="CenterOwner">
-    
+        Title="プロジェクト型選択" Height="220" Width="480">
+
     <i:Interaction.Triggers>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">
             <messaging:WindowInteractionMessageAction/>
@@ -16,6 +16,8 @@
     </i:Interaction.Triggers>
 
     <StackPanel>
+        <TextBlock Text="{Binding Message.Value}" Margin="6"/>
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -29,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="アセンブリ:" HorizontalAlignment="Right"/>
-            <TextBox Text="{Binding AssemblyPath.Value}" Grid.Column="1"/>
+            <TextBox Text="{Binding AssemblyPath.Value}" Grid.Column="1" Margin="6"/>
             <Button Content="参照…" Command="{Binding OpenAssemblyCommand}" Grid.Column="2"/>
 
             <Label Content="使用する型:" HorizontalAlignment="Right" Grid.Row="1"/>
@@ -37,11 +39,13 @@
                       SelectedItem="{Binding ProjectType.Value}" Grid.Row="1" Grid.Column="1"/>
 
             <Label Content="出力パス:" HorizontalAlignment="Right" Grid.Row="2"/>
-            <TextBox Text="{Binding ExportPath.Value}" Grid.Row="2" Grid.Column="1"/>
+            <TextBox Text="{Binding ExportPath.Value}" Grid.Row="2" Grid.Column="1" Margin="6"/>
             <Button Content="参照…" Command="{Binding SelectExportPathCommand}" Grid.Row="2" Grid.Column="2"/>
         </Grid>
-        
-        <Button Content="作成" HorizontalAlignment="Right" Command="{Binding ConfirmCommand}"/>
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Content="適用" HorizontalAlignment="Right" Command="{Binding ConfirmCommand}"/>
+        </StackPanel>
     </StackPanel>
     
 </Window>

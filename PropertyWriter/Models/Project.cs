@@ -12,6 +12,7 @@ using PropertyWriter.Models.Properties.Common;
 using PropertyWriter.Models.Serialize;
 using Reactive.Bindings;
 using JsonSerializer = PropertyWriter.Models.Serialize.JsonSerializer;
+using System.Collections.ObjectModel;
 
 namespace PropertyWriter.Models
 {
@@ -24,76 +25,126 @@ namespace PropertyWriter.Models
 		public ReactiveProperty<bool> IsValid { get; }
         public ReactiveProperty<PropertyRoot> Root { get; } = new ReactiveProperty<PropertyRoot>();
 
-        public Project()
+		public Project()
 		{
-			IsValid = AssemblyPath.Select(x => x != null)
-				.CombineLatest(ProjectTypeName.Select(x => x != null), (x, y) => x && y)
-				.CombineLatest(SavePath.Select(x => x != null), (x, y) => x && y)
+			IsValid = AssemblyPath.CombineLatest(ProjectTypeName, (x, y) =>
+			{
+				if (x == null || !File.Exists(x))
+				{
+					return false;
+				}
+				else
+				{
+					return GetProjectType(GetAssembly()) != null;
+				}
+			}).CombineLatest(SavePath.Select(x => x != null), (x, y) => x && y)
 				.ToReactiveProperty();
 		}
 
-		public Assembly GetAssembly() => Assembly.LoadFrom(AssemblyPath.Value);
-		public Type GetProjectType(Assembly assembly) => assembly.GetTypes()
-			.FirstOrDefault(x => x.Name == ProjectTypeName.Value);
+		public Project(Project project)
+			: this()
+		{
+			AssemblyPath.Value = project.AssemblyPath.Value;
+			ProjectTypeName.Value = project.ProjectTypeName.Value;
+			SavePath.Value = project.SavePath.Value;
+			Root.Value = project.Root.Value;
+		}
 
-        public void Initialize()
-        {
-            var modelFactory = new PropertyFactory();
-            var assembly = GetAssembly();
-            Root.Value = modelFactory.GetStructure(assembly, GetProjectType(assembly));
+		public Assembly GetAssembly()
+		{
+			if (AssemblyPath.Value == null)
+			{
+				return null;
+			}
+			return Assembly.LoadFrom(AssemblyPath.Value);
+		}
+
+		public Type GetProjectType(Assembly assembly)
+		{
+			if (ProjectTypeName.Value == null)
+			{
+				return null;
+			}
+			return assembly.GetTypes()
+				.FirstOrDefault(x => x.Name == ProjectTypeName.Value);
+		}
+
+        public void InitializeRoot()
+		{
+			Assembly assembly;
+			try
+			{
+				assembly = GetAssembly();
+			}
+			catch (FileNotFoundException)
+			{
+				throw new PwProjectException("アセンブリが移動または削除されています。");
+			}
+
+			var projectType = GetProjectType(assembly);
+			if (projectType == null)
+			{
+				throw new PwProjectException("プロジェクト型定義が失われています。");
+			}
+
+			var modelFactory = new PropertyFactory();
+			Root.Value = modelFactory.GetStructure(assembly, projectType);
         }
 
-        public static async Task<Project> LoadAsync(string path)
+        public static async Task<Project> LoadSettingAsync(string path)
         {
-            Project project;
             using (var file = new StreamReader(path))
             {
-                project = JsonConvert.DeserializeObject<Project>(await file.ReadToEndAsync());
+                return JsonConvert.DeserializeObject<Project>(await file.ReadToEndAsync());
             }
+        }
 
-            project.Initialize();
+		public async Task LoadDataAsync()
+		{
+			InitializeRoot();
 
-            var rootType = project.Root.Value.Type;
-            var deserializer = rootType.GetMethods()
-                .FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
+			var rootType = Root.Value.Type;
+			var deserializer = rootType.GetMethods()
+				.FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
 			try
 			{
 				if (deserializer != null)
 				{
-					await CustomSerializer.LoadDataAsync(deserializer, project.Root.Value, project.SavePath.Value);
+					await CustomSerializer.LoadDataAsync(deserializer, Root.Value, SavePath.Value);
 				}
 				else
 				{
-					await JsonSerializer.LoadDataAsync(project.Root.Value, project.SavePath.Value);
+					await JsonSerializer.LoadDataAsync(Root.Value, SavePath.Value);
 				}
 			}
 			catch (FileNotFoundException)
 			{
 			}
+		}
 
-            return project;
-        }
-
-        public async Task SaveAsync(string path)
+        public async Task SaveSettingAsync(string path)
         {
             using (var file = new StreamWriter(path))
             {
                 var json = JsonConvert.SerializeObject(this, Formatting.Indented);
                 await file.WriteLineAsync(json);
             }
+        }
 
-            var rootType = Root.Value.Type;
-            var serializer = rootType.GetMethods()
-                .FirstOrDefault(x => x.GetCustomAttribute<PwSerializerAttribute>() != null);
-            if (serializer != null)
+		public async Task SaveDataAsync()
+		{
+			var rootType = Root.Value.Type;
+			var serializer = rootType.GetMethods()
+				.FirstOrDefault(x => x.GetCustomAttribute<PwSerializerAttribute>() != null);
+			if (serializer != null)
 			{
 				await CustomSerializer.SaveDataAsync(serializer, Root.Value, SavePath.Value);
-            }
-            else
-            {
-                await JsonSerializer.SaveDataAsync(Root.Value, SavePath.Value);
-            }
-        }
+			}
+			else
+			{
+				await JsonSerializer.SaveDataAsync(Root.Value, SavePath.Value);
+			}
+		}
 
         #region Serialize
 
