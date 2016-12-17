@@ -12,16 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PropertyWriter.Views
+namespace PropertyWriter.Views.ProjectSetting
 {
-	/// <summary>
-	/// OutputPathWindow.xaml の相互作用ロジック
-	/// </summary>
-	public partial class OutputPathWindow : Window
-	{
-		public OutputPathWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// ProjectSettingWindow.xaml の相互作用ロジック
+    /// </summary>
+    public partial class ProjectSettingWindow : Window
+    {
+        public ProjectSettingWindow()
+        {
+            InitializeComponent();
+        }
+    }
 }

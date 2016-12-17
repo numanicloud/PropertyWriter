@@ -58,10 +58,17 @@ namespace PropertyWriter.ViewModels.Editor
 				return;
 			}
 
-			var path = await Manager.OpenProjectAsync();
-			if (path != null)
+			var result = await Manager.OpenProjectAsync();
+			if (result.path != null)
 			{
-				Owner.State.Value = new CleanState(Owner, Manager, path);
+                if (result.isDirtySetting)
+                {
+                    Owner.State.Value = new DirtyState(Owner, Manager, result.path);
+                }
+                else
+                {
+                    Owner.State.Value = new CleanState(Owner, Manager, result.path);
+                }
 			}
 		}
 

@@ -19,7 +19,7 @@ namespace PropertyWriter.ViewModels.Editor
 
 		public override Task ModifyAsync()
 		{
-			throw new InvalidOperationException();
+            return Task.CompletedTask;
 		}
 
 		public override Task NewAsync()
@@ -34,10 +34,17 @@ namespace PropertyWriter.ViewModels.Editor
 
 		public override async Task OpenAsync()
 		{
-			var path = await Manager.OpenProjectAsync();
-			if (path != null)
+			var result = await Manager.OpenProjectAsync();
+			if (result.path != null)
 			{
-				Owner.State.Value = new CleanState(Owner, Manager, path);
+                if (result.isDirtySetting)
+                {
+                    Owner.State.Value = new DirtyState(Owner, Manager, result.path);
+                }
+                else
+                {
+                    Owner.State.Value = new CleanState(Owner, Manager, result.path);
+                }
 			}
 		}
 

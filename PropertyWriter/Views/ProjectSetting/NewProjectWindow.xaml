@@ -1,0 +1,25 @@
+﻿<Window x:Class="PropertyWriter.Views.ProjectSetting.NewProjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PropertyWriter.Views.ProjectSetting"
+        xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
+        mc:Ignorable="d"
+        Title="NewProjectWindow" Width="480" SizeToContent="Height">
+
+    <i:Interaction.Triggers>
+        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">
+            <messaging:WindowInteractionMessageAction/>
+        </messaging:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
+
+    <DockPanel>
+        <local:ProjectSettingUserControl DataContext="{Binding ProjectSetting}" DockPanel.Dock="Top"/>
+        <mat:ColorZone Mode="Light" DockPanel.Dock="Bottom">
+            <Button HorizontalAlignment="Right" Content="作成" Command="{Binding CommitCommand}"/>
+        </mat:ColorZone>
+    </DockPanel>
+</Window>

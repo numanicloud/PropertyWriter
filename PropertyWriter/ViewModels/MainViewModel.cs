@@ -60,15 +60,14 @@ namespace PropertyWriter.ViewModels
 					.SelectMany(x => State.Value.ModifyAsync().ToObservable())
 					.SafelySubscribe(ErrorHandler("エラー"));
 			});
-			Manager.Value.Project.Where(x => x != null)
-				.SelectMany(x => x.SavePath)
-				.SelectMany(x => State.Value.ModifyAsync().ToObservable())
-				.SafelySubscribe(ErrorHandler("エラー"));
+            Manager.Value.OnSettingChanged
+                .SelectMany(x => State.Value.ModifyAsync().ToObservable())
+                .SafelySubscribe(ErrorHandler("エラー"));
 		}
 
 		private void OpenProjectSetting()
 		{
-			var vm = new OutputPathViewModel(Manager.Value.Project.Value);
+            var vm = new ProjectSetting.ProjectSettingViewModel(Manager.Value.Project.Value);
 			Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "ProjectSetting"));
 		}
 		

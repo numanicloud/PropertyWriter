@@ -5,6 +5,7 @@
 		xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:v="clr-namespace:PropertyWriter.Views"
+        xmlns:setting="clr-namespace:PropertyWriter.Views.ProjectSetting"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -43,16 +44,16 @@
 
     <i:Interaction.Triggers>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="NewProject">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:NewProjectWindow}" Mode="Modal"/>
+            <messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:NewProjectWindow}" Mode="Modal"/>
         </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ConfirmClose">
             <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:CloseWindow}" Mode="Modal"/>
         </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ProjectSetting">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:OutputPathWindow}" Mode="Modal"/>
+            <messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:ProjectSettingWindow}" Mode="Modal"/>
         </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="MissingProjectType">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:AssemblyPathWindow}" Mode="Modal"/>
+            <messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:ProjectRepairWindow}" Mode="Modal"/>
         </messaging:InteractionMessageTrigger>
         <messaging:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
             <messaging:WindowInteractionMessageAction/>

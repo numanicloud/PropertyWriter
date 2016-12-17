@@ -6,6 +6,8 @@ using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,20 +20,28 @@ namespace PropertyWriter.ViewModels.Editor
 		public ReactiveProperty<bool> IsError { get; private set; } = new ReactiveProperty<bool>();
 		public ReactiveProperty<string> StatusMessage { get; private set; } = new ReactiveProperty<string>();
 		public MainViewModel Owner { get; private set; }
+        public IObservable<Unit> OnSettingChanged { get; }
 
-		public EditorLifecycleManager(MainViewModel owner)
+        public EditorLifecycleManager(MainViewModel owner)
 		{
 			Owner = owner;
+
+            var project = Project.Where(x => x != null);
+            OnSettingChanged = project.SelectMany(x => x.SavePath)
+                .Merge(project.SelectMany(x => x.AssemblyPath))
+                .Merge(project.SelectMany(x => x.ProjectTypeName))
+                .Merge(project.SelectMany(x => x.DependenciesPathes))
+                .Select(x => Unit.Default);
 		}
 
 
 		public bool CreateNewProject()
 		{
 			var project = new Project();
-			var vm = new NewProjectViewModel(project);
+            var vm = new ProjectSetting.NewProjectViewModel(project);
 			Owner.Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "NewProject"));
 
-			if (vm.Confirmed.Value)
+			if (vm.IsCommitted.Value)
 			{
 				Project.Value = project;
 				Project.Value.InitializeRoot();
@@ -44,7 +54,7 @@ namespace PropertyWriter.ViewModels.Editor
 			return false;
 		}
 
-		public async Task<string> OpenProjectAsync()
+		public async Task<(string path, bool isDirtySetting)> OpenProjectAsync()
 		{
 			var dialog = new OpenFileDialog()
 			{
@@ -52,6 +62,8 @@ namespace PropertyWriter.ViewModels.Editor
 				Filter = "マスター プロジェクト (*.pwproj)|*.pwproj",
 				Title = "マスターデータ プロジェクトを開く"
 			};
+            bool isDirty = false;
+
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
 				StatusMessage.Value = "プロジェクトを読み込み中…";
@@ -63,20 +75,22 @@ namespace PropertyWriter.ViewModels.Editor
 				}
 				catch (Models.Exceptions.PwProjectException ex)
 				{
-					var vm = new ProjectTypeViewModel(project, ex.Message);
+                    var vm = new ProjectSetting.ProjectRepairViewModel(project, ex.Message);
 					Owner.Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "MissingProjectType"));
-					if (!vm.Confirmed.Value)
+					if (!vm.IsCommitted.Value)
 					{
-						return null;
+						return (null, false);
 					}
+                    project = vm.Result;
+                    isDirty = true;
 				}
 
 				Project.Value = project;
 				StatusMessage.Value = "プロジェクトを読み込みました。";
 				IsError.Value = false;
-				return dialog.FileName;
+				return (dialog.FileName, isDirty);
 			}
-			return null;
+			return (null, false);
 		}
 
 		public async Task SaveFileAsync(string path)

@@ -12,16 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PropertyWriter.Views
+namespace PropertyWriter.Views.ProjectSetting
 {
-	/// <summary>
-	/// AssemblyPathWindow.xaml の相互作用ロジック
-	/// </summary>
-	public partial class AssemblyPathWindow : Window
-	{
-		public AssemblyPathWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// ProjectRepairWindow.xaml の相互作用ロジック
+    /// </summary>
+    public partial class ProjectRepairWindow : Window
+    {
+        public ProjectRepairWindow()
+        {
+            InitializeComponent();
+        }
+    }
 }

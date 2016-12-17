@@ -7,25 +7,26 @@ using Livet.Messaging.Windows;
 using PropertyWriter.Annotation;
 using PropertyWriter.Models;
 using Reactive.Bindings;
+using System.Windows;
+using System.Reactive.Linq;
+using System.IO;
 
-namespace PropertyWriter.ViewModels
+namespace PropertyWriter.ViewModels.ProjectSetting
 {
-	class NewProjectViewModel : Livet.ViewModel
+	class ProjectSettingViewModel : Livet.ViewModel
 	{
 		private readonly Project project_;
 		public ReactiveProperty<string> AssemblyPath => project_.AssemblyPath;
 		public ReactiveProperty<string> ProjectTypeName => project_.ProjectTypeName;
 		public ReactiveProperty<string> ExportPath => project_.SavePath;
 		public ReactiveProperty<bool> IsValid => project_.IsValid;
-		public ReactiveProperty<bool> Confirmed { get; } = new ReactiveProperty<bool>(false);
-		public ReactiveCommand OpenAssemblyCommand { get; } = new ReactiveCommand();
+        
+        public ReactiveCommand OpenAssemblyCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand SelectExportPathCommand { get; } = new ReactiveCommand();
-		public ReactiveCommand ConfirmCommand { get; set; }
+        public ReactiveProperty<IEnumerable<Type>> AvailableProjectTypes { get; } = new ReactiveProperty<IEnumerable<Type>>();
+        public ReactiveProperty<Type> ProjectType { get; } = new ReactiveProperty<Type>(mode: ReactivePropertyMode.DistinctUntilChanged);
 
-		public ReactiveProperty<IEnumerable<Type>> AvailableProjectTypes { get; } = new ReactiveProperty<IEnumerable<Type>>();
-		public ReactiveProperty<Type> ProjectType { get; } = new ReactiveProperty<Type>();
-
-		public NewProjectViewModel(Project project)
+        public ProjectSettingViewModel(Project project)
 		{
 			project_ = project;
 
@@ -33,14 +34,7 @@ namespace PropertyWriter.ViewModels
 			OpenAssemblyCommand.Subscribe(x => OpenAssembly());
 			SelectExportPathCommand.Subscribe(x => SelectExportPath());
 
-			ConfirmCommand = IsValid.ToReactiveCommand();
-			ConfirmCommand.Subscribe(x => Confirm());
-		}
-
-		private void Confirm()
-		{
-			Confirmed.Value = true;
-			Messenger.Raise(new WindowActionMessage(WindowAction.Close));
+            SetAvailableProjectTypes();
 		}
 
 		private void OpenAssembly()
@@ -52,15 +46,27 @@ namespace PropertyWriter.ViewModels
 				Title = "アセンブリを開く"
 			};
 			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				AssemblyPath.Value = dialog.FileName;
-				AvailableProjectTypes.Value = project_.GetAssembly().GetTypes()
-					.Where(x => x.GetCustomAttribute<PwProjectAttribute>() != null)
-					.ToArray();
-			}
-		}
+            {
+                AssemblyPath.Value = dialog.FileName;
+                SetAvailableProjectTypes();
+            }
+        }
 
-		private void SelectExportPath()
+        private void SetAvailableProjectTypes()
+        {
+            if (project_.AssemblyPath.Value != null && File.Exists(project_.AssemblyPath.Value))
+            {
+                AvailableProjectTypes.Value = project_.GetAssembly().GetTypes()
+                    .Where(x => x.GetCustomAttribute<PwProjectAttribute>() != null)
+                    .ToArray();
+                if (ProjectTypeName.Value != null)
+                {
+                    ProjectType.Value = AvailableProjectTypes.Value.FirstOrDefault(x => x.Name == ProjectTypeName.Value);
+                }
+            }
+        }
+
+        private void SelectExportPath()
 		{
 			var dialog = new SaveFileDialog()
 			{
