@@ -22,14 +22,13 @@ namespace PropertyWriter.ViewModels.Editor
             return Task.CompletedTask;
 		}
 
-		public override Task NewAsync()
+		public override async Task NewAsync()
 		{
-			var result = Manager.CreateNewProject();
+			var result = await Manager.CreateNewProjectAsync();
 			if (result)
 			{
 				Owner.State.Value = new NewState(Owner, Manager);
 			}
-			return Task.CompletedTask;
 		}
 
 		public override async Task OpenAsync()

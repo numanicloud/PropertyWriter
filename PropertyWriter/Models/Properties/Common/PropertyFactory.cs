@@ -32,7 +32,7 @@ namespace PropertyWriter.Models.Properties.Common
 			subtypings_ = new Dictionary<Type, Type[]>();
 		}
 
-		public PropertyRoot GetStructure(Assembly assembly, Type projectType, PropertyFactory[] dependencies)
+		public PropertyRoot GetStructure(Assembly assembly, Type projectType, Project[] dependencies)
 		{
 			LoadSubtypes(assembly);
 
@@ -41,8 +41,9 @@ namespace PropertyWriter.Models.Properties.Common
 
 			masters_ = new Dictionary<string, ReferencableMasterInfo>();
 			LoadMasters(masters);
-			dependencies.SelectMany(x => x.Masters)
-				.ForEach(x => masters_["DataBase." + x.Key] = x.Value);
+			dependencies.SelectMany(x => x.Factory.Masters
+					.Select(y => (key: x.Root.Value.Type.Name + "." + y.Key, value: y.Value)))
+				.ForEach(x => masters_[x.key] = x.value);
 
 			var globals = GetMastersInfo(masterMembers, false);
 			var models = globals.Concat(masters).ToArray();

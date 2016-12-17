@@ -33,7 +33,7 @@ namespace PropertyWriter.ViewModels.Editor
 				return;
 			}
 			
-			var result = Manager.CreateNewProject();
+			var result = await Manager.CreateNewProjectAsync();
 			if (result)
 			{
 				Owner.State.Value = new NewState(Owner, Manager);

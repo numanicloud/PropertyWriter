@@ -93,7 +93,7 @@ namespace PropertyWriterTest
 		public void GetStructureTest()
 		{
 			var factory = new PropertyFactory();
-			var root = factory.GetStructure(typeof(PropertyFactoryTest).Assembly, typeof(LocalProject), new PropertyFactory[0]);
+			var root = factory.GetStructure(typeof(PropertyFactoryTest).Assembly, typeof(LocalProject), new PropertyWriter.Models.Project[0]);
 
 			root.Type.Is(typeof(LocalProject));
 
@@ -110,7 +110,7 @@ namespace PropertyWriterTest
 		public void ReferenceTest()
 		{
 			var factory = new PropertyFactory();
-			var root = factory.GetStructure(typeof(PropertyFactoryTest).Assembly, typeof(LocalProject), new PropertyFactory[0]);
+			var root = factory.GetStructure(typeof(PropertyFactoryTest).Assembly, typeof(LocalProject), new PropertyWriter.Models.Project[0]);
 			var properties = root.Structure.Properties.ToArray();
 			var collectionProp = (ComplicateCollectionProperty)properties[0];
 

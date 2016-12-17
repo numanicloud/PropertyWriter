@@ -37,16 +37,17 @@ namespace PropertyWriter.ViewModels.Editor
 		}
 
 
-		public bool CreateNewProject()
+		public async Task<bool> CreateNewProjectAsync()
 		{
 			var project = new Project();
-            var vm = new ProjectSetting.NewProjectViewModel(project);
+			var vm = new ProjectSetting.NewProjectViewModel(project);
 			Owner.Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "NewProject"));
 
 			if (vm.IsCommitted.Value)
 			{
 				Project.Value = project;
-				Project.Value.InitializeRoot(new PropertyFactory(), new PropertyFactory[0]);
+				await Project.Value.LoadDependencyAsync();
+				Project.Value.InitializeRoot(Project.Value.Dependencies.ToArray());
 
 				StatusMessage.Value = "プロジェクトを作成しました。";
 				IsError.Value = false;
@@ -73,7 +74,7 @@ namespace PropertyWriter.ViewModels.Editor
 				var project = await Models.Project.LoadSettingAsync(dialog.FileName);
 				try
 				{
-					await project.LoadDataAsync(true);
+					await project.LoadDataAsync();
 				}
 				catch (Models.Exceptions.PwProjectException ex)
 				{

@@ -33,7 +33,7 @@
             <Button Content="参照…" Command="{Binding SelectExportPathCommand}" Grid.Row="2" Grid.Column="2"/>
         </Grid>
 
-        <GroupBox Header="依存プロジェクト" Margin="6">
+        <GroupBox Header="依存プロジェクト" Margin="6" Height="162">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -45,7 +45,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <ListBox x:Name="dependencyList" Grid.RowSpan="2" ItemsSource="{Binding DependenciesPathes}">
+                <ListBox x:Name="dependencyList" Grid.RowSpan="3" ItemsSource="{Binding DependenciesPathes}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBox Text="{Binding Value}"/>
