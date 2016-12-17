@@ -2,6 +2,7 @@
 using Livet.Messaging;
 using Livet.Messaging.Windows;
 using PropertyWriter.Models;
+using PropertyWriter.Models.Properties.Common;
 using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,11 @@ namespace PropertyWriter.ViewModels.Editor
 			Owner = owner;
 
             var project = Project.Where(x => x != null);
+			var dependencyChanged = project.SelectMany(x => Observable.Merge(x.DependenciesPathes.ToArray()));
             OnSettingChanged = project.SelectMany(x => x.SavePath)
                 .Merge(project.SelectMany(x => x.AssemblyPath))
                 .Merge(project.SelectMany(x => x.ProjectTypeName))
-                .Merge(project.SelectMany(x => x.DependenciesPathes))
+                .Merge(dependencyChanged)
                 .Select(x => Unit.Default);
 		}
 
@@ -44,7 +46,7 @@ namespace PropertyWriter.ViewModels.Editor
 			if (vm.IsCommitted.Value)
 			{
 				Project.Value = project;
-				Project.Value.InitializeRoot();
+				Project.Value.InitializeRoot(new PropertyFactory(), new PropertyFactory[0]);
 
 				StatusMessage.Value = "プロジェクトを作成しました。";
 				IsError.Value = false;
@@ -71,7 +73,7 @@ namespace PropertyWriter.ViewModels.Editor
 				var project = await Models.Project.LoadSettingAsync(dialog.FileName);
 				try
 				{
-					await project.LoadDataAsync();
+					await project.LoadDataAsync(true);
 				}
 				catch (Models.Exceptions.PwProjectException ex)
 				{

@@ -46,6 +46,7 @@
     <Compile Include="Active\RaiseStatusBehavior.cs" />
     <Compile Include="Curse.cs" />
     <Compile Include="DamageAttribute.cs" />
+    <Compile Include="EnemyEncount.cs" />
     <Compile Include="Projects\DataBase.cs" />
     <Compile Include="Dungeon.cs" />
     <Compile Include="EnemiesAbility.cs" />

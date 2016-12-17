@@ -10,7 +10,7 @@ namespace RpgData.Projects
 	[PwProject]
 	public class DungeonData
 	{
-		[PwMember("敵キャラ")]
-		public EnemiesAbility[] Enemies { get; set; }
+		[PwMaster("敵キャラ")]
+		public EnemyEncount[] Enemies { get; set; }
 	}
 }

@@ -37,7 +37,7 @@ namespace PropertyWriter.ViewModels.ProjectSetting
         {
             try
             {
-                await clone_.LoadDataAsync();
+                await clone_.LoadDataAsync(true);
             }
             catch (Models.Exceptions.PwObjectMissmatchException)
             {

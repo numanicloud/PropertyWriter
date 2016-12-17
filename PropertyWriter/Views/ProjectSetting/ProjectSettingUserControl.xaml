@@ -5,30 +5,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PropertyWriter.Views.ProjectSetting"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="480">
-    
-    <Grid DockPanel.Dock="Top" Margin="6">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+             d:DesignHeight="300" d:DesignWidth="480">
 
-        <Label Content="アセンブリ:" HorizontalAlignment="Right"/>
-        <TextBox Text="{Binding AssemblyPath.Value}" Grid.Column="1"/>
-        <Button Content="参照…" Command="{Binding OpenAssemblyCommand}" Grid.Column="2"/>
+    <StackPanel>
+        <Grid DockPanel.Dock="Top" Margin="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Label Content="使用する型:" HorizontalAlignment="Right" Grid.Row="1"/>
-        <ComboBox ItemsSource="{Binding AvailableProjectTypes.Value}"
+            <Label Content="アセンブリ:" HorizontalAlignment="Right"/>
+            <TextBox Text="{Binding AssemblyPath.Value}" Grid.Column="1"/>
+            <Button Content="参照…" Command="{Binding OpenAssemblyCommand}" Grid.Column="2"/>
+
+            <Label Content="使用する型:" HorizontalAlignment="Right" Grid.Row="1"/>
+            <ComboBox ItemsSource="{Binding AvailableProjectTypes.Value}"
                       SelectedItem="{Binding ProjectType.Value}" Grid.Row="1" Grid.Column="1"/>
 
-        <Label Content="出力パス:" HorizontalAlignment="Right" Grid.Row="2"/>
-        <TextBox Text="{Binding ExportPath.Value}" Grid.Row="2" Grid.Column="1"/>
-        <Button Content="参照…" Command="{Binding SelectExportPathCommand}" Grid.Row="2" Grid.Column="2"/>
-    </Grid>
+            <Label Content="出力パス:" HorizontalAlignment="Right" Grid.Row="2"/>
+            <TextBox Text="{Binding ExportPath.Value}" Grid.Row="2" Grid.Column="1"/>
+            <Button Content="参照…" Command="{Binding SelectExportPathCommand}" Grid.Row="2" Grid.Column="2"/>
+        </Grid>
+
+        <GroupBox Header="依存プロジェクト" Margin="6">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <ListBox x:Name="dependencyList" Grid.RowSpan="2" ItemsSource="{Binding DependenciesPathes}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Value}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <Button Content="追加" Grid.Column="1" Command="{Binding AddDependencyCommand}"/>
+                <Button Content="削除" Grid.Column="1" Grid.Row="1" Command="{Binding RemoveDependencyCommand}"
+                        CommandParameter="{Binding ElementName=dependencyList, Path=SelectedIndex}"/>
+                <Button Content="参照..." Grid.Column="1" Grid.Row="2" Command="{Binding ReferenceDependencyCommand}"
+                        CommandParameter="{Binding ElementName=dependencyList, Path=SelectedIndex}"/>
+            </Grid>
+        </GroupBox>
+    </StackPanel>
 </UserControl>

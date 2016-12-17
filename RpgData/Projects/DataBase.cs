@@ -16,7 +16,7 @@ namespace RpgData
 		[DataMember]
 		public PlayersAbility[] Players { get; set; }
 
-		[PwMaster("敵キャラ")]
+		[PwMaster("敵キャラ", "Enemy")]
 		[DataMember]
 		public EnemiesAbility[] Enemies { get; set; }
 

@@ -98,7 +98,11 @@ namespace PropertyWriter.ViewModels.Editor
 				break;
 
 			case ClosingViewModel.Result.AfterSave:
-				await Manager.SaveFileAsAsync();
+				var result = await Manager.SaveFileAsAsync();
+				if (result == null)
+				{
+					return;
+				}
 				break;
 
 			case ClosingViewModel.Result.Cancel:

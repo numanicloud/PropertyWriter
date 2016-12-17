@@ -8,13 +8,15 @@ using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.ViewModels;
 using PropertyWriter.ViewModels.Properties;
 using Reactive.Bindings;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace PropertyWriter.Models.Properties.Common
 {
 	class ReferencableMasterInfo
 	{
 		public Type Type { get; set; }
-		public ReadOnlyReactiveCollection<object> Collection { get; set; }
+		public ObservableCollection<object> Collection { get; set; }
 	}
 
 	class PropertyFactory
@@ -22,19 +24,25 @@ namespace PropertyWriter.Models.Properties.Common
 		private Dictionary<string, ReferencableMasterInfo> masters_;
 		private Dictionary<Type, Type[]> subtypings_;
 
+		public ReadOnlyDictionary<string, ReferencableMasterInfo> Masters => new ReadOnlyDictionary<string, ReferencableMasterInfo>(masters_);
+
 		public PropertyFactory()
 		{
 			masters_ = new Dictionary<string, ReferencableMasterInfo>();
 			subtypings_ = new Dictionary<Type, Type[]>();
 		}
 
-		public PropertyRoot GetStructure(Assembly assembly, Type projectType)
+		public PropertyRoot GetStructure(Assembly assembly, Type projectType, PropertyFactory[] dependencies)
 		{
 			LoadSubtypes(assembly);
 
 			var masterMembers = projectType.GetMembers();
 			var masters = GetMastersInfo(masterMembers, true).ToArray();
+
+			masters_ = new Dictionary<string, ReferencableMasterInfo>();
 			LoadMasters(masters);
+			dependencies.SelectMany(x => x.Masters)
+				.ForEach(x => masters_["DataBase." + x.Key] = x.Value);
 
 			var globals = GetMastersInfo(masterMembers, false);
 			var models = globals.Concat(masters).ToArray();
@@ -42,17 +50,37 @@ namespace PropertyWriter.Models.Properties.Common
 			return new PropertyRoot(projectType, models.ToArray());
 		}
 
+		private IEnumerable<MasterInfo> GetDependentedMasters(PropertyRoot[] dependencies)
+		{
+			return dependencies.Select(root => (props: root.Structure.Properties, type: root.Type))
+				.Select(x => (ps: GetMastersInfo(x.props.Select(p => p.PropertyInfo).ToArray(), true), type: x.type))
+				.SelectMany(x => x.ps.Select(y => new MasterInfo(x.type.Name + "." + y.Key, y.Property, y.Master)))
+				.ToArray();
+		}
+
 		private void LoadMasters(MasterInfo[] masters)
 		{
-			masters_ = new Dictionary<string, ReferencableMasterInfo>();
 			foreach (var info in masters)
 			{
 				if (info.Master is ComplicateCollectionProperty prop)
 				{
 					masters_[info.Key] = new ReferencableMasterInfo()
 					{
-						Collection = prop.Collection.ToReadOnlyReactiveCollection(y => y.Value.Value),
+						Collection = new ObservableCollection<object>(prop.Collection.Select(y => y.Value.Value)),
 						Type = info.Property.PropertyType.GetElementType(),
+					};
+					prop.Collection.CollectionChanged += (sender, e) =>
+					{
+						if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+						{
+							Debugger.Log(0, "Info", "Add");
+							masters_[info.Key].Collection.Add(((IPropertyModel)e.NewItems[0]).Value.Value);
+						}
+						else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+						{
+							Debugger.Log(0, "Info", "Remove");
+							masters_[info.Key].Collection.RemoveAt(e.OldStartingIndex);
+						}
 					};
 				}
 			}

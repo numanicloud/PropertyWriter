@@ -19,13 +19,13 @@ namespace PropertyWriter.Models
     [JsonObject(MemberSerialization.OptIn)]
     class Project
     {
-        private ObservableCollection<string> dependenciesPathes_ = new ObservableCollection<string>();
+        private ObservableCollection<ReactiveProperty<string>> dependenciesPathes_ = new ObservableCollection<ReactiveProperty<string>>();
         private ObservableCollection<Project> dependencies_ = new ObservableCollection<Project>();
 
         public ReactiveProperty<string> AssemblyPath { get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> ProjectTypeName { get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> SavePath { get; } = new ReactiveProperty<string>();
-        public ReadOnlyReactiveCollection<string> DependenciesPathes { get; }
+        public ObservableCollection<ReactiveProperty<string>> DependenciesPathes { get; }
         public ReactiveProperty<bool> IsValid { get; }
 
         public ReactiveProperty<PropertyRoot> Root { get; } = new ReactiveProperty<PropertyRoot>();
@@ -46,7 +46,7 @@ namespace PropertyWriter.Models
             }).CombineLatest(SavePath.Select(x => x != null), (x, y) => x && y)
                 .ToReactiveProperty();
 
-            DependenciesPathes = dependenciesPathes_.ToReadOnlyReactiveCollection();
+            DependenciesPathes = dependenciesPathes_;
             Dependencies = dependencies_.ToReadOnlyReactiveCollection();
         }
 
@@ -56,6 +56,8 @@ namespace PropertyWriter.Models
             AssemblyPath.Value = project.AssemblyPath.Value;
             ProjectTypeName.Value = project.ProjectTypeName.Value;
             SavePath.Value = project.SavePath.Value;
+			dependenciesPathes_ = project.DependenciesPathes;
+			dependencies_ = project.dependencies_;
             Root.Value = project.Root.Value;
         }
 
@@ -78,7 +80,7 @@ namespace PropertyWriter.Models
                 .FirstOrDefault(x => x.Name == ProjectTypeName.Value);
         }
 
-        public void InitializeRoot()
+        public void InitializeRoot(PropertyFactory loader, PropertyFactory[] dependencies)
         {
             Assembly assembly;
             try
@@ -95,9 +97,8 @@ namespace PropertyWriter.Models
             {
                 throw new PwProjectException("プロジェクト型定義が失われています。");
             }
-
-            var modelFactory = new PropertyFactory();
-            Root.Value = modelFactory.GetStructure(assembly, projectType);
+			
+			Root.Value = loader.GetStructure(assembly, projectType, dependencies);
         }
 
         public static async Task<Project> LoadSettingAsync(string path)
@@ -108,30 +109,49 @@ namespace PropertyWriter.Models
             }
         }
 
-        public async Task LoadDataAsync()
-        {
-            InitializeRoot();
+        public async Task LoadDataAsync(bool isRootProject)
+		{
+			var factories = new List<PropertyFactory>();
+			if (isRootProject)
+			{
+				foreach (var projectPath in dependenciesPathes_)
+				{
+					dependencies_.Add(await LoadSettingAsync(projectPath.Value));
+				}
+				foreach (var subProject in dependencies_)
+				{
+					var f = new PropertyFactory();
+					subProject.InitializeRoot(f, new PropertyFactory[0]);
+					await subProject.LoadSerializedDataAsync();
+					factories.Add(f);
+				}
+			}
 
-            var rootType = Root.Value.Type;
-            var deserializer = rootType.GetMethods()
-                .FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
-            try
-            {
-                if (deserializer != null)
-                {
-                    await CustomSerializer.LoadDataAsync(deserializer, Root.Value, SavePath.Value);
-                }
-                else
-                {
-                    await JsonSerializer.LoadDataAsync(Root.Value, SavePath.Value);
-                }
-            }
-            catch (FileNotFoundException)
-            {
-            }
-        }
+			InitializeRoot(new PropertyFactory(), factories.ToArray());
+			await LoadSerializedDataAsync();
+		}
 
-        public async Task SaveSettingAsync(string path)
+		private async Task LoadSerializedDataAsync()
+		{
+			var deserializer = Root.Value.Type.GetMethods()
+				.FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
+			try
+			{
+				if (deserializer != null)
+				{
+					await CustomSerializer.LoadDataAsync(deserializer, Root.Value, SavePath.Value);
+				}
+				else
+				{
+					await JsonSerializer.LoadDataAsync(Root.Value, SavePath.Value);
+				}
+			}
+			catch (FileNotFoundException)
+			{
+			}
+		}
+
+		public async Task SaveSettingAsync(string path)
         {
             using (var file = new StreamWriter(path))
             {
@@ -192,13 +212,13 @@ namespace PropertyWriter.Models
         [JsonProperty]
         public string[] DependenciesPath
         {
-            get { return dependenciesPathes_.ToArray(); }
+            get { return dependenciesPathes_.Select(x => x.Value).ToArray(); }
             set
             {
                 dependenciesPathes_.Clear();
                 foreach (var item in value)
                 {
-                    dependenciesPathes_.Add(item);
+                    dependenciesPathes_.Add(new ReactiveProperty<string>(item));
                 }
             }
         }
