@@ -17,9 +17,7 @@ namespace PropertyWriter.ViewModels.Properties
         public SubTypeInfo[] AvailableTypes => Property.AvailableTypes;
 		public ReactiveProperty<SubTypeInfo> SelectedType => Property.SelectedType;
 		public ReactiveCommand EditCommand { get; }
-		public override IObservable<Unit> OnChanged => Instance.Where(x => x != null)
-			.SelectMany(x => x.OnChanged)
-			.Merge(Instance.Select(x => Unit.Default));
+		public override IObservable<Unit> OnChanged { get; }
 
 		public SubtypingViewModel(SubtypingProperty property)
 			: base(property)
@@ -36,6 +34,10 @@ namespace PropertyWriter.ViewModels.Properties
 				var vm = new BlockViewModel(Instance.Value);
 				Messenger.Raise(new TransitionMessage(vm, "SubtypeEditor"));
             });
-        }
+
+			OnChanged = Instance.Where(x => x != null)
+				.SelectMany(x => x.OnChanged)
+				.Merge(Instance.Select(x => Unit.Default));
+		}
 	}
 }

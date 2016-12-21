@@ -164,4 +164,4 @@ $RECYCLE.BIN/
 # Others
 # =========================
 *.sln.ide/
-PropertyWriter/bin/
+Dev/PropertyWriter/bin/
