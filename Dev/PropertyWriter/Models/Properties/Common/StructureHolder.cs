@@ -7,6 +7,7 @@ using PropertyWriter.Models.Info;
 using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.ViewModels;
 using Reactive.Bindings;
+using System.Diagnostics;
 
 namespace PropertyWriter.Models.Properties.Common
 {
@@ -40,13 +41,20 @@ namespace PropertyWriter.Models.Properties.Common
             {
                 property.Value.Subscribe(x =>
                 {
-                    property.PropertyInfo.SetValue(Value.Value, x);
+					try
+					{
+						property.PropertyInfo.SetValue(Value.Value, x);
+					}
+					catch (ArgumentException ex)
+					{
+						throw new Exceptions.PwInvalidStructureException($"{property.Title.Value} プロパティに Set アクセサがありません。");
+					}
                     if (property is ReferenceByIntProperty refModel)
                     {
                         refModel.PropertyToBindBack?.SetValue(Value.Value, refModel.SelectedObject.Value);
                     }
                     ValueChangedSubject.OnNext(Unit.Default);
-                });
+                }, ex => Debugger.Log(0, "Exception", ex.ToString()));
             }
         }
     }

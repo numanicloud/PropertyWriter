@@ -40,12 +40,12 @@ namespace PropertyWriter.ViewModels.Properties
 			{
 				Property.AddNewElement();
 				OnChangedSubject.OnNext(Unit.Default);
-			});
+			}, exception => OnChangedSubject.OnError(exception));
             RemoveCommand.Subscribe(x =>
 			{
 				Property.RemoveAt(x);
 				OnChangedSubject.OnNext(Unit.Default);
-			});
+			}, exception => OnChangedSubject.OnError(exception));
 			EditCommand.Subscribe(x => Messenger.Raise(
 				new TransitionMessage(
 					new BlockViewModel(this),

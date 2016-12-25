@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -15,5 +16,17 @@ namespace PropertyWriter.Models
         {
             return member.CustomAttributes.Any(x => x.AttributeType == typeof(TAttribute));
         }
-    }
+
+		public static void SafelySubscribe<T>(this IObservable<T> source, Action<Exception> onError)
+		{
+			source.Subscribe(
+				unit => { },
+				exception =>
+				{
+					onError(exception);
+					Debugger.Log(1, "Error", exception + "\n");
+					SafelySubscribe(source, onError);
+				});
+		}
+	}
 }

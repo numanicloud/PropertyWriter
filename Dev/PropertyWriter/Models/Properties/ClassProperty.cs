@@ -26,7 +26,9 @@ namespace PropertyWriter.Models.Properties
 
             structureValue_ = new StructureHolder(type, modelFactory);
             Value = new ReactiveProperty<object>(structureValue_.Value.Value, ReactivePropertyMode.RaiseLatestValueOnSubscribe);
-            structureValue_.ValueChanged.Subscribe(x => Value.Value = structureValue_.Value.Value);
-        }
+
+			structureValue_.ValueChanged.Subscribe(
+				x => Value.Value = structureValue_.Value.Value);
+		}
     }
 }

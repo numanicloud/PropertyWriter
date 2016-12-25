@@ -106,6 +106,7 @@ namespace PropertyWriter.ViewModels.Editor
 				return;
 			}
 
+			CanClose.Value = true;
 			await Manager.CloseAsync();
 		}
 	}

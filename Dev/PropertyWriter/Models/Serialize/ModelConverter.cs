@@ -99,6 +99,9 @@ namespace PropertyWriter.Models.Serialize
                     LoadValueToModel(element, item, references);
                 }
             }
+			else if(value == null)
+			{
+			}
             else
             {
                 throw new ArgumentException("開発者向け：コレクションかどうかの判定が間違っています。", nameof(value));

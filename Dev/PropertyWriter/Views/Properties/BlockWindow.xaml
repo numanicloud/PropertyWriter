@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterOwner">
 
 	<Window.Resources>
-		<ResourceDictionary Source="Properties/BlockProperty.xaml"/>
+		<ResourceDictionary Source="BlockProperty.xaml"/>
 	</Window.Resources>
 
 	<i:Interaction.Triggers>
