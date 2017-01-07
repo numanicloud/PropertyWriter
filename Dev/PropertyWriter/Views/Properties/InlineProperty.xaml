@@ -3,7 +3,7 @@
 										xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 										xmlns:instance="clr-namespace:PropertyWriter.ViewModels.Properties"
 										xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-										xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+										xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
 										xmlns:v="clr-namespace:PropertyWriter.Views">
 
 	<DataTemplate DataType="{x:Type instance:IntViewModel}">
@@ -33,48 +33,48 @@
 	<DataTemplate DataType="{x:Type instance:ClassViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
-				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
-					<l:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
-				</l:InteractionMessageTrigger>
+				<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
+					<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+				</messaging:InteractionMessageTrigger>
 			</i:Interaction.Triggers>
 			<TextBlock Text="{Binding Path=FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}"/>
+			<Button Content="編集" Command="{Binding EditCommand}" HorizontalAlignment="Left"/>
 		</StackPanel>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:StructViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
-				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
-					<l:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
-				</l:InteractionMessageTrigger>
+				<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
+					<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+				</messaging:InteractionMessageTrigger>
 			</i:Interaction.Triggers>
 			<TextBlock Text="{Binding Path=FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}"/>
+			<Button Content="編集" Command="{Binding EditCommand}" HorizontalAlignment="Left"/>
 		</StackPanel>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:BasicCollectionViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
-				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
-					<l:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
-				</l:InteractionMessageTrigger>
+				<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
+					<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+				</messaging:InteractionMessageTrigger>
 			</i:Interaction.Triggers>
 			<TextBlock Text="{Binding Path=FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}"/>
+			<Button Content="編集" Command="{Binding EditCommand}" HorizontalAlignment="Left"/>
 		</StackPanel>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:ComplicateCollectionViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
-				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
-					<l:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
-				</l:InteractionMessageTrigger>
+				<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
+					<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+				</messaging:InteractionMessageTrigger>
 			</i:Interaction.Triggers>
 			<TextBlock Text="{Binding Path=FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}"/>
+			<Button Content="編集" Command="{Binding EditCommand}" HorizontalAlignment="Left"/>
 		</StackPanel>
 	</DataTemplate>
 
@@ -85,14 +85,14 @@
 	<DataTemplate DataType="{x:Type instance:SubtypingViewModel}">
 		<StackPanel>
 			<i:Interaction.Triggers>
-				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="SubtypeEditor">
-					<l:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
-				</l:InteractionMessageTrigger>
+				<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="SubtypeEditor">
+					<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+				</messaging:InteractionMessageTrigger>
 			</i:Interaction.Triggers>
 			<ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}"
 								DisplayMemberPath="Name"/>
 			<TextBlock Text="{Binding FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}"/>
+			<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}" HorizontalAlignment="Left"/>
 		</StackPanel>
 	</DataTemplate>
 
