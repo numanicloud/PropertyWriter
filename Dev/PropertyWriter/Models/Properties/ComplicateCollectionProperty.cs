@@ -12,7 +12,7 @@ namespace PropertyWriter.Models.Properties
         private CollectionHolder CollectionValue { get; }
 
         public override ReactiveProperty<object> Value { get; }
-        public ObservableCollection<IPropertyModel> Collection => CollectionValue.Collection;
+        public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
         public Type ElementType => CollectionValue.ItemType;
 
         public ComplicateCollectionProperty(Type type, PropertyFactory modelFactory)
@@ -21,7 +21,10 @@ namespace PropertyWriter.Models.Properties
             Value = CollectionValue.Value
                 .Cast<object>()
                 .ToReactiveProperty();
-        }
+			CollectionValue.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
+
+			Collection = CollectionValue.Collection.ToReadOnlyReactiveCollection(x => x.model);
+		}
 
         public IPropertyModel AddNewElement() => CollectionValue.AddNewElement();
         public void RemoveElementAt(int index) => CollectionValue.RemoveAt(index);

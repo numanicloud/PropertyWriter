@@ -15,6 +15,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		public virtual ReactiveProperty<string> FormatedString => Value.Select(x => x?.ToString())
 			.ToReactiveProperty();
 		public abstract IObservable<Unit> OnChanged { get; }
+		public IObservable<Exception> OnError => Property.OnError;
 
 		public PropertyViewModel(TProperty property)
 		{

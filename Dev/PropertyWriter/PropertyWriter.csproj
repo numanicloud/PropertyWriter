@@ -164,6 +164,7 @@
     <Compile Include="ViewModels\Editor\EditorLifecycleManager.cs" />
     <Compile Include="ViewModels\Editor\EmptyState.cs" />
     <Compile Include="ViewModels\Editor\NewState.cs" />
+    <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\ObservableHelper.cs" />
     <Compile Include="ViewModels\ProjectSetting\NewProjectViewModel.cs" />
     <Compile Include="ViewModels\ProjectSetting\ProjectSettingViewModel.cs" />
@@ -176,8 +177,15 @@
     <Compile Include="Views\ClosingWindow.xaml.cs">
       <DependentUpon>ClosingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Properties\BlockProperty.cs" />
     <Compile Include="Views\Properties\InlineProperty.cs" />
+    <Page Include="Views\ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProjectSetting\NewProjectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

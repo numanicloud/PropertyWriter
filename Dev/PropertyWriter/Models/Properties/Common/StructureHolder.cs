@@ -8,18 +8,21 @@ using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.ViewModels;
 using Reactive.Bindings;
 using System.Diagnostics;
+using System.Reactive.Linq;
 
 namespace PropertyWriter.Models.Properties.Common
 {
     internal class StructureHolder
     {
 		private Subject<Unit> ValueChangedSubject { get; } = new Subject<Unit>();
+		private Subject<Exception> OnErrorSubject { get; } = new Subject<Exception>();
 
         public IEnumerable<IPropertyModel> Properties { get; }
         public ReactiveProperty<object> Value { get; private set; }
 		public IObservable<Unit> ValueChanged => ValueChangedSubject;
-        
-        public StructureHolder(Type type, PropertyFactory modelFactory)
+		public IObservable<Exception> OnError { get; private set; }
+
+		public StructureHolder(Type type, PropertyFactory modelFactory)
         {
             Properties = modelFactory.GetMembers(type);
             Initialize(type);
@@ -45,9 +48,10 @@ namespace PropertyWriter.Models.Properties.Common
 					{
 						property.PropertyInfo.SetValue(Value.Value, x);
 					}
-					catch (ArgumentException ex)
+					catch (ArgumentException)
 					{
-						throw new Exceptions.PwInvalidStructureException($"{property.Title.Value} プロパティに Set アクセサがありません。");
+						var ex = new Exceptions.PwInvalidStructureException($"{property.Title.Value} プロパティに Set アクセサがありません。");
+						OnErrorSubject.OnNext(ex);
 					}
                     if (property is ReferenceByIntProperty refModel)
                     {
@@ -56,6 +60,9 @@ namespace PropertyWriter.Models.Properties.Common
                     ValueChangedSubject.OnNext(Unit.Default);
                 }, ex => Debugger.Log(0, "Exception", ex.ToString()));
             }
+
+			OnError = Observable.Merge(Properties.Select(x => x.OnError))
+				.Merge(OnErrorSubject);
         }
     }
 }

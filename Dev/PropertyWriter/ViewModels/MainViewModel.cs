@@ -63,6 +63,11 @@ namespace PropertyWriter.ViewModels
             Manager.Value.OnSettingChanged
                 .SelectMany(x => State.Value.ModifyAsync().ToObservable())
                 .SafelySubscribe(ErrorHandler("エラー"));
+
+			Masters.Where(x => x != null)
+				.SelectMany(x => Observable.Merge(x.Select(y => y.OnError)))
+				.Do(x => Debugger.Log(1, "Error", "Error from Main\n"))
+				.Subscribe(ErrorHandler("エラー"));
 		}
 
 		private void OpenProjectSetting()
@@ -95,8 +100,8 @@ namespace PropertyWriter.ViewModels
 		{
 			return exception =>
 			{
-				Manager.Value.IsError.Value = true;
-				Manager.Value.StatusMessage.Value = $"{message} {exception.Message}";
+				var vm = new ErrorViewModel(message, exception);
+				Messenger.Raise(new TransitionMessage(vm, "Error"));
 			};
 		}
 	}

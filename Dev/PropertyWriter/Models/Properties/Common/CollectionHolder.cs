@@ -3,65 +3,83 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using PropertyWriter.Models.Properties.Interfaces;
 using Reactive.Bindings;
+using System.Reactive.Subjects;
 
 namespace PropertyWriter.Models.Properties.Common
 {
-    internal class CollectionHolder
-    {
-        public static readonly string ElementTitle = "Element";
+	internal class CollectionHolder
+	{
+		public static readonly string ElementTitle = "Element";
 
-        private readonly PropertyFactory modelFactory_;
-        public Type Type { get; }
-        public Type ItemType { get; }
-        public ObservableCollection<IPropertyModel> Collection { get; }
-        public ReactiveProperty<IEnumerable> Value { get; }
+		private readonly PropertyFactory modelFactory_;
 
-        public CollectionHolder(Type type, PropertyFactory modelFactory)
-        {
-            Type = type;
-            modelFactory_ = modelFactory;
+		private Subject<Exception> OnErrorSubject { get; } = new Subject<Exception>();
 
-            if (type.Name == "IEnumerable`1")
-            {
-                ItemType = type.GenericTypeArguments[0];
-            }
-            else if (type.IsArray)
-            {
-                ItemType = type.GetElementType();
-            }
-            else
-            {
-                throw new ArgumentException("配列または IEnumerable<T> を指定する必要があります。", nameof(type));
-            }
+		public Type Type { get; }
+		public Type ItemType { get; }
+		public ObservableCollection<(IPropertyModel model, IDisposable error)> Collection { get; }
+		public ReactiveProperty<IEnumerable> Value { get; }
+		public IObservable<Exception> OnError => OnErrorSubject;
 
-            Value = new ReactiveProperty<IEnumerable>(Array.CreateInstance(ItemType, 0));
+		public CollectionHolder(Type type, PropertyFactory modelFactory)
+		{
+			Type = type;
+			modelFactory_ = modelFactory;
 
-            Collection = new ObservableCollection<IPropertyModel>();
-            Collection.ToCollectionChanged()
-                .Subscribe(x => Value.Value = MakeValue(Collection));
-        }
+			if (type.Name == "IEnumerable`1")
+			{
+				ItemType = type.GenericTypeArguments[0];
+			}
+			else if (type.IsArray)
+			{
+				ItemType = type.GetElementType();
+			}
+			else
+			{
+				throw new ArgumentException("配列または IEnumerable<T> を指定する必要があります。", nameof(type));
+			}
 
-        private IEnumerable MakeValue(ObservableCollection<IPropertyModel> collection)
-        {
-            var array = Array.CreateInstance(ItemType, collection.Count);
-            for (var i = 0; i < collection.Count; i++)
-            {
-                array.SetValue(collection[i].Value.Value, i);
-            }
-            return array;
-        }
+			Value = new ReactiveProperty<IEnumerable>(Array.CreateInstance(ItemType, 0));
 
-        public IPropertyModel AddNewElement()
-        {
-            var instance = modelFactory_.Create(ItemType, ElementTitle);
-            Collection.Add(instance);
-            instance.Value.Subscribe(x => Value.Value = MakeValue(Collection));
-            return instance;
-        }
+			Collection = new ObservableCollection<(IPropertyModel model, IDisposable error)>();
+			Collection.ToCollectionChanged()
+				.Subscribe(x =>
+				{
+					try
+					{
+						Value.Value = MakeValue(Collection);
+					}
+					catch (Exception e)
+					{
+						OnErrorSubject.OnNext(e);
+						throw;
+					}
+				});
+		}
 
-        public void RemoveAt(int index)
-        {
-            Collection.RemoveAt(index);
-        }
-    }
+		private IEnumerable MakeValue(ObservableCollection<(IPropertyModel model, IDisposable error)> collection)
+		{
+			var array = Array.CreateInstance(ItemType, collection.Count);
+			for (var i = 0; i < collection.Count; i++)
+			{
+				array.SetValue(collection[i].model.Value.Value, i);
+			}
+			return array;
+		}
+
+		public IPropertyModel AddNewElement()
+		{
+			var instance = modelFactory_.Create(ItemType, ElementTitle);
+			var errorDisposable = instance.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
+			Collection.Add((instance, errorDisposable));
+			instance.Value.Subscribe(x => Value.Value = MakeValue(Collection));
+			return instance;
+		}
+
+		public void RemoveAt(int index)
+		{
+			Collection[index].error.Dispose();
+			Collection.RemoveAt(index);
+		}
+	}
 }

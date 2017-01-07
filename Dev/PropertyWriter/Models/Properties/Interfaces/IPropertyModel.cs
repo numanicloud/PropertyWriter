@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Reactive.Bindings;
+using System;
 
 namespace PropertyWriter.Models.Properties.Interfaces
 {
@@ -8,5 +9,6 @@ namespace PropertyWriter.Models.Properties.Interfaces
         ReactiveProperty<object> Value { get; }
         ReactiveProperty<string> Title { get; }
         PropertyInfo PropertyInfo { get; set; }
+		IObservable<Exception> OnError { get; }
     }
 }

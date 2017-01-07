@@ -30,6 +30,8 @@ namespace PropertyWriter.Models.Properties
             Value = StructureValue.ValueChanged
                 .Select(x => StructureValue.Value.Value)
                 .ToReactiveProperty();
+
+			StructureValue.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
         }
     }
 }

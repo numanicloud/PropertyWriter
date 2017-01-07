@@ -29,6 +29,8 @@ namespace PropertyWriter.Models.Properties
 
 			structureValue_.ValueChanged.Subscribe(
 				x => Value.Value = structureValue_.Value.Value);
+
+			structureValue_.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
 		}
     }
 }

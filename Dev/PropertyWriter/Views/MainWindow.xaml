@@ -14,102 +14,105 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
 		Title="{Binding Title.Value}" Height="540" Width="960">
-    
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Properties/BlockProperty.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="StatusBar">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Manager.Value.IsError.Value}" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
-                        <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentForegroundBrush}"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Manager.Value.IsError.Value}" Value="False">
-                        <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
-                        <Setter Property="Foreground" Value="White"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
 
-    <Window.InputBindings>
-        <KeyBinding Command="{Binding NewProjectCommand}" Modifiers="Control" Key="N"/>
-        <KeyBinding Command="{Binding OpenProjectCommand}" Modifiers="Control" Key="O"/>
-        <KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
-        <KeyBinding Command="{Binding SaveAsCommand}" Modifiers="Control+Shift" Key="S"/>
-    </Window.InputBindings>
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Properties/BlockProperty.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<Style TargetType="StatusBar">
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding Manager.Value.IsError.Value}" Value="True">
+						<Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
+						<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentForegroundBrush}"/>
+					</DataTrigger>
+					<DataTrigger Binding="{Binding Manager.Value.IsError.Value}" Value="False">
+						<Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
+						<Setter Property="Foreground" Value="White"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</Window.Resources>
 
-    <i:Interaction.Triggers>
-        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="NewProject">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:NewProjectWindow}" Mode="Modal"/>
-        </messaging:InteractionMessageTrigger>
-        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ConfirmClose">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type v:CloseWindow}" Mode="Modal"/>
-        </messaging:InteractionMessageTrigger>
-        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ProjectSetting">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:ProjectSettingWindow}" Mode="Modal"/>
-        </messaging:InteractionMessageTrigger>
-        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="MissingProjectType">
-            <messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:ProjectRepairWindow}" Mode="Modal"/>
-        </messaging:InteractionMessageTrigger>
-        <messaging:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
-            <messaging:WindowInteractionMessageAction/>
-        </messaging:InteractionMessageTrigger>
-        <i:EventTrigger EventName="Closed">
-            <messaging:DataContextDisposeAction/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+	<Window.InputBindings>
+		<KeyBinding Command="{Binding NewProjectCommand}" Modifiers="Control" Key="N"/>
+		<KeyBinding Command="{Binding OpenProjectCommand}" Modifiers="Control" Key="O"/>
+		<KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
+		<KeyBinding Command="{Binding SaveAsCommand}" Modifiers="Control+Shift" Key="S"/>
+	</Window.InputBindings>
 
-    <i:Interaction.Behaviors>
-        <messaging:WindowCloseCancelBehavior CanClose="{Binding State.Value.CanClose.Value}"
+	<i:Interaction.Triggers>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="NewProject">
+			<messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:NewProjectWindow}" Mode="Modal"/>
+		</messaging:InteractionMessageTrigger>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ConfirmClose">
+			<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:CloseWindow}" Mode="Modal"/>
+		</messaging:InteractionMessageTrigger>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="ProjectSetting">
+			<messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:ProjectSettingWindow}" Mode="Modal"/>
+		</messaging:InteractionMessageTrigger>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="MissingProjectType">
+			<messaging:TransitionInteractionMessageAction WindowType="{x:Type setting:ProjectRepairWindow}" Mode="Modal"/>
+		</messaging:InteractionMessageTrigger>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Error">
+			<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:ErrorWindow}" Mode="Modal"/>
+		</messaging:InteractionMessageTrigger>
+		<messaging:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
+			<messaging:WindowInteractionMessageAction/>
+		</messaging:InteractionMessageTrigger>
+		<i:EventTrigger EventName="Closed">
+			<messaging:DataContextDisposeAction/>
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
+
+	<i:Interaction.Behaviors>
+		<messaging:WindowCloseCancelBehavior CanClose="{Binding State.Value.CanClose.Value}"
                                              CloseCanceledCallbackCommand="{Binding CloseCanceledCommand}"/>
-    </i:Interaction.Behaviors>
+	</i:Interaction.Behaviors>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
 
-        <mat:ColorZone Grid.Row="0" Mode="Inverted">
-            <Menu>
-                <MenuItem Header="ファイル">
-                    <MenuItem Header="新規プロジェクト" InputGestureText="Ctrl+N"
+		<mat:ColorZone Grid.Row="0" Mode="Inverted">
+			<Menu>
+				<MenuItem Header="ファイル">
+					<MenuItem Header="新規プロジェクト" InputGestureText="Ctrl+N"
 										Command="{Binding NewProjectCommand}" VerticalAlignment="Center"/>
-                    <MenuItem Header="プロジェクトを開く" InputGestureText="Ctrl+O"
+					<MenuItem Header="プロジェクトを開く" InputGestureText="Ctrl+O"
 										Command="{Binding OpenProjectCommand}" VerticalAlignment="Center"/>
-                    <MenuItem Header="プロジェクトを保存" InputGestureText="Ctrl+S"
+					<MenuItem Header="プロジェクトを保存" InputGestureText="Ctrl+S"
 										Command="{Binding SaveCommand}" VerticalAlignment="Center"/>
-                    <MenuItem Header="プロジェクトを別名保存" InputGestureText="Ctrl+Shift+S"
+					<MenuItem Header="プロジェクトを別名保存" InputGestureText="Ctrl+Shift+S"
 										Command="{Binding SaveAsCommand}" VerticalAlignment="Center"/>
-                </MenuItem>
-                <MenuItem Header="プロジェクト">
-                    <MenuItem Header="プロジェクト設定" Command="{Binding ProjectSettingCommand}"  VerticalAlignment="Center"/>
-                </MenuItem>
-            </Menu>
-        </mat:ColorZone>
+				</MenuItem>
+				<MenuItem Header="プロジェクト">
+					<MenuItem Header="プロジェクト設定" Command="{Binding ProjectSettingCommand}"  VerticalAlignment="Center"/>
+				</MenuItem>
+			</Menu>
+		</mat:ColorZone>
 
-        <TabControl Grid.Row="1" ItemsSource="{Binding Masters.Value}" TabStripPlacement="Left">
-            <TabControl.ItemTemplate>
-                <DataTemplate DataType="instance:PropertyModel">
-                    <TextBlock Text="{Binding Title.Value}" Margin="6"/>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate DataType="instance:PropertyModel">
-                    <ContentControl Content="{Binding}" Focusable="False"/>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
+		<TabControl Grid.Row="1" ItemsSource="{Binding Masters.Value}" TabStripPlacement="Left">
+			<TabControl.ItemTemplate>
+				<DataTemplate DataType="instance:PropertyModel">
+					<TextBlock Text="{Binding Title.Value}" Margin="6"/>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+			<TabControl.ContentTemplate>
+				<DataTemplate DataType="instance:PropertyModel">
+					<ContentControl Content="{Binding}" Focusable="False"/>
+				</DataTemplate>
+			</TabControl.ContentTemplate>
+		</TabControl>
 
-        <StatusBar Grid.Row="2">
-            <TextBlock Text="{Binding Manager.Value.StatusMessage.Value}"/>
-        </StatusBar>
+		<StatusBar Grid.Row="2">
+			<TextBlock Text="{Binding Manager.Value.StatusMessage.Value}"/>
+		</StatusBar>
 
-    </Grid>
+	</Grid>
 </Window>
 

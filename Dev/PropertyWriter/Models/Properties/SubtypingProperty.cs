@@ -26,13 +26,28 @@ namespace PropertyWriter.Models.Properties
                 return new SubTypeInfo(x, attr.Name);
             }).ToArray();
             BaseType = baseType;
-
-            SelectedType.Where(x => x != null)
-                .Subscribe(x => Model.Value = modelFactory.Create(x.Type, Title.Value));
+			
+			SelectedType.Where(x => x != null)
+				.Subscribe(x =>
+				{
+					try
+					{
+						Model.Value = modelFactory.Create(x.Type, Title.Value);
+					}
+					catch (Exception e)
+					{
+						OnErrorSubject.OnNext(e);
+						throw;
+					}
+				});
 
             Value = Model.Where(x => x != null)
                 .SelectMany(x => x.Value)
                 .ToReactiveProperty(mode: ReactivePropertyMode.RaiseLatestValueOnSubscribe);
+
+			Model.Where(x => x != null)
+				.SelectMany(x => x.OnError)
+				.Subscribe(x => OnErrorSubject.OnNext(x));
         }
     }
 }

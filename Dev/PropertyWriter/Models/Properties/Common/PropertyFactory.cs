@@ -16,7 +16,7 @@ namespace PropertyWriter.Models.Properties.Common
 	class ReferencableMasterInfo
 	{
 		public Type Type { get; set; }
-		public ObservableCollection<object> Collection { get; set; }
+		public ReadOnlyReactiveCollection<object> Collection { get; set; }
 	}
 
 	class PropertyFactory
@@ -67,21 +67,8 @@ namespace PropertyWriter.Models.Properties.Common
 				{
 					masters_[info.Key] = new ReferencableMasterInfo()
 					{
-						Collection = new ObservableCollection<object>(prop.Collection.Select(y => y.Value.Value)),
+						Collection = prop.Collection.ToReadOnlyReactiveCollection(x => x.Value.Value),
 						Type = info.Property.PropertyType.GetElementType(),
-					};
-					prop.Collection.CollectionChanged += (sender, e) =>
-					{
-						if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-						{
-							Debugger.Log(0, "Info", "Add");
-							masters_[info.Key].Collection.Add(((IPropertyModel)e.NewItems[0]).Value.Value);
-						}
-						else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-						{
-							Debugger.Log(0, "Info", "Remove");
-							masters_[info.Key].Collection.RemoveAt(e.OldStartingIndex);
-						}
 					};
 				}
 			}
@@ -221,7 +208,7 @@ namespace PropertyWriter.Models.Properties.Common
 					Title = { Value = title }
 				};
 			default:
-				throw new InvalidOperationException("ID参照はInt32のみがサポートされます。");
+				throw new InvalidOperationException("ID参照をするプロパティの型は int 型のみがサポートされます。");
 			}
 		}
 
