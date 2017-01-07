@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.25914.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyWriter", "PropertyWriter\PropertyWriter.csproj", "{2C581695-DAD9-4CA3-AE99-2BE5499AF25B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDll", "TestDll\TestDll.csproj", "{4F5C1A3F-0784-4A22-B16B-37CE9A04F980}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyWriterTest", "PropertyWriterTest\PropertyWriterTest.csproj", "{2B56A02E-44EC-4FB0-B8E7-D8B1F78F46C1}"
 EndProject
@@ -23,10 +21,6 @@ Global
 		{2C581695-DAD9-4CA3-AE99-2BE5499AF25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C581695-DAD9-4CA3-AE99-2BE5499AF25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C581695-DAD9-4CA3-AE99-2BE5499AF25B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F5C1A3F-0784-4A22-B16B-37CE9A04F980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F5C1A3F-0784-4A22-B16B-37CE9A04F980}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F5C1A3F-0784-4A22-B16B-37CE9A04F980}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F5C1A3F-0784-4A22-B16B-37CE9A04F980}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B56A02E-44EC-4FB0-B8E7-D8B1F78F46C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B56A02E-44EC-4FB0-B8E7-D8B1F78F46C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B56A02E-44EC-4FB0-B8E7-D8B1F78F46C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
