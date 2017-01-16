@@ -8,6 +8,7 @@ using PropertyWriter.ViewModels.Properties.Common;
 using Reactive.Bindings;
 using System.Reactive;
 using System.Reactive.Subjects;
+using System.Diagnostics;
 
 namespace PropertyWriter.ViewModels.Properties
 {
@@ -16,7 +17,6 @@ namespace PropertyWriter.ViewModels.Properties
 		private Subject<Unit> OnChangedSubject { get; } = new Subject<Unit>();
 
         public ReadOnlyReactiveCollection<IPropertyViewModel> Collection { get; }
-        public override ReactiveProperty<string> FormatedString { get; }
 		public override IObservable<Unit> OnChanged => OnChangedSubject;
 		public ReactiveCommand AddCommand { get; } = new ReactiveCommand();
         public ReactiveCommand<int> RemoveCommand { get; } = new ReactiveCommand<int>();

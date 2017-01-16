@@ -3,6 +3,7 @@ using Livet.Messaging.Windows;
 using PropertyWriter.Models.Properties.Interfaces;
 using Reactive.Bindings;
 using PropertyWriter.ViewModels.Properties.Common;
+using Livet.Messaging;
 
 namespace PropertyWriter.ViewModels
 {
@@ -17,6 +18,16 @@ namespace PropertyWriter.ViewModels
 		{
 			Model.Value = model;
 			CloseCommand.Subscribe(x => Messenger.Raise(new WindowActionMessage(WindowAction.Close, "Close")));
+			Model.Value.OnError.Subscribe(ErrorHandler("エラー"));
+		}
+
+		private Action<Exception> ErrorHandler(string message)
+		{
+			return exception =>
+			{
+				var vm = new ErrorViewModel(message, exception);
+				Messenger.Raise(new TransitionMessage(vm, "Error"));
+			};
 		}
 	}
 }

@@ -14,7 +14,6 @@ namespace PropertyWriter.ViewModels.Properties
 	{
 		public IPropertyViewModel[] Members { get; }
 		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
-        public override ReactiveProperty<string> FormatedString { get; }
 		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
 
 		public StructViewModel(StructProperty property)
@@ -23,6 +22,8 @@ namespace PropertyWriter.ViewModels.Properties
 			FormatedString = Property.OnChanged
 				.Select(x => Value.Value.ToString())
 				.ToReactiveProperty();
+
+			FormatedString.Subscribe(x => { }, OnErrorSubject.OnNext);
 
 			EditCommand.Subscribe(x => Messenger.Raise(
                 new TransitionMessage(

@@ -7,6 +7,7 @@ using PropertyWriter.Models.Info;
 using PropertyWriter.Models.Properties.Common;
 using PropertyWriter.Models.Properties.Interfaces;
 using Reactive.Bindings;
+using System.Diagnostics;
 
 namespace PropertyWriter.Models.Properties
 {
@@ -37,7 +38,7 @@ namespace PropertyWriter.Models.Properties
 					catch (Exception e)
 					{
 						OnErrorSubject.OnNext(e);
-						throw;
+						Debugger.Log(1, "Error", $"Error from SubtypingProperty:\n{e}\n");
 					}
 				});
 

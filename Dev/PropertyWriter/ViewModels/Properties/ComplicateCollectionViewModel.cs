@@ -16,8 +16,7 @@ namespace PropertyWriter.ViewModels.Properties
 		private Subject<Unit> OnChangedSubject { get; } = new Subject<Unit>();
 
 		public ReadOnlyReactiveCollection<IPropertyViewModel> Collection { get; }
-
-        public override ReactiveProperty<string> FormatedString { get; }
+		
 		public override IObservable<Unit> OnChanged => OnChangedSubject;
 		public ReactiveCommand AddCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand<int> RemoveCommand { get; } = new ReactiveCommand<int>();
