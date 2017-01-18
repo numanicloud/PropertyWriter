@@ -100,6 +100,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BugFix\InvalidDataTest.cs" />
     <Compile Include="ChainingAssertion.MSTest.cs" />
     <Compile Include="Models\BasicCollectionPropertyTest.cs" />
     <Compile Include="Models\ComplicateCollectionPropertyTest.cs" />

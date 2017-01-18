@@ -34,12 +34,23 @@ namespace PropertyWriter.ViewModels.Properties.Common
 					catch (Exception e)
 					{
 						OnErrorSubject.OnNext(e);
-						return "";
+						return "<表示エラー>";
 					}
 				})
 				.ToReactiveProperty("");
 		}
 
-		public override string ToString() => $"<{GetType()}: {Value}>";
+		public override string ToString()
+		{
+			try
+			{
+				return $"<{GetType()}: {Value}>";
+			}
+			catch (Exception e)
+			{
+				OnErrorSubject.OnNext(e);
+				return "<表示エラー>";
+			}
+		}
 	}
 }

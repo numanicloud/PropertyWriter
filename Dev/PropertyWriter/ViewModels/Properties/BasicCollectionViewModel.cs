@@ -38,14 +38,28 @@ namespace PropertyWriter.ViewModels.Properties
 
             AddCommand.Subscribe(x =>
 			{
-				Property.AddNewElement();
+				try
+				{
+					Property.AddNewElement();
+				}
+				catch (Exception e)
+				{
+					OnErrorSubject.OnNext(e);
+				}
 				OnChangedSubject.OnNext(Unit.Default);
-			}, exception => OnChangedSubject.OnError(exception));
+			});
             RemoveCommand.Subscribe(x =>
 			{
-				Property.RemoveAt(x);
+				try
+				{
+					Property.RemoveAt(x);
+				}
+				catch (Exception e)
+				{
+					OnErrorSubject.OnNext(e);
+				}
 				OnChangedSubject.OnNext(Unit.Default);
-			}, exception => OnChangedSubject.OnError(exception));
+			});
 			EditCommand.Subscribe(x => Messenger.Raise(
 				new TransitionMessage(
 					new BlockViewModel(this),

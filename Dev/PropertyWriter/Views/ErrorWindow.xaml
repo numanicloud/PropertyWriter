@@ -3,11 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:local="clr-namespace:PropertyWriter.Views"
+					xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         mc:Ignorable="d"
-        Title="ErrorWindow" Height="300" Width="400">
+        Title="ErrorWindow" Height="400" Width="600">
+
+	<!--
+
+	-->
 
 	<i:Interaction.Triggers>
 		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Close">
@@ -20,14 +24,15 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
-		<TextBlock Text="{Binding Message.Value}" Margin="6"/>
-		<TextBox IsReadOnly="True" Text="{Binding ErrorDescription.Value}" Grid.Row="1" Margin="6"
+		<TextBlock Text="{Binding Message.Value}" Margin="6" TextWrapping="Wrap" Foreground="Red"/>
+		<TextBlock Text="{Binding Exception.Value.Message}" Margin="6" TextWrapping="Wrap" Grid.Row="1"/>
+		<Label Content="開発者向け情報：" Margin="6" Grid.Row="2"/>
+		<TextBox IsReadOnly="True" Text="{Binding ErrorDescription.Value}" Grid.Row="3" Margin="45,6,6,6"
 						 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-		<Button Content="OK" Command="{Binding OkCommand}" HorizontalAlignment="Right" Grid.Row="2" Margin="6"/>
+		<Button Content="OK" Command="{Binding OkCommand}" HorizontalAlignment="Right" Grid.Row="4" Margin="6"/>
 	</Grid>
 </Window>

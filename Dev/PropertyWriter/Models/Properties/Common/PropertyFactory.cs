@@ -203,6 +203,10 @@ namespace PropertyWriter.Models.Properties.Common
 			switch (propertyType)
 			{
 			case PropertyKind.Integer:
+				if (!masters_.ContainsKey(masterKey))
+				{
+					throw new KeyNotFoundException($"[PwReferenceMember] 属性で指定されたマスターキー \"{masterKey}\" を持つ [PwMaster] 属性のついたメンバーがプロジェクトに含まれていません。");
+				}
 				return new ReferenceByIntProperty(masters_[masterKey], idMemberName)
 				{
 					Title = { Value = title }

@@ -29,8 +29,7 @@ namespace PropertyWriter.ViewModels.ProjectSetting
             Message.Value = message + "プロジェクト型を元の型に設定しなおしてください。必要であればアセンブリを設定しなおしてください。";
 
             CommitCommand = clone_.IsValid.ToReactiveCommand();
-            CommitCommand.SelectMany(x => CommitAsync().ToObservable())
-                .SafelySubscribe(ex => { });
+			CommitCommand.PublishTask(x => CommitAsync(), e => { });
         }
 
         private async Task CommitAsync()

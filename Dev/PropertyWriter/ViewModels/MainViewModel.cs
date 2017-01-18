@@ -57,17 +57,15 @@ namespace PropertyWriter.ViewModels
 			Masters.Where(xs => xs != null).Subscribe(xs =>
 			{
 				Observable.Merge(xs.Select(x => x.OnChanged))
-					.SelectMany(x => State.Value.ModifyAsync().ToObservable())
-					.SafelySubscribe(ErrorHandler("エラー"));
+					.PublishTask(x => State.Value.ModifyAsync(), e => ShowError(e, "エラー"));
 			});
             Manager.Value.OnSettingChanged
-                .SelectMany(x => State.Value.ModifyAsync().ToObservable())
-                .SafelySubscribe(ErrorHandler("エラー"));
+				.PublishTask(x => State.Value.ModifyAsync(), e => ShowError(e, "エラー"));
 
 			Masters.Where(x => x != null)
 				.SelectMany(x => Observable.Merge(x.Select(y => y.OnError)))
 				.Do(x => Debugger.Log(1, "Error", "Error from Main\n"))
-				.Subscribe(ErrorHandler("エラー"));
+				.Subscribe(err => ShowError(err, "エラー"));
 		}
 
 		private void OpenProjectSetting()
@@ -80,29 +78,23 @@ namespace PropertyWriter.ViewModels
 		{
 			ProjectSettingCommand.Subscribe(x => OpenProjectSetting());
 
-			NewProjectCommand.SelectMany(x => State.Value.NewAsync().ToObservable())
-				.SafelySubscribe(ErrorHandler("プロジェクトの作成に失敗しました。"));
-
-			OpenProjectCommand.SelectMany(x => State.Value.OpenAsync().ToObservable())
-				.SafelySubscribe(ErrorHandler("データを読み込めませんでした。"));
-
-			SaveCommand.SelectMany(x => State.Value.SaveAsync().ToObservable())
-				.SafelySubscribe(ErrorHandler("保存を中止し、以前のファイルに復元しました。"));
-
-			SaveAsCommand.SelectMany(x => State.Value.SaveAsAsync().ToObservable())
-				.SafelySubscribe(ErrorHandler("保存を中止しました。"));
-
-			CloseCanceledCommand.SelectMany(x => State.Value.CloseAsync().ToObservable())
-				.SafelySubscribe(ErrorHandler("ウィンドウを閉じることができませんでした。"));
+			NewProjectCommand.PublishTask(x => State.Value.NewAsync(),
+				e => ShowError(e, "プロジェクトの作成に失敗しました。"));
+			OpenProjectCommand.PublishTask(x => State.Value.OpenAsync(),
+				e => ShowError(e, "データを読み込めませんでした。"));
+			SaveCommand.PublishTask(x => State.Value.SaveAsAsync(),
+				e => ShowError(e, "保存を中止し、以前のファイルに復元しました。"));
+			SaveAsCommand.PublishTask(x => State.Value.SaveAsAsync(),
+				e => ShowError(e, "保存を中止しました。"));
+			CloseCanceledCommand.PublishTask(x => State.Value.CloseAsync(),
+				e => ShowError(e, "ウィンドウを閉じることができませんでした。"));
 		}
 
-		private Action<Exception> ErrorHandler(string message)
+		private IObservable<Unit> ShowError(Exception exception, string message)
 		{
-			return exception =>
-			{
-				var vm = new ErrorViewModel(message, exception);
-				Messenger.Raise(new TransitionMessage(vm, "Error"));
-			};
+			var vm = new ErrorViewModel(message, exception);
+			Messenger.Raise(new TransitionMessage(vm, "Error"));
+			return Observable.Empty<Unit>();
 		}
 	}
 }
