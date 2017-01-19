@@ -11,9 +11,9 @@ using System.Diagnostics;
 
 namespace PropertyWriter.Models.Properties
 {
-    class SubtypingProperty : PropertyModel
+    public class SubtypingProperty : PropertyModel
     {
-        public Type BaseType { get; }
+        public override Type ValueType { get; }
         public SubTypeInfo[] AvailableTypes { get; set; }
         public ReactiveProperty<SubTypeInfo> SelectedType { get; } = new ReactiveProperty<SubTypeInfo>();
         public ReactiveProperty<IPropertyModel> Model { get; } = new ReactiveProperty<IPropertyModel>();
@@ -26,7 +26,7 @@ namespace PropertyWriter.Models.Properties
                 var attr = x.GetCustomAttribute<PwSubtypeAttribute>();
                 return new SubTypeInfo(x, attr.Name);
             }).ToArray();
-            BaseType = baseType;
+            ValueType = baseType;
 			
 			SelectedType.Where(x => x != null)
 				.Subscribe(x =>

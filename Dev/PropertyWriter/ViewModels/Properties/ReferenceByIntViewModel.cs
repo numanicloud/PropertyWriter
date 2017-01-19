@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class ReferenceByIntViewModel : PropertyViewModel<ReferenceByIntProperty>
+	public class ReferenceByIntViewModel : PropertyViewModel<ReferenceByIntProperty>
 	{
         public ReferencableMasterInfo Source => Property.Source;
 		public ReactiveProperty<object> SelectedObject => Property.SelectedObject;

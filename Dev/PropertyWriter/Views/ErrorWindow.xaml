@@ -4,20 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PropertyWriter.Views"
-					xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+				xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         mc:Ignorable="d"
         Title="ErrorWindow" Height="400" Width="600">
-
 	<!--
 
 	-->
-
 	<i:Interaction.Triggers>
 		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Close">
 			<messaging:WindowInteractionMessageAction/>
 		</messaging:InteractionMessageTrigger>
 	</i:Interaction.Triggers>
+	
 
 	<Grid>
 		<Grid.RowDefinitions>

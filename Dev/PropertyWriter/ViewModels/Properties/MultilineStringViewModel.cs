@@ -7,7 +7,7 @@ using PropertyWriter.Models.Properties;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class MultilineStringViewModel : StringViewModel
+	public class MultilineStringViewModel : StringViewModel
 	{
 		public MultilineStringViewModel(StringProperty property)
 			: base(property)

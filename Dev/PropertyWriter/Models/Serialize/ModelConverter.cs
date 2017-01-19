@@ -124,7 +124,7 @@ namespace PropertyWriter.Models.Serialize
                 }
                 catch (ArgumentException)
                 {
-                    throw new PwObjectMissmatchException(model.Type.Name, property.Title.Value);
+                    throw new PwObjectMissmatchException(model.ValueType.Name, property.Title.Value);
                 }
 
                 LoadValueToModel(property, value, references);
@@ -133,7 +133,7 @@ namespace PropertyWriter.Models.Serialize
 
         private static void ConvertEnum(EnumProperty model, object obj)
         {
-            var val = model.EnumValues.FirstOrDefault(x => x.ToString() == model.Type.GetEnumName(obj));
+            var val = model.EnumValues.FirstOrDefault(x => x.ToString() == model.ValueType.GetEnumName(obj));
             model.EnumValue.Value = val;
         }
     }

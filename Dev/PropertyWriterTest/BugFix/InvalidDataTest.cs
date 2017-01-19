@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Linq;
 using PropertyWriter.Models.Properties;
 using PropertyWriter.ViewModels.Properties;
+using PropertyWriter.ViewModels.Properties.Common;
 
 namespace PropertyWriterTest.BugFix
 {
@@ -40,7 +41,7 @@ namespace PropertyWriterTest.BugFix
 			var factory = new PropertyWriter.Models.Properties.Common.PropertyFactory();
 			var root = factory.GetStructure(Assembly.GetAssembly(typeof(InvalidMaster)), typeof(InvalidMaster), new PropertyWriter.Models.Project[0]);
 			var prop = (ComplicateCollectionProperty)root.Structure.Properties.First(x => x.PropertyInfo.Name == nameof(InvalidMaster.Refer));
-			var vm = new ComplicateCollectionViewModel(prop);
+			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory());
 
 			bool isHandled = false;
 			vm.OnError.Subscribe(x => isHandled = true);

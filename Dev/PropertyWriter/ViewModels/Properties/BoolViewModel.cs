@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class BoolViewModel : PropertyViewModel<BoolProperty>
+	public class BoolViewModel : PropertyViewModel<BoolProperty>
 	{
 		public ReactiveProperty<bool> BoolValue => Property.BoolValue;
 		public override IObservable<Unit> OnChanged => Property.BoolValue.Select(x => Unit.Default);

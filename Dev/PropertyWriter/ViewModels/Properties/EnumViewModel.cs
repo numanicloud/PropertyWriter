@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class EnumViewModel : PropertyViewModel<EnumProperty>
+	public class EnumViewModel : PropertyViewModel<EnumProperty>
 	{
         public object[] EnumValues => Property.EnumValues;
 		public ReactiveProperty<object> EnumValue => Property.EnumValue;

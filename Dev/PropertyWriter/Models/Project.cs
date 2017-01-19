@@ -17,7 +17,7 @@ using System.Collections.ObjectModel;
 namespace PropertyWriter.Models
 {
 	[JsonObject(MemberSerialization.OptIn)]
-	class Project
+	public class Project
 	{
 		private ObservableCollection<ReactiveProperty<string>> dependenciesPathes_ = new ObservableCollection<ReactiveProperty<string>>();
 		private ObservableCollection<Project> dependencies_ = new ObservableCollection<Project>();

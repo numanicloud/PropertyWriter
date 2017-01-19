@@ -13,13 +13,13 @@ using System.Diagnostics;
 
 namespace PropertyWriter.Models.Properties.Common
 {
-	class ReferencableMasterInfo
+	public class ReferencableMasterInfo
 	{
 		public Type Type { get; set; }
 		public ReadOnlyReactiveCollection<object> Collection { get; set; }
 	}
 
-	class PropertyFactory
+	public class PropertyFactory
 	{
 		private Dictionary<string, ReferencableMasterInfo> masters_;
 		private Dictionary<Type, Type[]> subtypings_;

@@ -10,13 +10,13 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-    internal class StructViewModel : PropertyViewModel<StructProperty>
+    public class StructViewModel : PropertyViewModel<StructProperty>
 	{
 		public IPropertyViewModel[] Members { get; }
 		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
 		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
 
-		public StructViewModel(StructProperty property)
+		public StructViewModel(StructProperty property, ViewModelFactory factory)
 			: base(property)
         {
 			FormatedString = Property.OnChanged
@@ -29,7 +29,7 @@ namespace PropertyWriter.ViewModels.Properties
                 new TransitionMessage(
                     new BlockViewModel(this),
                     "BlockWindow")));
-			Members = property.Members.Select(ViewModelFactory.Create).ToArray();
+			Members = property.Members.Select(x => factory.Create(x, true)).ToArray();
         }
 	}
 }

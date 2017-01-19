@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\Core\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -107,6 +107,7 @@
     <Compile Include="Common\TestData.cs" />
     <Compile Include="Common\TestResources.cs" />
     <Compile Include="Models\ModelConverterTest.cs" />
+    <Compile Include="Models\RouterTest.cs" />
     <Compile Include="Models\TypeParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\PropertyFactoryTest.cs" />

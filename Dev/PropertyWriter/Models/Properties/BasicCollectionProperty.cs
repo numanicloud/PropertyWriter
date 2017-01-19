@@ -7,11 +7,12 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Models.Properties
 {
-    class BasicCollectionProperty : PropertyModel, ICollectionProperty
+    public class BasicCollectionProperty : PropertyModel, ICollectionProperty
     {
         private CollectionHolder collectionValue_;
 
-        public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
+		public override Type ValueType => collectionValue_.Type;
+		public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
         public override ReactiveProperty<object> Value { get; }
 
         public BasicCollectionProperty(Type type, PropertyFactory modelFactory)

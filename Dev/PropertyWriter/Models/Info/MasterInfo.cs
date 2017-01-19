@@ -3,7 +3,7 @@ using PropertyWriter.Models.Properties.Interfaces;
 
 namespace PropertyWriter.Models.Info
 {
-    class MasterInfo
+    public class MasterInfo
 	{
 		public string Key { get; }
 		public PropertyInfo Property { get; }

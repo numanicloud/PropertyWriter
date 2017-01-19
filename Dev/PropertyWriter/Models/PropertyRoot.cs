@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace PropertyWriter.Models
 {
-    class PropertyRoot
+    public class PropertyRoot
     {
         public PropertyRoot(Type type, MasterInfo[] masters)
         {

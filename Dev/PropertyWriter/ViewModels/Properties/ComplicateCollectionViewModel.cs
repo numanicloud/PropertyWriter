@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	internal class ComplicateCollectionViewModel : PropertyViewModel<ComplicateCollectionProperty>
+	public class ComplicateCollectionViewModel : PropertyViewModel<ComplicateCollectionProperty>
 	{
 		private Subject<Unit> OnChangedSubject { get; } = new Subject<Unit>();
 
@@ -23,12 +23,12 @@ namespace PropertyWriter.ViewModels.Properties
 		public ReactiveCommand<int> RemoveCommand { get; } = new ReactiveCommand<int>();
 		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
 
-		public ComplicateCollectionViewModel(ComplicateCollectionProperty property)
+		public ComplicateCollectionViewModel(ComplicateCollectionProperty property, ViewModelFactory factory)
 			: base(property)
 		{
 			Collection = property.Collection.ToReadOnlyReactiveCollection(x =>
 			{
-				var vm = ViewModelFactory.Create(x);
+				var vm = factory.Create(x);
 				vm.OnChanged.Subscribe(y => OnChangedSubject.OnNext(Unit.Default));
 				return vm;
 			});

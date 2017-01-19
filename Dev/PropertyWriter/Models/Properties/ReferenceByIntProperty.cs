@@ -8,7 +8,7 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Models.Properties
 {
-    class ReferenceByIntProperty : PropertyModel
+    public class ReferenceByIntProperty : PropertyModel
     {
         public ReferencableMasterInfo Source { get; }
         public ReactiveProperty<object> SelectedObject { get; } = new ReactiveProperty<object>();
@@ -16,8 +16,9 @@ namespace PropertyWriter.Models.Properties
         public override ReactiveProperty<object> Value { get; }
         public PropertyInfo PropertyToReference { get; }
         public PropertyInfo PropertyToBindBack { get; set; }
+		public override Type ValueType => typeof(int);
 
-        public ReferenceByIntProperty(ReferencableMasterInfo source, string idPropertyName)
+		public ReferenceByIntProperty(ReferencableMasterInfo source, string idPropertyName)
         {
             Source = source;
             PropertyToReference = Source.Type.GetProperty(idPropertyName);

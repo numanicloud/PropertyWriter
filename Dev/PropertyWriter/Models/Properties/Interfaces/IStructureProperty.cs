@@ -4,7 +4,7 @@ namespace PropertyWriter.Models.Properties.Interfaces
 {
     interface IStructureProperty
     {
-        Type Type { get; }
+        Type ValueType { get; }
         IPropertyModel[] Members { get; }
     }
 }

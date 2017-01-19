@@ -4,23 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PropertyWriter.Views.ProjectSetting"
+				xmlns:v="clr-namespace:PropertyWriter.Views"
         xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
+				xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
         mc:Ignorable="d"
         Title="ProjectRepairWindow" Width="480" SizeToContent="Height">
 
-    <i:Interaction.Triggers>
-        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">
-            <messaging:WindowInteractionMessageAction/>
-        </messaging:InteractionMessageTrigger>
-    </i:Interaction.Triggers>
+	<i:Interaction.Triggers>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">
+			<messaging:WindowInteractionMessageAction/>
+		</messaging:InteractionMessageTrigger>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Error">
+			<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:ErrorWindow}" Mode="Modal"/>
+		</messaging:InteractionMessageTrigger>
+	</i:Interaction.Triggers>
 
-    <DockPanel>
-        <TextBlock Text="{Binding Message.Value}" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow" Margin="6"/>
-        <local:ProjectSettingUserControl DataContext="{Binding ProjectSetting}" DockPanel.Dock="Top"/>
-        <mat:ColorZone Mode="Light" DockPanel.Dock="Bottom">
-            <Button HorizontalAlignment="Right" Content="この設定で修復" Command="{Binding CommitCommand}"/>
-        </mat:ColorZone>
-    </DockPanel>
+	<DockPanel>
+		<TextBlock Text="{Binding Message.Value}" DockPanel.Dock="Top" TextWrapping="WrapWithOverflow" Margin="6"/>
+		<local:ProjectSettingUserControl DataContext="{Binding ProjectSetting}" DockPanel.Dock="Top"/>
+		<mat:ColorZone Mode="Light" DockPanel.Dock="Bottom">
+			<Button HorizontalAlignment="Right" Content="この設定で修復" Command="{Binding CommitCommand}"/>
+		</mat:ColorZone>
+	</DockPanel>
 </Window>

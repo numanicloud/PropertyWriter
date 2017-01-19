@@ -96,4 +96,8 @@
 		</StackPanel>
 	</DataTemplate>
 
+	<DataTemplate DataType="{x:Type instance:PluginViewModel}">
+		<ContentControl Content="{Binding UserControl}"/>
+	</DataTemplate>
+
 </ResourceDictionary>

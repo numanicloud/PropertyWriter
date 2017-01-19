@@ -118,7 +118,7 @@ namespace PropertyWriterTest
 			model.IsInstanceOf<ClassProperty>();
 
 			var prop = (ClassProperty)model;
-			prop.Type.Is(typeof(ReferenceClass));
+			prop.ValueType.Is(typeof(ReferenceClass));
 			prop.Members.Length.Is(2);
 			prop.Members[0].IsInstanceOf<IntProperty>();
 			prop.Members[1].IsInstanceOf<ReferenceByIntProperty>();

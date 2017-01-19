@@ -8,18 +8,18 @@ using System.Reactive;
 
 namespace PropertyWriter.Models.Properties
 {
-    class StructProperty : PropertyModel, IStructureProperty
+    public class StructProperty : PropertyModel, IStructureProperty
     {
         private StructureHolder StructureValue { get; }
 
-        public Type Type { get; }
+        public override Type ValueType { get; }
         public IPropertyModel[] Members => StructureValue.Properties.ToArray();
         public override ReactiveProperty<object> Value { get; }
 		public IObservable<Unit> OnChanged => StructureValue.ValueChanged;
 
 		public StructProperty(Type type, PropertyFactory modelFactory)
         {
-            Type = type;
+            ValueType = type;
             if (!type.IsValueType)
             {
                 throw new ArgumentException("type が構造体を表す Type クラスではありません。");

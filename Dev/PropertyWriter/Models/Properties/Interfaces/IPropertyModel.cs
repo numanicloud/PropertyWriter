@@ -4,9 +4,10 @@ using System;
 
 namespace PropertyWriter.Models.Properties.Interfaces
 {
-    interface IPropertyModel
+    public interface IPropertyModel
     {
         ReactiveProperty<object> Value { get; }
+		Type ValueType { get; }
         ReactiveProperty<string> Title { get; }
         PropertyInfo PropertyInfo { get; set; }
 		IObservable<Exception> OnError { get; }

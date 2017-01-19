@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class IntViewModel : PropertyViewModel<IntProperty>
+	public class IntViewModel : PropertyViewModel<IntProperty>
 	{
 		public ReactiveProperty<int> IntValue => Property.IntValue;
 		public override IObservable<Unit> OnChanged => Property.IntValue.Select(x => Unit.Default);

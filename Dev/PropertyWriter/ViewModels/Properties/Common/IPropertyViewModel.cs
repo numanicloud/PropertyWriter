@@ -4,7 +4,7 @@ using System.Reactive;
 
 namespace PropertyWriter.ViewModels.Properties.Common
 {
-	interface IPropertyViewModel
+	public interface IPropertyViewModel
 	{
 		ReactiveProperty<object> Value { get; }
 		ReactiveProperty<string> FormatedString { get; }

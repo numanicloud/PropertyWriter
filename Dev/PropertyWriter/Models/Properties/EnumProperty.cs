@@ -5,16 +5,16 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.Models.Properties
 {
-    class EnumProperty : PropertyModel
+    public class EnumProperty : PropertyModel
     {
-        public Type Type { get; private set; }
+        public override Type ValueType { get; }
         public object[] EnumValues { get; private set; }
         public ReactiveProperty<object> EnumValue { get; set; } = new ReactiveProperty<object>();
         public override ReactiveProperty<object> Value => EnumValue;
 
-        public EnumProperty(Type type)
+		public EnumProperty(Type type)
         {
-            Type = type;
+            ValueType = type;
             if (!type.IsEnum)
             {
                 throw new ArgumentException("type が列挙型を表す Type クラスではありません。");

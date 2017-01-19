@@ -10,7 +10,7 @@ using System.Reactive;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class SubtypingViewModel : PropertyViewModel<SubtypingProperty>
+	public class SubtypingViewModel : PropertyViewModel<SubtypingProperty>
 	{
 		private ReactiveProperty<IPropertyViewModel> Instance { get; }
 
@@ -19,11 +19,11 @@ namespace PropertyWriter.ViewModels.Properties
 		public ReactiveCommand EditCommand { get; }
 		public override IObservable<Unit> OnChanged { get; }
 
-		public SubtypingViewModel(SubtypingProperty property)
+		public SubtypingViewModel(SubtypingProperty property, ViewModelFactory factory)
 			: base(property)
         {
 			Instance = Property.Model.Where(x => x != null)
-				.Select(ViewModelFactory.Create)
+				.Select(x => factory.Create(x, true))
 				.ToReactiveProperty();
 
 			EditCommand = property.Model.Select(x => x != null)

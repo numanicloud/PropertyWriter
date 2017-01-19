@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	class FloatViewModel : PropertyViewModel<FloatProperty>
+	public class FloatViewModel : PropertyViewModel<FloatProperty>
 	{
         public ReactiveProperty<float> FloatValue => Property.FloatValue;
 		public override IObservable<Unit> OnChanged => Property.FloatValue.Select(x => Unit.Default);

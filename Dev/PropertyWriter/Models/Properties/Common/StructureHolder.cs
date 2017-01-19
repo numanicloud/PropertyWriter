@@ -12,7 +12,7 @@ using System.Reactive.Linq;
 
 namespace PropertyWriter.Models.Properties.Common
 {
-    internal class StructureHolder
+    public class StructureHolder
     {
 		private Subject<Unit> ValueChangedSubject { get; } = new Subject<Unit>();
 		private Subject<Exception> OnErrorSubject { get; } = new Subject<Exception>();

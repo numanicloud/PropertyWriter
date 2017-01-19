@@ -18,16 +18,13 @@ namespace PropertyWriter.ViewModels
 		{
 			Model.Value = model;
 			CloseCommand.Subscribe(x => Messenger.Raise(new WindowActionMessage(WindowAction.Close, "Close")));
-			Model.Value.OnError.Subscribe(ErrorHandler("エラー"));
+			Model.Value.OnError.Subscribe(e => ShowError(e, "エラー"));
 		}
 
-		private Action<Exception> ErrorHandler(string message)
+		private void ShowError(Exception exception, string message)
 		{
-			return exception =>
-			{
-				var vm = new ErrorViewModel(message, exception);
-				Messenger.Raise(new TransitionMessage(vm, "Error"));
-			};
+			var vm = new ErrorViewModel(message, exception);
+			Messenger.Raise(new TransitionMessage(vm, "Error"));
 		}
 	}
 }

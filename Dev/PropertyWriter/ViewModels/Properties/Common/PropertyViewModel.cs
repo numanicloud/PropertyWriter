@@ -8,7 +8,7 @@ using System.Reactive.Subjects;
 
 namespace PropertyWriter.ViewModels.Properties.Common
 {
-	abstract class PropertyViewModel<TProperty> : Livet.ViewModel, IPropertyViewModel
+	public abstract class PropertyViewModel<TProperty> : Livet.ViewModel, IPropertyViewModel
 		where TProperty : IPropertyModel
 	{
 		protected Subject<Exception> OnErrorSubject { get; }

@@ -2,7 +2,7 @@
 
 namespace PropertyWriter.Models.Info
 {
-	class SubTypeInfo
+	public class SubTypeInfo
 	{
 		public SubTypeInfo(Type type, string name)
 		{

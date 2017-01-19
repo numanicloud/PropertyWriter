@@ -33,6 +33,8 @@ namespace PropertyWriter.ViewModels
 
 		public MainViewModel()
 		{
+			var factory = new ViewModelFactory();
+
 			Manager.Value = new EditorLifecycleManager(this);
 			State.Value = new EmptyState(this, Manager.Value);
 
@@ -40,7 +42,7 @@ namespace PropertyWriter.ViewModels
                 .SelectMany(x => x.Root)
                 .Where(x => x != null)
 				.Select(x => x.Structure.Properties)
-				.Select(x => x.Select(ViewModelFactory.Create).ToArray())
+				.Select(x => x.Select(y => factory.Create(y, true)).ToArray())
 				.ToReactiveProperty();
 			Title = State.Select(x => "PropertyWriter" + x.Title)
 				.ToReactiveProperty();
@@ -64,7 +66,6 @@ namespace PropertyWriter.ViewModels
 
 			Masters.Where(x => x != null)
 				.SelectMany(x => Observable.Merge(x.Select(y => y.OnError)))
-				.Do(x => Debugger.Log(1, "Error", "Error from Main\n"))
 				.Subscribe(err => ShowError(err, "エラー"));
 		}
 

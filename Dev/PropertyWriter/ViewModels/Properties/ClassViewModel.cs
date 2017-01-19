@@ -11,13 +11,13 @@ using System.Diagnostics;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-    class ClassViewModel : PropertyViewModel<ClassProperty>
+    public class ClassViewModel : PropertyViewModel<ClassProperty>
 	{
         public IPropertyViewModel[] Members { get; }
         public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
 		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
 
-        public ClassViewModel(ClassProperty property)
+        public ClassViewModel(ClassProperty property, ViewModelFactory factory)
 			: base(property)
         {
 			FormatedString.Dispose();
@@ -30,7 +30,7 @@ namespace PropertyWriter.ViewModels.Properties
                 new TransitionMessage(
                     new BlockViewModel(this),
                     "BlockWindow")));
-			Members = property.Members.Select(ViewModelFactory.Create).ToArray();
+			Members = property.Members.Select(x => factory.Create(x, true)).ToArray();
         }
 	}
 }

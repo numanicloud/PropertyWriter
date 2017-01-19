@@ -1,4 +1,5 @@
-﻿using Livet.Messaging.Windows;
+﻿using Livet.Messaging;
+using Livet.Messaging.Windows;
 using PropertyWriter.Models;
 using Reactive.Bindings;
 using System;
@@ -29,7 +30,7 @@ namespace PropertyWriter.ViewModels.ProjectSetting
             Message.Value = message + "プロジェクト型を元の型に設定しなおしてください。必要であればアセンブリを設定しなおしてください。";
 
             CommitCommand = clone_.IsValid.ToReactiveCommand();
-			CommitCommand.PublishTask(x => CommitAsync(), e => { });
+			CommitCommand.PublishTask(x => CommitAsync(), e => ShowError(e, "エラー"));
         }
 
         private async Task CommitAsync()
@@ -50,5 +51,11 @@ namespace PropertyWriter.ViewModels.ProjectSetting
             IsCommitted.Value = true;
             Messenger.Raise(new WindowActionMessage(WindowAction.Close));
         }
-    }
+
+		private void ShowError(Exception exception, string message)
+		{
+			var vm = new ErrorViewModel(message, exception);
+			Messenger.Raise(new TransitionMessage(vm, "Error"));
+		}
+	}
 }
