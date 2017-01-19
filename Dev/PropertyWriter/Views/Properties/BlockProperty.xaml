@@ -6,7 +6,8 @@
 										xmlns:views="clr-namespace:PropertyWriter.Views"
 										xmlns:properties="clr-namespace:PropertyWriter.Views.Properties"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-										xmlns:l="http://schemas.livet-mvvm.net/2011/wpf">
+										xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+										xmlns:vm="clr-namespace:PropertyWriter.ViewModels.Properties">
 
 	<DataTemplate DataType="{x:Type instance:ComplicateCollectionViewModel}">
 		<properties:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
@@ -66,7 +67,7 @@
 		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate DataType="{x:Type instance:PluginViewModel}">
+	<DataTemplate DataType="{x:Type vm:PluginViewModel}">
 		<ContentControl Content="{Binding UserControl}"/>
 	</DataTemplate>
 

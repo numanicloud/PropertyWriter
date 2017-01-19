@@ -42,12 +42,12 @@
 			<Label Content="電撃:" Grid.Column="2" Grid.Row="1"/>
 			<Label Content="根源:" Grid.Column="2" Grid.Row="2"/>
 
-			<ContentControl Content="{Binding Blow}" Grid.Column="1"/>
-			<ContentControl Content="{Binding Gash}" Grid.Column="1" Grid.Row="1"/>
-			<ContentControl Content="{Binding Burn}" Grid.Column="1" Grid.Row="2"/>
-			<ContentControl Content="{Binding Chill}" Grid.Column="3"/>
-			<ContentControl Content="{Binding Electric}" Grid.Column="3" Grid.Row="1"/>
-			<ContentControl Content="{Binding Primal}" Grid.Column="3" Grid.Row="2"/>
+			<ContentControl Content="{Binding Blow}" Focusable="False" Grid.Column="1"/>
+			<ContentControl Content="{Binding Gash}" Focusable="False" Grid.Column="1" Grid.Row="1"/>
+			<ContentControl Content="{Binding Burn}" Focusable="False" Grid.Column="1" Grid.Row="2"/>
+			<ContentControl Content="{Binding Chill}" Focusable="False" Grid.Column="3"/>
+			<ContentControl Content="{Binding Electric}" Focusable="False" Grid.Column="3" Grid.Row="1"/>
+			<ContentControl Content="{Binding Primal}" Focusable="False" Grid.Column="3" Grid.Row="2"/>
 		</Grid>
 	</GroupBox>
 </UserControl>

@@ -11,6 +11,9 @@ using System.Reactive;
 using Reactive.Bindings;
 using System.ComponentModel.Composition;
 using PropertyWriter.ViewModels.Properties.Common;
+using PropertyWriter.ViewModels.Properties.Extensibility;
+using PropertyWriter.ViewModels;
+using PropertyWriter.Models.Properties;
 
 namespace IntSliderPlugin
 {
@@ -24,15 +27,13 @@ namespace IntSliderPlugin
 
 	public class SliderIntViewModel : PluginViewModel
 	{
-		public override IObservable<Unit> OnChanged => Value.Select(x => Unit.Default);
 		public override UserControl UserControl => new IntSlider(this);
-
-		public ReactiveProperty<int> IntValue { get; }
+		public ReactiveProperty<int> IntValue { get; set; }
 
 		public SliderIntViewModel(IPropertyModel model, ViewModelFactory factory)
 			: base(model, factory)
 		{
-			IntValue = Router.GetIntProperty(model, "");
+			IntValue = Compounder.CreateIntViewModel("").IntValue;
 		}
 	}
 }

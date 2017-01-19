@@ -138,8 +138,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\Exceptions\PwInvalidStructureException.cs" />
     <Compile Include="Models\Exceptions\PwProjectException.cs" />
-    <Compile Include="ViewModels\Properties\IPluginViewModelFactory.cs" />
-    <Compile Include="ViewModels\PropertyRouter.cs" />
+    <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModel.cs" />
+    <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModelFactory.cs" />
+    <Compile Include="ViewModels\Properties\Extensibility\PropertyRouter.cs" />
     <Compile Include="Models\Serialize\CustomSerializer.cs" />
     <Compile Include="Models\Properties\Interfaces\ICollectionProperty.cs" />
     <Compile Include="Models\Properties\Interfaces\PropertyModel.cs" />
@@ -175,7 +176,7 @@
     <Compile Include="ViewModels\Properties\Common\StructureHolderViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\ViewModelFactory.cs" />
     <Compile Include="ViewModels\Properties\MultilineStringViewModel.cs" />
-    <Compile Include="ViewModels\Properties\PluginViewModel.cs" />
+    <Compile Include="ViewModels\Properties\Extensibility\IPluginPropertyViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
     <Compile Include="ViewModels\Editor\EditorState.cs" />
     <Compile Include="Views\ClosingWindow.xaml.cs">

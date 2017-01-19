@@ -4,9 +4,14 @@
 										xmlns:instance="clr-namespace:PropertyWriter.ViewModels.Properties;assembly="
 										xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 										xmlns:messaging="http://schemas.livet-mvvm.net/2011/wpf"
-										xmlns:v="clr-namespace:PropertyWriter.Views">
+										xmlns:v="clr-namespace:PropertyWriter.Views"
+										xmlns:vi="clr-namespace:PropertyWriter.ViewModels.Properties">
 
 	<ResourceDictionary x:Key="Editor" Source="../EditorStyles.xaml"/>
+
+	<DataTemplate DataType="{x:Type vi:PluginViewModel}">
+		<ContentControl Content="{Binding UserControl}" Focusable="False"/>
+	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:IntViewModel}">
 		<ContentControl Template="{StaticResource TitledField}" Focusable="False">
@@ -122,10 +127,6 @@
 				<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}" HorizontalAlignment="Left"/>
 			</StackPanel>
 		</ContentControl>
-	</DataTemplate>
-
-	<DataTemplate DataType="{x:Type instance:PluginViewModel}">
-		<ContentControl Content="{Binding UserControl}" Focusable="False"/>
 	</DataTemplate>
 
 </ResourceDictionary>
