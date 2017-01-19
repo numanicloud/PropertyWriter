@@ -29,6 +29,9 @@ namespace IntSliderPlugin
 
 	public class ToleranceViewModel : PluginViewModel
 	{
+		[Import("ToleranceView")]
+		public override UserControl UserControl { get; }
+
 		public IntViewModel Blow { get; }
 		public IntViewModel Gash { get; }
 		public IntViewModel Burn { get; }
@@ -36,23 +39,20 @@ namespace IntSliderPlugin
 		public IntViewModel Electric { get; }
 		public IntViewModel Primal { get; }
 
-		[Import("ToleranceView")]
-		public override UserControl UserControl { get; }
-
 		public ToleranceViewModel(IPropertyModel model, ViewModelFactory factory)
 			: base(model, factory)
 		{
+			var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+			var container = new CompositionContainer(catalog);
+			UserControl = container.GetExportedValue<UserControl>("ToleranceView");
+			UserControl.DataContext = this;
+
 			Blow = Compounder.CreateIntViewModel("Blow");
 			Gash = Compounder.CreateIntViewModel("Gash");
 			Burn = Compounder.CreateIntViewModel("Burn");
 			Chill = Compounder.CreateIntViewModel("Chill");
 			Electric = Compounder.CreateIntViewModel("Electric");
 			Primal = Compounder.CreateIntViewModel("Primal");
-
-			var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-			var container = new CompositionContainer(catalog);
-			UserControl = container.GetExportedValue<UserControl>("ToleranceView");
-			UserControl.DataContext = this;
 		}
 	}
 }

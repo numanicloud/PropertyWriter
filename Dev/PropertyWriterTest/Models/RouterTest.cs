@@ -35,7 +35,7 @@ namespace PropertyWriterTest.Models
 		}
 
 		[TestMethod]
-		public void TestMethod1()
+		public void RoutingTest()
 		{
 			var factory = new PropertyFactory();
 			var model = (ClassProperty)factory.Create(typeof(Hoge), "Hoge");
