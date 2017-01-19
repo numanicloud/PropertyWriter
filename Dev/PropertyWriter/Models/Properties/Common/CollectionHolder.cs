@@ -7,7 +7,7 @@ using System.Reactive.Subjects;
 
 namespace PropertyWriter.Models.Properties.Common
 {
-	internal class CollectionHolder
+	public class CollectionHolder
 	{
 		public static readonly string ElementTitle = "Element";
 
@@ -78,6 +78,10 @@ namespace PropertyWriter.Models.Properties.Common
 
 		public void RemoveAt(int index)
 		{
+			if (index < 0 || index >= Collection.Count)
+			{
+				return;
+			}
 			Collection[index].error.Dispose();
 			Collection.RemoveAt(index);
 		}

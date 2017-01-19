@@ -107,11 +107,15 @@
     <Compile Include="Common\TestData.cs" />
     <Compile Include="Common\TestResources.cs" />
     <Compile Include="Models\ModelConverterTest.cs" />
+    <Compile Include="Models\OnChangedTest.cs" />
     <Compile Include="Models\RouterTest.cs" />
     <Compile Include="Models\TypeParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\PropertyFactoryTest.cs" />
     <Compile Include="Models\PropertyTest.cs" />
+    <Compile Include="ViewModels\ErrorTest.cs" />
+    <Compile Include="ViewModels\OnChangedPropagatingTest.cs" />
+    <Compile Include="ViewModels\OnChangedTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PropertyWriter.Annotation\PropertyWriter.Annotation.csproj">

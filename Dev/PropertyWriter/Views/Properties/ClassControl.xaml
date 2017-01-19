@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:vm="clr-namespace:PropertyWriter.ViewModels.Properties.Common"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -16,20 +17,6 @@
 				<WrapPanel Orientation="Vertical"/>
 			</ItemsPanelTemplate>
 		</ItemsControl.ItemsPanel>
-		<ItemsControl.ItemTemplate>
-			<DataTemplate DataType="model:InstanceAndMemberInfo">
-				<Grid MinHeight="26" Margin="0,0,20,0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
-						<ColumnDefinition Width="Auto" SharedSizeGroup="ColonColumn"/>
-						<ColumnDefinition Width="*" SharedSizeGroup="ValueColumn"/>
-					</Grid.ColumnDefinitions>
-					<Label Content="{Binding Title.Value}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-					<Label Content=":" Grid.Column="1" VerticalAlignment="Top"/>
-					<ContentControl Content="{Binding}" Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
-				</Grid>
-			</DataTemplate>
-		</ItemsControl.ItemTemplate>
 	</ItemsControl>
 
 </UserControl>

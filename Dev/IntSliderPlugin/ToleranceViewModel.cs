@@ -11,6 +11,8 @@ using System.Reactive;
 using System.Windows.Controls;
 using System.Reactive.Linq;
 using PropertyWriter.ViewModels.Properties.Common;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 
 namespace IntSliderPlugin
 {
@@ -31,15 +33,9 @@ namespace IntSliderPlugin
 		public IntViewModel Electric { get; }
 		public IntViewModel Primal { get; }
 
-		public override UserControl UserControl => new ToleranceView(this);
-
-		public override IObservable<Unit> OnChanged => Blow.Value
-			.Merge(Gash.Value)
-			.Merge(Burn.Value)
-			.Merge(Chill.Value)
-			.Merge(Electric.Value)
-			.Merge(Primal.Value)
-			.Select(x => Unit.Default);
+		[Import("ToleranceView")]
+		public override UserControl UserControl { get; }
+		public override IObservable<Unit> OnChanged { get; }
 
 		public ToleranceViewModel(IPropertyModel model, ViewModelFactory factory) : base(model, factory)
 		{
@@ -51,6 +47,14 @@ namespace IntSliderPlugin
 			Chill = Create("Chill");
 			Electric = Create("Electric");
 			Primal = Create("Primal");
+
+			OnChanged = Observable.Merge(Blow.OnChanged, Gash.OnChanged, Burn.OnChanged,
+				Chill.OnChanged, Electric.OnChanged, Primal.OnChanged);
+
+			var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+			var container = new CompositionContainer(catalog);
+			UserControl = container.GetExportedValue<UserControl>("ToleranceView");
+			UserControl.DataContext = this;
 		}
 	}
 }

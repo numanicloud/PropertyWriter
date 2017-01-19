@@ -14,7 +14,7 @@ using PropertyWriter.ViewModels.Properties.Common;
 
 namespace IntSliderPlugin
 {
-	[Export(typeof(IPluginViewModelFactory))]
+	//[Export(typeof(IPluginViewModelFactory))]
 	public class SliderIntPlugin : IPluginViewModelFactory
 	{
 		public Type EntityType => typeof(int);

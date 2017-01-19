@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,12 @@ namespace IntSliderPlugin
 	/// <summary>
 	/// ToleranceView.xaml の相互作用ロジック
 	/// </summary>
+	[Export("ToleranceView", typeof(UserControl))]
 	public partial class ToleranceView : UserControl
 	{
-		public ToleranceView(ToleranceViewModel vm)
+		public ToleranceView()
 		{
 			InitializeComponent();
-			DataContext = vm;
 		}
 	}
 }

@@ -83,7 +83,7 @@ namespace PropertyWriter.ViewModels
 				e => ShowError(e, "プロジェクトの作成に失敗しました。"));
 			OpenProjectCommand.PublishTask(x => State.Value.OpenAsync(),
 				e => ShowError(e, "データを読み込めませんでした。"));
-			SaveCommand.PublishTask(x => State.Value.SaveAsAsync(),
+			SaveCommand.PublishTask(x => State.Value.SaveAsync(),
 				e => ShowError(e, "保存を中止し、以前のファイルに復元しました。"));
 			SaveAsCommand.PublishTask(x => State.Value.SaveAsAsync(),
 				e => ShowError(e, "保存を中止しました。"));

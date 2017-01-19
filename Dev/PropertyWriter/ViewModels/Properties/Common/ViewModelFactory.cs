@@ -15,8 +15,14 @@ namespace PropertyWriter.ViewModels.Properties.Common
 	{
 		public Dictionary<Type, IPluginViewModelFactory> Factories { get; set; }
 
-		public ViewModelFactory()
+		public ViewModelFactory(bool usePlugin = true)
 		{
+			if (!usePlugin)
+			{
+				Factories = new Dictionary<Type, IPluginViewModelFactory>();
+				return;
+			}
+
 			if (!Directory.Exists(App.PluginDirectory))
 			{
 				Directory.CreateDirectory(App.PluginDirectory);

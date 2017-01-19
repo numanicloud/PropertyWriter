@@ -41,5 +41,12 @@ namespace PropertyWriterTest.Models
             var e1m1 = e1.Members[0] as IntProperty;
             e1m1.IntValue.Value.Is(2);
         }
+
+		[TestMethod]
+		public void RemoveFromEmptyTest()
+		{
+			var prop = new ComplicateCollectionProperty(typeof(TestClass[]), new PropertyFactory());
+			prop.RemoveElementAt(-1);
+		}
     }
 }

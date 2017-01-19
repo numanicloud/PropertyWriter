@@ -9,29 +9,28 @@ namespace PropertyWriter.Models.Properties
 {
     public class BasicCollectionProperty : PropertyModel, ICollectionProperty
     {
-        private CollectionHolder collectionValue_;
-
-		public override Type ValueType => collectionValue_.Type;
+        public CollectionHolder CollectionValue { get; }
+		public override Type ValueType => CollectionValue.Type;
 		public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
         public override ReactiveProperty<object> Value { get; }
 
         public BasicCollectionProperty(Type type, PropertyFactory modelFactory)
         {
-            collectionValue_ = new CollectionHolder(type, modelFactory);
-            Value = collectionValue_.Value.Cast<object>().ToReactiveProperty();
-			collectionValue_.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
+            CollectionValue = new CollectionHolder(type, modelFactory);
+            Value = CollectionValue.Value.Cast<object>().ToReactiveProperty();
+			CollectionValue.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
 
-			Collection = collectionValue_.Collection.ToReadOnlyReactiveCollection(x => x.model);
+			Collection = CollectionValue.Collection.ToReadOnlyReactiveCollection(x => x.model);
 		}
 
         public IPropertyModel AddNewElement()
         {
-            return collectionValue_.AddNewElement();
+            return CollectionValue.AddNewElement();
         }
 
         public void RemoveAt(int index)
         {
-            collectionValue_.RemoveAt(index);
+            CollectionValue.RemoveAt(index);
         }
     }
 }

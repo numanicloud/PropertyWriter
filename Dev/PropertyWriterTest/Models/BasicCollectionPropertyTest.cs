@@ -49,5 +49,12 @@ namespace PropertyWriterTest
             property.Collection.ToArray()
                 .IsStructuralEqual(expected);
         }
+
+		[TestMethod]
+		public void RemoveFromEmptyTest()
+		{
+			var prop = new BasicCollectionProperty(typeof(int[]), new PropertyFactory());
+			prop.RemoveAt(-1);
+		}
     }
 }

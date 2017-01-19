@@ -9,6 +9,9 @@ using System.Reactive;
 using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.Models.Properties.Common;
 using System.Windows.Controls;
+using PropertyWriter.Models.Properties;
+using System.Reactive.Linq;
+using System.Collections.Specialized;
 
 namespace PropertyWriter.ViewModels.Properties
 {
@@ -16,6 +19,8 @@ namespace PropertyWriter.ViewModels.Properties
 	{
 		protected PropertyRouter Router { get; }
 		public abstract UserControl UserControl { get; }
+
+		public override IObservable<Unit> OnChanged { get; }
 
 		public PluginViewModel(IPropertyModel model, ViewModelFactory factory) : base(model)
 		{

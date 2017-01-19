@@ -12,14 +12,14 @@
 
 	<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
 		<Setter Property="Margin" Value="4"/>
-        <Setter Property="Foreground" Value="White"/>
-    </Style>
+		<Setter Property="Foreground" Value="White"/>
+	</Style>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-        <Setter Property="Margin" Value="0"/>
-    </Style>
+	<Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+		<Setter Property="Margin" Value="0"/>
+	</Style>
 
-    <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
+	<Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
 		<Setter Property="Margin" Value="0,3"/>
 	</Style>
 
@@ -27,8 +27,34 @@
 		<Setter Property="Margin" Value="3,8,3,3"/>
 	</Style>
 
-    <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
-        <Setter Property="MaxDropDownHeight" Value="200"/>
-    </Style>
+	<Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
+		<Setter Property="MaxDropDownHeight" Value="200"/>
+	</Style>
+
+	<ControlTemplate x:Key="TitledField" TargetType="ContentControl">
+		<Grid MinHeight="26" Margin="0,0,20,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
+				<ColumnDefinition Width="Auto" SharedSizeGroup="ColonColumn"/>
+				<ColumnDefinition Width="*" SharedSizeGroup="ValueColumn"/>
+			</Grid.ColumnDefinitions>
+			<Label Content="{Binding Title.Value}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+			<Label Content=":" Grid.Column="1" VerticalAlignment="Top"/>
+			<ContentPresenter Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
+		</Grid>
+	</ControlTemplate>
+	
+	<ControlTemplate x:Key="NonAlignedTitledField" TargetType="ContentControl">
+		<Grid MinHeight="26" Margin="0,0,20,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Label Content="{Binding Title.Value}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+			<Label Content=":" Grid.Column="1" VerticalAlignment="Top"/>
+			<ContentPresenter Focusable="False" Grid.Column="2" VerticalAlignment="Center"/>
+		</Grid>
+	</ControlTemplate>
 
 </ResourceDictionary>
