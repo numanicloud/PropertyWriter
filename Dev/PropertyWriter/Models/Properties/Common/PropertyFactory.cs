@@ -107,21 +107,28 @@ namespace PropertyWriter.Models.Properties.Common
 				var property = (PropertyInfo)member;
 				if (property.PropertyType.IsArray == filterArrayType)
 				{
-					yield return new MasterInfo(attr.Key, property, Create(property.PropertyType, attr.Name));
+					var title = attr.Name ?? property.Name;
+					yield return new MasterInfo(attr.Key, property, Create(property.PropertyType, title));
 				}
 			}
 		}
 
 		public IEnumerable<IPropertyModel> GetMembers(Type type)
 		{
-			var properties = type.GetProperties()
-				.Select(MakeModel)
+			var properties = type.GetProperties();
+
+			if (properties.Any(x => x.PropertyType == type))
+			{
+				throw new InvalidOperationException($"クラス {type.Name} は依存関係が循環しています。");
+			}
+
+			var models = properties.Select(MakeModel)
 				.Where(x => x != null)
 				.ToArray();
 
-			LoadBackwardBind(type, properties);
+			LoadBackwardBind(type, models);
 
-			return properties.Cast<IPropertyModel>().ToArray();
+			return models.Cast<IPropertyModel>().ToArray();
 		}
 
 		private static void LoadBackwardBind(Type type, IPropertyModel[] properties)

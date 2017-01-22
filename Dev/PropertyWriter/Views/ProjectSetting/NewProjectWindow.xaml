@@ -10,16 +10,16 @@
         mc:Ignorable="d"
         Title="NewProjectWindow" Width="480" SizeToContent="Height">
 
-    <i:Interaction.Triggers>
-        <messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">
-            <messaging:WindowInteractionMessageAction/>
-        </messaging:InteractionMessageTrigger>
-    </i:Interaction.Triggers>
+	<i:Interaction.Triggers>
+		<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}">
+			<messaging:WindowInteractionMessageAction/>
+		</messaging:InteractionMessageTrigger>
+	</i:Interaction.Triggers>
 
-    <DockPanel>
-        <local:ProjectSettingUserControl DataContext="{Binding ProjectSetting}" DockPanel.Dock="Top"/>
-        <mat:ColorZone Mode="Light" DockPanel.Dock="Bottom">
-            <Button HorizontalAlignment="Right" Content="作成" Command="{Binding CommitCommand}"/>
-        </mat:ColorZone>
-    </DockPanel>
+	<DockPanel>
+		<local:ProjectSettingUserControl DataContext="{Binding ProjectSetting}" DockPanel.Dock="Top"/>
+		<mat:ColorZone Mode="Light" DockPanel.Dock="Bottom">
+			<Button HorizontalAlignment="Right" Content="作成" Command="{Binding CommitCommand}"/>
+		</mat:ColorZone>
+	</DockPanel>
 </Window>

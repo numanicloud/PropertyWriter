@@ -22,27 +22,29 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:IntViewModel}">
-		<TextBox Text="{Binding Path=IntValue.Value}" GotFocus="SelectAll"/>
+		<TextBox Text="{Binding Path=IntValue.Value}" GotFocus="SelectAll" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:BoolViewModel}">
-		<CheckBox IsChecked="{Binding Path=BoolValue.Value}"/>
+		<CheckBox IsChecked="{Binding Path=BoolValue.Value}" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:StringViewModel}">
-		<TextBox Text="{Binding Path=StringValue.Value}" GotFocus="SelectAll" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="24" MinWidth="100"/>
+		<TextBox Text="{Binding Path=StringValue.Value}" GotFocus="SelectAll" AcceptsReturn="True"
+						 TextWrapping="WrapWithOverflow" Height="24" MinWidth="100" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:MultilineStringViewModel}">
-		<TextBox Text="{Binding Path=StringValue.Value}" GotFocus="SelectAll" AcceptsReturn="True" TextWrapping="WrapWithOverflow" Height="Auto" MinWidth="100"/>
+		<TextBox Text="{Binding Path=StringValue.Value}" GotFocus="SelectAll" AcceptsReturn="True"
+						 TextWrapping="WrapWithOverflow" Height="Auto" MinWidth="100" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:FloatViewModel}">
-		<TextBox Text="{Binding Path=FloatValue.Value}" GotFocus="SelectAll" Height="24" MinWidth="100"/>
+		<TextBox Text="{Binding Path=FloatValue.Value}" GotFocus="SelectAll" Height="24" MinWidth="100" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:EnumViewModel}">
-		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}"/>
+		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:BasicCollectionViewModel}">

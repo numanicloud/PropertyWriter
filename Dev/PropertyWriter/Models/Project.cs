@@ -79,7 +79,7 @@ namespace PropertyWriter.Models
 				return null;
 			}
 			return assembly.GetTypes()
-				.FirstOrDefault(x => x.Name == ProjectTypeName.Value);
+				.FirstOrDefault(x => x.FullName == ProjectTypeName.Value);
 		}
 
 		public void InitializeRoot(Project[] dependencies)

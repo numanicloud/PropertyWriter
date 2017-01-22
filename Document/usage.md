@@ -1,121 +1,99 @@
-# PropertyWriterの使い方
+# PropertyWriterの基本的な使い方
 
-データ入力したいデータ型が定義されているプロジェクトに`[PwProject]`属性を付けた型を定義し、
-そこにデータ入力したいデータ型をプロパティとして定義し、そのプロパティに`[PwMaster]`属性を付けてください。
+## 基本的な使いかた
+
+PropertyWriterで作業をする前に、データ入力したいクラスを宣言する必要があります。
+宣言の例をまず示します。
 
 ```csharp
-[PwProject]
-class MyProject
+public class Hoge
 {
-    [PwMaster]
-    public int[] Data { get; set; }
+    [PwMember]      // フィールドを提供するプロパティにつける
+    public int X { get; set; }
+    [PwMember]
+    public string Message { get; set; }
+    [PwMember]
+    public bool Check { get; set; }
+}
 
-    [PwMaster(key: "Ref")]
+[PwProject]         // データ編集プロジェクトのトップにつける（プロジェクト型）
+public class MyProject
+{
+    [PwMaster]      // プロジェクト型でのPwMember
+    public int[] Data { get; set; }
+    [PwMaster]
     public Hoge[] Referencable { get; set; }
 }
 ```
 
 `[PwProject]`が付いた型を**プロジェクト型**、`[PwMaster]`が付いたプロパティを**マスター プロパティ**と呼びます。
+プロジェクト型はひとつのアセンブリにいくつあっても構いません。
 
-## 対応型
+準備ができたら、そのプロジェクトをビルドすることでアセンブリ(dllまたはexe)を生成してください。
+ここでは`PropertyWriter.DocSample.dll`というアセンブリを生成しました。
 
-* int
-* float
-* bool
-* string
+PropertyWriterでは、プロジェクト型に属するプロパティにデータを入力していくことができます。
+ある一つのプロジェクト型に対するデータ入力作業を管理するファイルを、**プロジェクト**と呼びます。
+プロジェクトファイルの拡張子は基本的に`.pwproj`です。
+
+ではプロジェクトを作成するために、PropertyWriterを起動します。
+「ファイル > 新規プロジェクト」をクリックすると、以下のようなプロジェクト設定画面が表示されます。
+ここに、プロジェクトの設定を入力してから"作成"ボタンでプロジェクトを作成できます。
+設定項目をこの後示します。
+
+![プロジェクト設定](img/ProjectSetting.png)
+
+設定項目は以下の通りです。
+
+|項目名|説明|
+|---|---|
+|アセンブリ|データ入力の対象となるプロジェクト型があるアセンブリ(dllまたはexe)を指定します。|
+|使用する型|"アセンブリ"で指定したアセンブリ内にあるプロジェクト型から、このプロジェクトで作業対象となる型をドロップダウンリストで選択します。|
+|出力パス|入力したデータを出力するパスを指定します。プロジェクトファイルの保存先とは違うことに注意してください。|
+|依存プロジェクト|ここにプロジェクトファイルを設定することで、他のプロジェクトの出力に保存されているデータを利用することができます(詳しくは後述)。複数設定できます。|
+
+"参照…"ボタンでWindowsのファイル エクスプローラーを利用できます。
+
+"作成"ボタンでプロジェクトを作成すると次のような画面になり、データ入力作業を始めることができます。
+
+![プロジェクトの基本](img/Sample1.png)
+
+---
+
+データ入力のための型定義について、詳しく説明します。
+
+基本的にデータ入力をしたいプロパティを`[PwMember]`属性で宣言しますが、
+データ入力したい型の構造で一番上にくるクラスに`[PwProject]`属性を付け、
+`[PwProject]`属性のついた型の中では`[PwMember]`属性の代わりに`[PwMaster]`属性を使います。
+
+## 対応している型
+
+以下の型を持つプロパティに`[PwMember]`属性や`[PwMaster]`属性をつけると、データ入力をするフィールドが提供されます。
+
+* `int`
+* `float`
+* `bool`
+* `string`
 * 列挙型
 * 配列
-* 上記の型を組み合わせたクラス/構造体
+* クラス/構造体
     * 引数なしコンストラクタが定義されている必要があります
-    * データ入力したいプロパティに`[PwMember]`属性を付ける必要があります
 
-## 高度な機能
+`[PwProject]`, `[PwMaster]`, `[PwMember]`属性がついた型には引数なしのコンストラクタが定義されている必要があります。
+また、クラス間の参照関係が循環しているとエラーとなります。
 
-### 他のマスターをintのIDで参照する
+## フィールド サンプル
 
-リストで管理されているデータの中から１つをIDで参照する機能があります。
+それぞれの型のフィールドは以下のように表示されます。
 
-参照元のプロパティに`[PwReferenceMember]`属性を付与してください。
-引数は以下のとおりです：
+![](img/Types1.png)
+上から順に、`int`, `float`, `string`, `bool`, 列挙体, クラス, 単純な(intなどの)リスト, 複雑な(クラスなどの)リストです。
 
-```csharp
-[PwReferenceMember(masterKey: "参照先のMasterに設定したKey", IdFieldName: "参照先の型のIDを表すプロパティ名")]
-```
+左のタブから単純なリストである"BasicList"を選択すると、次のようにリストを編集するUIが表示されます。
+![](img/Types2.png)
+追加/削除ボタンで要素を編集することができます。
 
-例えば、PwMaster属性のkeyに"Ref"が指定されたマスターを参照するなら以下のようにしてください。
-
-```csharp
-class MySubData
-{
-    [PwReferenceMember(masterKey: "Ref", IdFieldName: nameof(Hoge.Id))]
-    public int Reference { get; set; }
-}
-```
-
-### 継承関係のあるクラスのいずれかを選んで入力する
-
-1つの基底クラスと、複数のその派生クラスがあるとき、どの実装クラスを入力するか選ぶことができます。
-
-基底クラスに`[PwSubtyping]`属性を付けてください。派生クラスに`[PwSubtyped]`属性を付けてください。
-いずれかのクラスが`[PwSubtyping]`が付いている型のプロパティを`[PwMember]`で指定したとき、
-そこに必要な派生クラスを選んで入力することができます。
-
-例：
-
-```csharp
-[PwSubtyping]
-class SubtypingClass
-{
-    [PwMember]
-    public int X { get; set; }
-}
-
-[PwSubtyped]
-class SubtypedClassA
-{
-    [PwMember]
-    public int Y { get; set; }
-}
-
-class SubtypedClassB
-{
-    [PwMember]
-    public int Z { get; set; }
-}
-
-class MyData
-{
-    [PwMember]
-    public SubtypingClass Subtyping { get; set; }
-}
-```
-
-### 複数行入力できるstring
-
-string型のプロパティに、`[PwMember]`の代わりに`[PwMultiLineTextMember]`を付与すると、
-複数行に渡る入力をサポートした文字列入力フィールドが表示できます。
-
-### シリアライズの方式をカスタマイズ可能
-
-デフォルトでは`DataContractJsonSerializer`によってjsonでデータが保存されますが、形式をカスタマイズできます。
-
-プロジェクト型にシリアライズ用の静的メソッドを定義し、`[PwSerializer]`属性を付けてください。
-同様にデシリアライズ用の静的メソッドを定義し、`[PwDeserializer]`属性を付けてください。
-以下のような引数・戻り値にしてください。メソッド名は自由でかまいません。
-
-```csharp
-// 第一引数は自分自身の型
-[PwSerializer]
-public static async Task Serialize(MyProject data, Stream stream)
-{
-    // シリアライズ処理
-}
-
-[PwDeserializer]
-public static async Task<MasterProject> Deserialize(Stream stream)
-{
-    // デシリアライズ処理
-}
-```
-
-引数に渡されてくるStreamクラスに対して、データが格納されるファイルへの読み書き処理を行えます。
+左のタブから複雑なリストである"ComplicateList"を選択すると、次のようにリストを編集するUIが表示されます。
+![](img/Types3.png)
+追加/削除ボタンで要素を編集することができます。左側のリストから要素をクリックすると、
+右側にその要素のプロパティ情報を編集するフィールドが表示されます。

@@ -35,7 +35,7 @@ namespace PropertyWriter.ViewModels.ProjectSetting
 		{
 			project_ = project;
 
-			ProjectType.Subscribe(x => project_.ProjectTypeName.Value = x?.Name);
+			ProjectType.Subscribe(x => project_.ProjectTypeName.Value = x?.FullName);
 			OpenAssemblyCommand.Subscribe(x => OpenAssembly());
 			SelectExportPathCommand.Subscribe(x => SelectExportPath());
 
@@ -93,7 +93,7 @@ namespace PropertyWriter.ViewModels.ProjectSetting
                     .ToArray();
                 if (ProjectTypeName.Value != null)
                 {
-                    ProjectType.Value = AvailableProjectTypes.Value.FirstOrDefault(x => x.Name == ProjectTypeName.Value);
+                    ProjectType.Value = AvailableProjectTypes.Value.FirstOrDefault(x => x.FullName == ProjectTypeName.Value);
                 }
             }
         }
