@@ -2,8 +2,8 @@
 
 PropertyWriterは、.NET で定義した型に対応したデータ入力UIを動的に提供するデータ入力ツールです。
 
-![](Document/img/Types3.png)
 ![](Document/img/Readability4.png)
+![](Document/img/Types3.png)
 
 現在バイナリを準備中です。しばらくお待ちください。
 
