@@ -5,24 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PropertyWriter.DocSample.ProjectBasic
+namespace PropertyWriter.DocSample.ProjectBasic1
 {
 	[PwProject]
-    public class MyProject
-    {
+	public class MyProject
+	{
 		[PwMaster]
 		public int Data { get; set; }
 		[PwMaster]
-		public Hoge Hoge { get; set; }
-	}
-
-	public class Hoge
-	{
-		[PwMember]
-		public int X { get; set; }
-		[PwMember]
 		public string Message { get; set; }
-		[PwMember]
-		public bool Check { get; set; }
 	}
 }

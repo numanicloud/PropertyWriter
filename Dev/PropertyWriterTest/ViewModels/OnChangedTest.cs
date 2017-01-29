@@ -65,7 +65,7 @@ namespace PropertyWriterTest.ViewModels
 			isCalled.IsTrue();
 		}
 
-		enum Hoge
+		public enum Hoge
 		{
 			A, B, C, D
 		}
@@ -83,7 +83,7 @@ namespace PropertyWriterTest.ViewModels
 			isCalled.IsTrue();
 		}
 
-		class MyClass
+		public class MyClass
 		{
 			[PwMember]
 			public int X { get; set; }
@@ -117,7 +117,7 @@ namespace PropertyWriterTest.ViewModels
 			isCalled.IsTrue();
 		}
 
-		struct MyStruct
+		public struct MyStruct
 		{
 			[PwMember]
 			public int X { get; set; }
@@ -152,14 +152,14 @@ namespace PropertyWriterTest.ViewModels
 		}
 
 		[PwSubtyping]
-		class MyBase
+		public class MyBase
 		{
 			[PwMember]
 			public int X { get; set; }
 		}
 
 		[PwSubtype]
-		class MyDerived : MyBase
+		public class MyDerived : MyBase
 		{
 			[PwMember]
 			public int Y { get; set; }

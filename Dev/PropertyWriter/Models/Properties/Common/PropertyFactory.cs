@@ -34,6 +34,11 @@ namespace PropertyWriter.Models.Properties.Common
 
 		public PropertyRoot GetStructure(Assembly assembly, Type projectType, Project[] dependencies)
 		{
+			if (!projectType.IsPublic && !projectType.IsNestedPublic)
+			{
+				throw new ArgumentException($"プロジェクト型 {projectType.FullName} がパブリックではありませんでした。", nameof(projectType));
+			}
+
 			LoadSubtypes(assembly);
 
 			var masterMembers = projectType.GetMembers();
@@ -226,6 +231,10 @@ namespace PropertyWriter.Models.Properties.Common
 		public IPropertyModel Create(Type type, string title)
 		{
 			var propertyType = TypeRecognizer.ParseType(type);
+			if (!type.IsPublic && !type.IsNestedPublic)
+			{
+				throw new ArgumentException($"型 {type.FullName} がパブリックではありませんでした。", nameof(type));
+			}
 			var model = Create(propertyType, type);
 			model.Title.Value = title;
 			return model;

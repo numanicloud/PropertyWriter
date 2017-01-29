@@ -16,19 +16,19 @@ namespace PropertyWriterTest.ViewModels
 	public class OnChangedPropagatingTest
 	{
 		#region ClassPropagate
-		class Hoge
+		public class Hoge
 		{
 			[PwMember]
 			public Fuga Fuga { get; set; }
 		}
 
-		class Fuga
+		public class Fuga
 		{
 			[PwMember]
 			public Foo Foo { get; set; }
 		}
 
-		class Foo
+		public class Foo
 		{
 			[PwMember]
 			public int X { get; set; }
@@ -52,17 +52,17 @@ namespace PropertyWriterTest.ViewModels
 		#endregion
 
 		#region StructPropagate
-		struct Toriel
+		public struct Toriel
 		{
 			[PwMember]
 			public Sans Sans { get; set; }
 		}
-		struct Sans
+		public struct Sans
 		{
 			[PwMember]
 			public Papyrus Papyrus { get; set; }
 		}
-		struct Papyrus
+		public struct Papyrus
 		{
 			[PwMember]
 			public int X { get; set; }
@@ -87,41 +87,41 @@ namespace PropertyWriterTest.ViewModels
 
 		#region SubtypingPropagate
 		[PwProject]
-		class SubtypeProject
+		public class SubtypeProject
 		{
 			[PwMaster]
 			public A A { get; set; }
 		}
 
 		[PwSubtyping]
-		class A
+		public class A
 		{
 			[PwMember]
 			public int X { get; set; }
 		}
 
 		[PwSubtype]
-		class AX : A
+		public class AX : A
 		{
 			[PwMember]
 			public B B { get; set; }
 		}
 
 		[PwSubtyping]
-		class B
+		public class B
 		{
 			[PwMember]
 			public int Y { get; set; }
 		}
 
 		[PwSubtype]
-		class BX : B
+		public class BX : B
 		{
 			[PwMember]
 			public C C { get; set; }
 		}
 
-		class C
+		public class C
 		{
 			[PwMember]
 			public int Z { get; set; }

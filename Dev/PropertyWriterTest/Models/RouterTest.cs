@@ -12,7 +12,7 @@ namespace PropertyWriterTest.Models
 	[TestClass]
 	public class RouterTest
 	{
-		class Hoge
+		public class Hoge
 		{
 			[PwMember]
 			public int X { get; set; }
@@ -20,7 +20,7 @@ namespace PropertyWriterTest.Models
 			public Fuga Fuga { get; set; }
 		}
 
-		class Fuga
+		public class Fuga
 		{
 			[PwMember]
 			public int Y { get; set; }
@@ -28,7 +28,7 @@ namespace PropertyWriterTest.Models
 			public Foo Foo { get; set; }
 		}
 
-		class Foo
+		public class Foo
 		{
 			[PwMember]
 			public int Z { get; set; }
