@@ -9,6 +9,27 @@ using PropertyWriter.Models.Properties.Interfaces;
 
 namespace PropertyWriter.Models.Serialize
 {
+	class ErrorHandlerOnDispose : IDisposable
+	{
+		private Exception error;
+		private IDisposable errorHandlerDisposable;
+
+		public ErrorHandlerOnDispose(IObservable<Exception> errorSequence)
+		{
+			error = null;
+			errorHandlerDisposable = errorSequence.Subscribe(x => error = x);
+		}
+
+		public void Dispose()
+		{
+			errorHandlerDisposable.Dispose();
+			if (error != null)
+			{
+				throw error;
+			}
+		}
+	}
+
     class ModelConverter
     {
         public static async Task LoadValueToRootAsync(PropertyRoot root, object obj)
@@ -79,8 +100,11 @@ namespace PropertyWriter.Models.Serialize
             foreach (var type in m.AvailableTypes)
             {
                 if (type.Type == value?.GetType())
-                {
-                    m.SelectedType.Value = type;
+				{
+					using (var error = new ErrorHandlerOnDispose(m.OnError))
+					{
+						m.SelectedType.Value = type;
+					}
                     LoadObjectToModel((IStructureProperty)m.Model.Value, value, references);
                 }
             }
@@ -95,7 +119,11 @@ namespace PropertyWriter.Models.Serialize
             {
                 foreach (var item in enumerable)
                 {
-                    var element = model.AddNewElement();
+					IPropertyModel element;
+					using (var error = new ErrorHandlerOnDispose(model.OnError))
+					{
+						element = model.AddNewElement();
+					}
                     LoadValueToModel(element, item, references);
                 }
             }

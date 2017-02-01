@@ -37,8 +37,8 @@ namespace PropertyWriter.Models.Properties
 					}
 					catch (Exception e)
 					{
-						OnErrorSubject.OnNext(e);
 						Debugger.Log(1, "Error", $"Error from SubtypingProperty:\n{e}\n");
+						OnErrorSubject.OnNext(e);
 					}
 				});
 

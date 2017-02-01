@@ -84,7 +84,8 @@ namespace PropertyWriter.Models.Properties.Common
 			var types = assembly.GetTypes();
 			var subtypings = types.Where(Helpers.IsAnnotatedType<PwSubtypingAttribute>).ToArray();
 			var subtypes = types.Where(Helpers.IsAnnotatedType<PwSubtypeAttribute>).ToArray();
-			subtypings_ = subtypings.ToDictionary(x => x, x => subtypes.Where(y => y.BaseType == x).ToArray());
+			subtypings_ = subtypings.ToDictionary(x => x,
+				x => subtypes.Where(y => x.IsAssignableFrom(y)).ToArray());
 		}
 
 		/// <summary>

@@ -13,6 +13,7 @@ using PropertyWriter.Models.Serialize;
 using Reactive.Bindings;
 using JsonSerializer = PropertyWriter.Models.Serialize.JsonSerializer;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace PropertyWriter.Models
 {
@@ -136,19 +137,13 @@ namespace PropertyWriter.Models
 		{
 			var deserializer = Root.Value.Type.GetMethods()
 				.FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
-			try
+			if (deserializer != null)
 			{
-				if (deserializer != null)
-				{
-					await CustomSerializer.LoadDataAsync(deserializer, Root.Value, SavePath.Value);
-				}
-				else
-				{
-					await JsonSerializer.LoadDataAsync(Root.Value, SavePath.Value);
-				}
+				await CustomSerializer.LoadDataAsync(deserializer, Root.Value, SavePath.Value);
 			}
-			catch (FileNotFoundException)
+			else
 			{
+				await JsonSerializer.LoadDataAsync(Root.Value, SavePath.Value);
 			}
 		}
 
