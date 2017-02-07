@@ -29,5 +29,6 @@ namespace PropertyWriter.Models.Properties
 
         public IPropertyModel AddNewElement() => CollectionValue.AddNewElement();
         public void RemoveElementAt(int index) => CollectionValue.RemoveAt(index);
+		public void Move(int oldIndex, int newIndex) => CollectionValue.Move(oldIndex, newIndex);
     }
 }

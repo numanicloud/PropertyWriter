@@ -65,7 +65,7 @@
 			<ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}"
 								DisplayMemberPath="Name"/>
 			<TextBlock Text="{Binding FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}"/>
+			<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}" HorizontalAlignment="Left"/>
 		</StackPanel>
 	</DataTemplate>
 

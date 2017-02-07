@@ -106,6 +106,7 @@
     <Compile Include="Models\ComplicateCollectionPropertyTest.cs" />
     <Compile Include="Common\TestData.cs" />
     <Compile Include="Common\TestResources.cs" />
+    <Compile Include="Models\DictionaryProperty.cs" />
     <Compile Include="Models\ErrorOnInternalClass.cs" />
     <Compile Include="Models\ModelConverterTest.cs" />
     <Compile Include="Models\OnChangedTest.cs" />

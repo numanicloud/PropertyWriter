@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using PropertyWriter.Models.Properties.Interfaces;
 using Reactive.Bindings;
 using System.Reactive.Subjects;
+using System.Collections.Generic;
 
 namespace PropertyWriter.Models.Properties.Common
 {
@@ -29,6 +30,10 @@ namespace PropertyWriter.Models.Properties.Common
 			if (type.Name == "IEnumerable`1")
 			{
 				ItemType = type.GenericTypeArguments[0];
+			}
+			else if(type.Name == "Dictionary`2")
+			{
+				ItemType = typeof(KeyValuePair<,>).MakeGenericType(type.GenericTypeArguments[0], type.GenericTypeArguments[1]);
 			}
 			else if (type.IsArray)
 			{
@@ -84,6 +89,19 @@ namespace PropertyWriter.Models.Properties.Common
 			}
 			Collection[index].error.Dispose();
 			Collection.RemoveAt(index);
+		}
+		
+		public void Move(int oldIndex, int newIndex)
+		{
+			if (oldIndex < 0 || oldIndex >= Collection.Count)
+			{
+				return;
+			}
+			if (newIndex < 0 || newIndex >= Collection.Count)
+			{
+				return;
+			}
+			Collection.Move(oldIndex, newIndex);
 		}
 	}
 }

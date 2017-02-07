@@ -17,20 +17,25 @@
 			<Grid.RowDefinitions>
 				<RowDefinition/>
 				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="2*"/>
+				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 
 			<ListBox 
 				ItemsSource="{Binding Collection}"
+				SelectedIndex="{Binding SelectedIndex.Value}"
 				Grid.Row="0"
-				Grid.ColumnSpan="2"
+				Grid.ColumnSpan="3"
 				IsSynchronizedWithCurrentItem="True"
 				Name="MasterList">
 				<ListBox.Resources>
 					<DataTemplate DataType="{x:Type instance:ClassViewModel}">
+						<TextBlock Text="{Binding FormatedString.Value}"/>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type instance:SubtypingViewModel}">
 						<TextBlock Text="{Binding FormatedString.Value}"/>
 					</DataTemplate>
 				</ListBox.Resources>
@@ -38,7 +43,11 @@
 
 			<Button Content="追加" Command="{Binding AddCommand}" Grid.Row="1" Grid.Column="0"/>
 			<Button Content="削除" Command="{Binding RemoveCommand}"
+							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="2" Grid.Column="0"/>
+			<Button Content="⇧" Command="{Binding UpCommand}"
 							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="1" Grid.Column="1"/>
+			<Button Content="⇩" Command="{Binding DownCommand}"
+							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="2" Grid.Column="1"/>
 		</Grid>
 
 		<ContentControl Content="{Binding Collection/}" Focusable="False" Grid.Column="1" Margin="5,0,0,0">

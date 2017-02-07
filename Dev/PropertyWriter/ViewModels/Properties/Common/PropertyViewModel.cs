@@ -24,6 +24,10 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		{
 			OnErrorSubject = new Subject<Exception>();
 			Property = property;
+
+			var nullString = Value.Where(x => x == null)
+				.Select(x => "<null>");
+
 			FormatedString = Value.Where(x => x != null)
 				.Select(x =>
 				{
@@ -37,6 +41,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 						return "<表示エラー>";
 					}
 				})
+				.Merge(nullString)
 				.ToReactiveProperty("");
 		}
 

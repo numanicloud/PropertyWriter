@@ -17,11 +17,14 @@ namespace PropertyWriter.ViewModels.Properties
 		private Subject<Unit> OnChangedSubject { get; } = new Subject<Unit>();
 
 		public ReadOnlyReactiveCollection<IPropertyViewModel> Collection { get; }
+		public ReactiveProperty<int> SelectedIndex { get; } = new ReactiveProperty<int>();
 
 		public override IObservable<Unit> OnChanged => OnChangedSubject;
 		public ReactiveCommand AddCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand<int> RemoveCommand { get; } = new ReactiveCommand<int>();
 		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
+		public ReactiveCommand<int> UpCommand { get; } = new ReactiveCommand<int>();
+		public ReactiveCommand<int> DownCommand { get; } = new ReactiveCommand<int>();
 
 		public ComplicateCollectionViewModel(ComplicateCollectionProperty property, ViewModelFactory factory)
 			: base(property)
@@ -65,6 +68,17 @@ namespace PropertyWriter.ViewModels.Properties
 				new TransitionMessage(
 					new BlockViewModel(this),
 					"BlockWindow")));
+
+			UpCommand.Subscribe(x =>
+			{
+				Property.Move(x - 1, x);
+				SelectedIndex.Value = x - 1;
+			});
+			DownCommand.Subscribe(x =>
+			{
+				Property.Move(x + 1, x);
+				SelectedIndex.Value = x;
+			});
 		}
 	}
 }

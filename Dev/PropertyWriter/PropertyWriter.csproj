@@ -177,6 +177,7 @@
     <Compile Include="ViewModels\Properties\Common\ViewModelFactory.cs" />
     <Compile Include="ViewModels\Properties\MultilineStringViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\PluginViewModel.cs" />
+    <Compile Include="ViewModels\Properties\SubtypingClassCollectionViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
     <Compile Include="ViewModels\Editor\EditorState.cs" />
     <Compile Include="Views\ClosingWindow.xaml.cs">

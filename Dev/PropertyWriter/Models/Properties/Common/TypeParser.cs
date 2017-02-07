@@ -1,18 +1,16 @@
 ﻿using System;
 using PropertyWriter.Annotation;
+using System.Linq;
 
 namespace PropertyWriter.Models.Properties.Common
 {
 	enum PropertyKind
 	{
 		Integer, Boolean, String, Unknown,
-		Float,
-		Enum,
-		Class,
-		Struct,
+		Float, Enum,
+		Class, Struct, SubtypingClass,
 		BasicCollection,
 		ComplicateCollection,
-        SubtypingClass,
 	}
 
 	class TypeRecognizer
@@ -30,7 +28,7 @@ namespace PropertyWriter.Models.Properties.Common
 					? PropertyKind.ComplicateCollection
 					: PropertyKind.BasicCollection;
 			}
-
+			
 			if (type.IsArray)
 			{
 				return IsComplecateCollection(type.GetElementType())
@@ -60,7 +58,7 @@ namespace PropertyWriter.Models.Properties.Common
 		private static bool IsComplecateCollection(Type elementType)
 		{
 			var element = ParseType(elementType);
-			return element == PropertyKind.Class || element == PropertyKind.Struct;
+			return element == PropertyKind.Class || element == PropertyKind.Struct || element == PropertyKind.SubtypingClass;
 		}
 	}
 }
