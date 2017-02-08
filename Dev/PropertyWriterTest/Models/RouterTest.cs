@@ -50,7 +50,7 @@ namespace PropertyWriterTest.Models
 			yProp.IntValue.Value = 64;
 			zProp.IntValue.Value = 256;
 
-			var router = new PropertyRouter(new ViewModelFactory());
+			var router = new PropertyRouter(new ViewModelFactory(factory));
 			Assert.AreEqual(xProp.IntValue.Value, router.GetIntProperty(model, "X").Value);
 			Assert.AreEqual(yProp.IntValue.Value, router.GetIntProperty(model, "Fuga.Y").Value);
 			Assert.AreEqual(zProp.IntValue.Value, router.GetIntProperty(model, "Fuga.Foo.Z").Value);

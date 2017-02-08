@@ -113,6 +113,20 @@
 		</ContentControl>
 	</DataTemplate>
 
+	<DataTemplate DataType="{x:Type instance:ReferenceByIntCollectionViewModel}">
+		<ContentControl Template="{StaticResource TitledField}" Focusable="False">
+			<StackPanel>
+				<i:Interaction.Triggers>
+					<messaging:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="BlockWindow">
+						<messaging:TransitionInteractionMessageAction WindowType="{x:Type v:BlockWindow}" Mode="Modal"/>
+					</messaging:InteractionMessageTrigger>
+				</i:Interaction.Triggers>
+				<TextBlock Text="{Binding Path=FormatedString.Value}" Style="{StaticResource Revealer}"/>
+				<Button Content="編集" Command="{Binding EditCommand}" HorizontalAlignment="Left"/>
+			</StackPanel>
+		</ContentControl>
+	</DataTemplate>
+
 	<DataTemplate DataType="{x:Type instance:SubtypingViewModel}">
 		<ContentControl Template="{StaticResource TitledField}" Focusable="False">
 			<StackPanel>

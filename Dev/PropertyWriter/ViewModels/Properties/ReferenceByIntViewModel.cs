@@ -18,6 +18,12 @@ namespace PropertyWriter.ViewModels.Properties
 		public ReferenceByIntViewModel(ReferenceByIntProperty property)
 			: base(property)
         {
+			var onNull = SelectedObject.Where(x => x == null)
+				.Select(x => "<null>");
+			FormatedString = SelectedObject.Where(x => x != null)
+				.Select(x => x.ToString())
+				.Merge(onNull)
+				.ToReactiveProperty();
         }
 	}
 }

@@ -41,7 +41,7 @@ namespace PropertyWriterTest.BugFix
 			var factory = new PropertyWriter.Models.Properties.Common.PropertyFactory();
 			var root = factory.GetStructure(Assembly.GetAssembly(typeof(InvalidMaster)), typeof(InvalidMaster), new PropertyWriter.Models.Project[0]);
 			var prop = (ComplicateCollectionProperty)root.Structure.Properties.First(x => x.PropertyInfo.Name == nameof(InvalidMaster.Refer));
-			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory());
+			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory(factory));
 
 			bool isHandled = false;
 			vm.OnError.Subscribe(x => isHandled = true);

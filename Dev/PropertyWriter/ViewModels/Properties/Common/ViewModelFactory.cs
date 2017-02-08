@@ -8,37 +8,43 @@ using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
+using PropertyWriter.Models.Properties.Common;
 
 namespace PropertyWriter.ViewModels.Properties.Common
 {
 	public class ViewModelFactory
 	{
-		public Dictionary<Type, IPluginViewModelFactory> Factories { get; set; }
+		private PropertyFactory modelFactory_;
 
-		public ViewModelFactory(bool usePlugin = true)
+		public List<IPluginViewModelFactory> Factories { get; set; }
+
+		public ViewModelFactory(PropertyFactory modelFactory, bool usePlugin = true)
 		{
-			if (!usePlugin)
-			{
-				Factories = new Dictionary<Type, IPluginViewModelFactory>();
-				return;
-			}
+			modelFactory_ = modelFactory;
+			Factories = new List<IPluginViewModelFactory>();
 
-			if (!Directory.Exists(App.PluginDirectory))
+			if (usePlugin)
 			{
-				Directory.CreateDirectory(App.PluginDirectory);
-			}
+				if (!Directory.Exists(App.PluginDirectory))
+				{
+					Directory.CreateDirectory(App.PluginDirectory);
+				}
 
-			var catalog = new DirectoryCatalog(App.PluginDirectory);
-			var container = new CompositionContainer(catalog);
-			var plugins = container.GetExportedValues<IPluginViewModelFactory>();
-			Factories = plugins.ToDictionary(x => x.EntityType);
+				var catalog = new DirectoryCatalog(App.PluginDirectory);
+				var container = new CompositionContainer(catalog);
+				Factories = container.GetExportedValues<IPluginViewModelFactory>().ToList();
+			}
 		}
 
 		public IPropertyViewModel Create(IPropertyModel model, bool usePlugin = true)
 		{
-			if (usePlugin && Factories.ContainsKey(model.ValueType))
+			if(usePlugin)
 			{
-				return Factories[model.PropertyInfo.PropertyType].CreateViewModel(model, this);
+				var factory = Factories.FirstOrDefault(x => x.IsTargetType(model.ValueType));
+				if (factory != null)
+				{
+					return factory.CreateViewModel(model, modelFactory_, this);
+				}
 			}
 
 			switch (model)
@@ -54,6 +60,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 			case SubtypingProperty p: return new SubtypingViewModel(p, this);
 			case BasicCollectionProperty p: return new BasicCollectionViewModel(p, this);
 			case ComplicateCollectionProperty p: return new ComplicateCollectionViewModel(p, this);
+			case ReferenceByIntCollectionProperty p: return new ReferenceByIntCollectionViewModel(p, this);
 			case ReferenceByIntProperty p: return new ReferenceByIntViewModel(p);
 			default: throw new ArgumentException("開発者向け：ViewModelの生成に失敗しました。");
 			}

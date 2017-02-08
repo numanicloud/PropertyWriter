@@ -38,6 +38,9 @@
 					<DataTemplate DataType="{x:Type instance:SubtypingViewModel}">
 						<TextBlock Text="{Binding FormatedString.Value}"/>
 					</DataTemplate>
+					<DataTemplate DataType="{x:Type instance:ReferenceByIntViewModel}">
+						<TextBlock Text="{Binding FormatedString.Value}"/>
+					</DataTemplate>
 				</ListBox.Resources>
 			</ListBox>
 

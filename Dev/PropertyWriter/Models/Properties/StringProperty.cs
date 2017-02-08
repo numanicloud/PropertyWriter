@@ -8,7 +8,7 @@ namespace PropertyWriter.Models.Properties
     public class StringProperty : PropertyModel
     {
 		public bool IsMultiLine { get; }
-		public ReactiveProperty<string> StringValue { get; } = new ReactiveProperty<string>();
+		public ReactiveProperty<string> StringValue { get; } = new ReactiveProperty<string>("");
         public override ReactiveProperty<object> Value { get; }
 		public override Type ValueType => typeof(string);
 

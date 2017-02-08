@@ -38,8 +38,9 @@ namespace PropertyWriterTest.ViewModels
 		public void ClassPropagateTest()
 		{
 			bool isCalled = false;
-			var prop = new ClassProperty(typeof(Hoge), new PropertyFactory());
-			var vm = new ClassViewModel(prop, new ViewModelFactory());
+			var modelFactory = new PropertyFactory();
+			var prop = new ClassProperty(typeof(Hoge), modelFactory);
+			var vm = new ClassViewModel(prop, new ViewModelFactory(modelFactory));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			var memberFuga = (ClassProperty)prop.Members.First(x => x.PropertyInfo.Name == nameof(Hoge.Fuga));
@@ -72,8 +73,9 @@ namespace PropertyWriterTest.ViewModels
 		public void StructPropagateTest()
 		{
 			bool isCalled = false;
-			var prop = new StructProperty(typeof(Toriel), new PropertyFactory());
-			var vm = new StructViewModel(prop, new ViewModelFactory());
+			var modelFactory = new PropertyFactory();
+			var prop = new StructProperty(typeof(Toriel), modelFactory);
+			var vm = new StructViewModel(prop, new ViewModelFactory(modelFactory));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			var memberSans = (StructProperty)prop.Members.First(x => x.PropertyInfo.Name == nameof(Toriel.Sans));
@@ -135,7 +137,7 @@ namespace PropertyWriterTest.ViewModels
 			factory.GetStructure(Assembly.GetExecutingAssembly(), typeof(SubtypeProject), new Project[0]);
 
 			var prop = factory.Create(typeof(A), "SubtypeA") as SubtypingProperty;
-			var vm = new ViewModelFactory().Create(prop, false) as SubtypingViewModel;
+			var vm = new ViewModelFactory(factory).Create(prop, false) as SubtypingViewModel;
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			T GetMember<T>(IStructureProperty model, string name) => (T)model.Members.First(x => x.PropertyInfo.Name == name);

@@ -28,9 +28,14 @@ namespace PropertyWriter.Models.Properties
             return CollectionValue.AddNewElement();
         }
 
-        public void RemoveAt(int index)
-        {
-            CollectionValue.RemoveAt(index);
-        }
-    }
+		public void RemoveElementAt(int index)
+		{
+			CollectionValue.RemoveAt(index);
+		}
+
+		public void Move(int oldIndex, int newIndex)
+		{
+			CollectionValue.Move(oldIndex, newIndex);
+		}
+	}
 }

@@ -13,6 +13,10 @@
 		<properties:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
+	<DataTemplate DataType="{x:Type instance:ReferenceByIntCollectionViewModel}">
+		<properties:ComplicateCollectionControl DataContext="{Binding Path=.}"/>
+	</DataTemplate>
+
 	<DataTemplate DataType="{x:Type instance:ClassViewModel}">
 		<properties:ClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
@@ -46,6 +50,11 @@
 	<DataTemplate DataType="{x:Type instance:EnumViewModel}">
 		<ComboBox ItemsSource="{Binding Path=EnumValues}" SelectedItem="{Binding EnumValue.Value}" VerticalAlignment="Top" Margin="6"/>
 	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type instance:ReferenceByIntViewModel}">
+		<ComboBox ItemsSource="{Binding Source.Collection}" SelectedItem="{Binding SelectedObject.Value}"
+								VerticalAlignment="Top" HorizontalAlignment="Left"/>
+	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:BasicCollectionViewModel}">
 		<properties:BasicCollectionControl
@@ -63,7 +72,7 @@
 				</l:InteractionMessageTrigger>
 			</i:Interaction.Triggers>
 			<ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}"
-								DisplayMemberPath="Name"/>
+								DisplayMemberPath="Name" HorizontalAlignment="Left"/>
 			<TextBlock Text="{Binding FormatedString.Value}" Style="{StaticResource Revealer}"/>
 			<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}" HorizontalAlignment="Left"/>
 		</StackPanel>

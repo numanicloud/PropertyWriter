@@ -87,7 +87,7 @@ namespace PropertyWriter.ViewModels.Editor
                     project = vm.Result;
                     isDirty = true;
 				}
-				catch(Exception ex)
+				catch(Exception)
 				{
 					StatusMessage.Value = "プロジェクトを読み込めませんでした。";
 					IsError.Value = true;

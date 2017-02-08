@@ -36,7 +36,7 @@ namespace PropertyWriterTest
             var e2 = property.AddNewElement() as IntProperty;
             e1.IntValue.Value = 1;
             e2.IntValue.Value = 2;
-            property.RemoveAt(0);
+            property.RemoveElementAt(0);
 
             var expected = new IPropertyModel[]
             {
@@ -54,7 +54,7 @@ namespace PropertyWriterTest
 		public void RemoveFromEmptyTest()
 		{
 			var prop = new BasicCollectionProperty(typeof(int[]), new PropertyFactory());
-			prop.RemoveAt(-1);
+			prop.RemoveElementAt(-1);
 		}
     }
 }

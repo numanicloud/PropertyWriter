@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PropertyWriter.Views.ProjectSetting"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="480">
+             d:DesignHeight="320" d:DesignWidth="480">
 
     <StackPanel>
         <Grid DockPanel.Dock="Top" Margin="6">
@@ -33,7 +33,7 @@
             <Button Content="参照…" Command="{Binding SelectExportPathCommand}" Grid.Row="2" Grid.Column="2"/>
         </Grid>
 
-        <GroupBox Header="依存プロジェクト" Margin="6" Height="162">
+        <GroupBox Header="依存プロジェクト" Margin="6" Height="180">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -48,7 +48,7 @@
                 <ListBox x:Name="dependencyList" Grid.RowSpan="3" ItemsSource="{Binding DependenciesPathes}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Value}"/>
+                            <TextBox Text="{Binding Value}" MinWidth="200" HorizontalAlignment="Stretch"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

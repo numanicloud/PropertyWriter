@@ -100,7 +100,7 @@ namespace PropertyWriterTest.ViewModels
 
 			var factory = new PropertyFactory();
 			var prop = new ClassProperty(typeof(MyClass), factory);
-			var vm = new ClassViewModel(prop, new ViewModelFactory(false));
+			var vm = new ClassViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			var memberY = vm.Members.OfType<IntViewModel>()
@@ -134,7 +134,7 @@ namespace PropertyWriterTest.ViewModels
 
 			var factory = new PropertyFactory();
 			var prop = new StructProperty(typeof(MyStruct), factory);
-			var vm = new StructViewModel(prop, new ViewModelFactory(false));
+			var vm = new StructViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			var memberY = vm.Members.OfType<IntViewModel>()
@@ -172,7 +172,7 @@ namespace PropertyWriterTest.ViewModels
 
 			var factory = new PropertyFactory();
 			var prop = new SubtypingProperty(typeof(MyBase), factory, new Type[] { typeof(MyDerived) });
-			var vm = new SubtypingViewModel(prop, new ViewModelFactory(false));
+			var vm = new SubtypingViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			prop.SelectedType.Value = prop.AvailableTypes.First();
@@ -198,7 +198,7 @@ namespace PropertyWriterTest.ViewModels
 			bool isCalled = false;
 			var factory = new PropertyFactory();
 			var prop = new BasicCollectionProperty(typeof(int[]), factory);
-			var vm = new BasicCollectionViewModel(prop, new ViewModelFactory(false));
+			var vm = new BasicCollectionViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			vm.AddCommand.Execute();
@@ -211,7 +211,7 @@ namespace PropertyWriterTest.ViewModels
 			bool isCalled = false;
 			var factory = new PropertyFactory();
 			var prop = new BasicCollectionProperty(typeof(int[]), factory);
-			var vm = new BasicCollectionViewModel(prop, new ViewModelFactory(false));
+			var vm = new BasicCollectionViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 			
 			vm.AddCommand.Execute();
@@ -227,7 +227,7 @@ namespace PropertyWriterTest.ViewModels
 			bool isCalled = false;
 			var factory = new PropertyFactory();
 			var prop = new ComplicateCollectionProperty(typeof(MyClass[]), factory);
-			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory(false));
+			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 
 			vm.AddCommand.Execute();
@@ -240,7 +240,7 @@ namespace PropertyWriterTest.ViewModels
 			bool isCalled = false;
 			var factory = new PropertyFactory();
 			var prop = new ComplicateCollectionProperty(typeof(MyClass[]), factory);
-			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory(false));
+			var vm = new ComplicateCollectionViewModel(prop, new ViewModelFactory(factory, false));
 			vm.OnChanged.Subscribe(x => isCalled = true);
 			
 			vm.AddCommand.Execute();

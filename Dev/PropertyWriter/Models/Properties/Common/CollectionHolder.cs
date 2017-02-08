@@ -81,6 +81,13 @@ namespace PropertyWriter.Models.Properties.Common
 			return instance;
 		}
 
+		public void AddElement(IPropertyModel model)
+		{
+			var errorDisposable = model.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
+			Collection.Add((model, errorDisposable));
+			model.Value.Subscribe(x => Value.Value = MakeValue(Collection));
+		}
+
 		public void RemoveAt(int index)
 		{
 			if (index < 0 || index >= Collection.Count)

@@ -1,4 +1,5 @@
 ﻿using PropertyWriter.Annotation;
+using Reactive.Bindings;
 using System.Runtime.Serialization;
 
 namespace RpgData

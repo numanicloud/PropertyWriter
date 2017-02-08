@@ -16,8 +16,7 @@ namespace PropertyWriterTest.Models
 			[PwMember]
 			public Dictionary<string, int> Ints { get; set; }
 		}
-
-		[TestMethod]
+		
 		public void DictionaryPropertyTest()
 		{
 			var factory = new PropertyFactory();

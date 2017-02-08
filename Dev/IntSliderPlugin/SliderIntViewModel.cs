@@ -14,15 +14,16 @@ using PropertyWriter.ViewModels.Properties.Common;
 using PropertyWriter.ViewModels.Properties.Extensibility;
 using PropertyWriter.ViewModels;
 using PropertyWriter.Models.Properties;
+using PropertyWriter.Models.Properties.Common;
 
 namespace IntSliderPlugin
 {
 	//[Export(typeof(IPluginViewModelFactory))]
 	public class SliderIntPlugin : IPluginViewModelFactory
 	{
-		public Type EntityType => typeof(int);
-		public PluginViewModel CreateViewModel(IPropertyModel model, ViewModelFactory factory) =>
-			new SliderIntViewModel(model, factory);
+		public PluginViewModel CreateViewModel(IPropertyModel model, PropertyFactory propertyFactory, ViewModelFactory viewModelFactory) =>
+			new SliderIntViewModel(model, viewModelFactory);
+		public bool IsTargetType(Type type) => type == typeof(int);
 	}
 
 	public class SliderIntViewModel : PluginViewModel

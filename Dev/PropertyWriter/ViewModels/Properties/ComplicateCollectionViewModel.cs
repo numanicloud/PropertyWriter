@@ -12,73 +12,11 @@ using System.Collections.Generic;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-	public class ComplicateCollectionViewModel : PropertyViewModel<ComplicateCollectionProperty>
+	public class ComplicateCollectionViewModel : CollectionViewModel<ComplicateCollectionProperty>
 	{
-		private Subject<Unit> OnChangedSubject { get; } = new Subject<Unit>();
-
-		public ReadOnlyReactiveCollection<IPropertyViewModel> Collection { get; }
-		public ReactiveProperty<int> SelectedIndex { get; } = new ReactiveProperty<int>();
-
-		public override IObservable<Unit> OnChanged => OnChangedSubject;
-		public ReactiveCommand AddCommand { get; } = new ReactiveCommand();
-		public ReactiveCommand<int> RemoveCommand { get; } = new ReactiveCommand<int>();
-		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
-		public ReactiveCommand<int> UpCommand { get; } = new ReactiveCommand<int>();
-		public ReactiveCommand<int> DownCommand { get; } = new ReactiveCommand<int>();
-
 		public ComplicateCollectionViewModel(ComplicateCollectionProperty property, ViewModelFactory factory)
-			: base(property)
+			: base(property, factory)
 		{
-			Collection = property.Collection.ToReadOnlyReactiveCollection(x =>
-			{
-				var vm = factory.Create(x);
-				vm.OnChanged.Subscribe(y => OnChangedSubject.OnNext(Unit.Default));
-				return vm;
-			});
-
-			FormatedString = Property.Value
-				.Select(x => "Count = " + Collection.Count)
-				.ToReactiveProperty();
-
-			AddCommand.Subscribe(x =>
-			{
-				try
-				{
-					Property.AddNewElement();
-				}
-				catch(Exception e)
-				{
-					OnErrorSubject.OnNext(e);
-				}
-				OnChangedSubject.OnNext(Unit.Default);
-			});
-			RemoveCommand.Subscribe(x =>
-			{
-				try
-				{
-					Property.RemoveElementAt(x);
-				}
-				catch (Exception e)
-				{
-					OnErrorSubject.OnNext(e);
-				}
-				OnChangedSubject.OnNext(Unit.Default);
-			});
-			EditCommand.Subscribe(x => Messenger.Raise(
-				new TransitionMessage(
-					new BlockViewModel(this),
-					"BlockWindow")));
-
-			UpCommand.Subscribe(x =>
-			{
-				Property.Move(x - 1, x);
-				SelectedIndex.Value = x - 1;
-			});
-			DownCommand.Subscribe(x =>
-			{
-				Property.Move(x + 1, x);
-				SelectedIndex.Value = x;
-			});
 		}
 	}
 }

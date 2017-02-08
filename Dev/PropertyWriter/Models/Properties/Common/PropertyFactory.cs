@@ -224,8 +224,17 @@ namespace PropertyWriter.Models.Properties.Common
 				{
 					Title = { Value = title }
 				};
+			case PropertyKind.BasicCollection:
+				if (!masters_.ContainsKey(masterKey))
+				{
+					throw new KeyNotFoundException($"[PwReferenceMember] 属性で指定されたマスターキー \"{masterKey}\" を持つ [PwMaster] 属性のついたメンバーがプロジェクトに含まれていません。");
+				}
+				return new ReferenceByIntCollectionProperty(masters_[masterKey], idMemberName, this)
+				{
+					Title = { Value = title }
+				};
 			default:
-				throw new InvalidOperationException("ID参照をするプロパティの型は int 型のみがサポートされます。");
+				throw new InvalidOperationException("ID参照をするプロパティの型は int, int[] 型のみがサポートされます。");
 			}
 		}
 

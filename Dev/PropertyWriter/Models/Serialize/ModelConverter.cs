@@ -87,6 +87,9 @@ namespace PropertyWriter.Models.Serialize
             case BasicCollectionProperty m:
                 LoadCollectionToModel(m, value, references);
                 break;
+			case ReferenceByIntCollectionProperty m:
+				LoadCollectionToModel(m, value, references);
+				break;
             default:
                 throw new Exception("開発者向け：不正なModelです。");
             }

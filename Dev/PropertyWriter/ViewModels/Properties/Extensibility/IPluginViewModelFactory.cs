@@ -1,4 +1,5 @@
-﻿using PropertyWriter.Models.Properties.Interfaces;
+﻿using PropertyWriter.Models.Properties.Common;
+using PropertyWriter.Models.Properties.Interfaces;
 using PropertyWriter.ViewModels.Properties.Common;
 using PropertyWriter.ViewModels.Properties.Extensibility;
 using System;
@@ -12,7 +13,7 @@ namespace PropertyWriter.ViewModels.Properties
 {
 	public interface IPluginViewModelFactory
 	{
-		Type EntityType { get; }
-		PluginViewModel CreateViewModel(IPropertyModel model, ViewModelFactory factory);
+		bool IsTargetType(Type type);
+		PluginViewModel CreateViewModel(IPropertyModel model, PropertyFactory propertyFactory, ViewModelFactory viewModelFactory);
 	}
 }
