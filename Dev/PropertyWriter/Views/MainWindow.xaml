@@ -67,7 +67,7 @@
 	</i:Interaction.Triggers>
 
 	<i:Interaction.Behaviors>
-		<messaging:WindowCloseCancelBehavior CanClose="{Binding State.Value.CanClose.Value}"
+		<messaging:WindowCloseCancelBehavior CanClose="{Binding Editor.Value.CanClose.Value}"
                                              CloseCanceledCallbackCommand="{Binding CloseCanceledCommand}"/>
 	</i:Interaction.Behaviors>
 

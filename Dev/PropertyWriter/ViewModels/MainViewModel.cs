@@ -13,16 +13,15 @@ using PropertyWriter.ViewModels.Properties.Common;
 using System.Diagnostics;
 using Livet;
 using Livet.Messaging.Windows;
-using PropertyWriter.ViewModels.Editor;
+using PropertyWriter.Models.Editor;
 
 namespace PropertyWriter.ViewModels
 {
-	class MainViewModel : Livet.ViewModel
+	class MainViewModel : Livet.ViewModel, IEditorViewModel
 	{
 		public ReactiveProperty<string> Title { get; private set; }
 		public ReactiveProperty<IPropertyViewModel[]> Masters { get; }
-		public ReactiveProperty<EditorState> State { get; } = new ReactiveProperty<EditorState>();
-		public ReactiveProperty<EditorLifecycleManager> Manager { get; } = new ReactiveProperty<EditorLifecycleManager>();
+		public ReactiveProperty<Editor> Editor { get; } = new ReactiveProperty<Editor>();
 
 		public ReactiveCommand NewProjectCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand OpenProjectCommand { get; } = new ReactiveCommand();
@@ -33,27 +32,26 @@ namespace PropertyWriter.ViewModels
 
 		public MainViewModel()
 		{
-			Manager.Value = new EditorLifecycleManager(this);
-			State.Value = new EmptyState(this, Manager.Value);
+			Editor.Value = new Editor(this);
 
-			Masters = Manager.Value.Project.Where(x => x != null)
+			Masters = Editor.Value.Project.Where(x => x != null)
                 .SelectMany(x => x.Root)
                 .Where(x => x != null)
 				.Select(x => x.Structure.Properties)
 				.Select(x =>
 				{
-					var factory = new ViewModelFactory(Manager.Value.Project.Value.Factory);
+					var factory = new ViewModelFactory(Editor.Value.Project.Value.Factory);
 					return x.Select(y => factory.Create(y, true)).ToArray();
 				})
 				.ToReactiveProperty();
-			Title = State.Select(x => "PropertyWriter" + x.Title)
+			Title = Editor.SelectMany(x => x.Title)
 				.ToReactiveProperty();
 			
-			SaveCommand = State.Select(x => x.CanSave)
+			SaveCommand = Editor.SelectMany(x => x.CanSave)
 				.ToReactiveCommand();
-			SaveAsCommand = State.Select(x => x.CanSave)
+			SaveAsCommand = Editor.SelectMany(x => x.CanSave)
 				.ToReactiveCommand();
-			ProjectSettingCommand = Manager.Value.Project
+			ProjectSettingCommand = Editor.Value.Project
 				.Select(x => x != null)
 				.ToReactiveCommand();
 			SubscribeCommands();
@@ -61,10 +59,10 @@ namespace PropertyWriter.ViewModels
 			Masters.Where(xs => xs != null).Subscribe(xs =>
 			{
 				Observable.Merge(xs.Select(x => x.OnChanged))
-					.PublishTask(x => State.Value.ModifyAsync(), e => ShowError(e, "エラー"));
+					.PublishTask(x => Editor.Value.ModifyAsync(), e => ShowError(e, "エラー"));
 			});
-            Manager.Value.OnSettingChanged
-				.PublishTask(x => State.Value.ModifyAsync(), e => ShowError(e, "エラー"));
+            Editor.Value.OnSettingChanged
+				.PublishTask(x => Editor.Value.ModifyAsync(), e => ShowError(e, "エラー"));
 
 			Masters.Where(x => x != null)
 				.SelectMany(x => Observable.Merge(x.Select(y => y.OnError)))
@@ -73,7 +71,7 @@ namespace PropertyWriter.ViewModels
 
 		private void OpenProjectSetting()
 		{
-            var vm = new ProjectSetting.ProjectSettingViewModel(Manager.Value.Project.Value);
+            var vm = new ProjectSetting.ProjectSettingViewModel(Editor.Value.Project.Value);
 			Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "ProjectSetting"));
 		}
 		
@@ -81,15 +79,15 @@ namespace PropertyWriter.ViewModels
 		{
 			ProjectSettingCommand.Subscribe(x => OpenProjectSetting());
 
-			NewProjectCommand.PublishTask(x => State.Value.NewAsync(),
+			NewProjectCommand.PublishTask(x => Editor.Value.NewProjectAsync(),
 				e => ShowError(e, "プロジェクトの作成に失敗しました。"));
-			OpenProjectCommand.PublishTask(x => State.Value.OpenAsync(),
+			OpenProjectCommand.PublishTask(x => Editor.Value.OpenAsync(),
 				e => ShowError(e, "データを読み込めませんでした。"));
-			SaveCommand.PublishTask(x => State.Value.SaveAsync(),
+			SaveCommand.PublishTask(x => Editor.Value.SaveAsync(),
 				e => ShowError(e, "保存を中止し、以前のファイルに復元しました。"));
-			SaveAsCommand.PublishTask(x => State.Value.SaveAsAsync(),
+			SaveAsCommand.PublishTask(x => Editor.Value.SaveAsAsync(),
 				e => ShowError(e, "保存を中止しました。"));
-			CloseCanceledCommand.PublishTask(x => State.Value.CloseAsync(),
+			CloseCanceledCommand.PublishTask(x => Editor.Value.CloseProjectAsync(),
 				e => ShowError(e, "ウィンドウを閉じることができませんでした。"));
 		}
 
@@ -98,6 +96,36 @@ namespace PropertyWriter.ViewModels
 			var vm = new ErrorViewModel(message, exception);
 			Messenger.Raise(new TransitionMessage(vm, "Error"));
 			return Observable.Empty<Unit>();
+		}
+
+		public (bool isCommited, Project result) CreateNewProject()
+		{
+			var vm = new ProjectSetting.NewProjectViewModel();
+			Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "NewProject"));
+			return (vm.IsCommitted.Value, vm.Project);
+		}
+
+		public (bool isCommited, Project result) RepairProject(Project project, string message)
+		{
+			var vm = new ProjectSetting.ProjectRepairViewModel(project, message);
+			Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "MissingProjectType"));
+			return (vm.IsCommitted.Value, vm.Result);
+		}
+
+		public ClosingResult ConfirmCloseProject()
+		{
+			var vm = new ClosingViewModel();
+			var message = new TransitionMessage(vm, "ConfirmClose");
+			Messenger.Raise(message);
+			return vm.Response;
+		}
+
+		public async Task TerminateAsync()
+		{
+			await DispatcherHelper.UIDispatcher.InvokeAsync(() =>
+			{
+				Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
+			});
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Livet.Messaging;
 using Livet.Messaging.Windows;
 using PropertyWriter.Models;
+using PropertyWriter.Models.Editor;
 using PropertyWriter.Models.Properties.Common;
 using Reactive.Bindings;
 using System;
@@ -13,19 +14,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PropertyWriter.ViewModels.Editor
+namespace PropertyWriter.Models.Editor
 {
-	class EditorLifecycleManager
+	class Editor
 	{
+		private IEditorViewModel editorViewModel_;
+
 		public ReactiveProperty<Project> Project { get; set; } = new ReactiveProperty<Models.Project>();
+		public ReactiveProperty<EditorState> State { get; set; } = new ReactiveProperty<EditorState>();
+		public IObservable<Unit> OnSettingChanged { get; }
+
 		public ReactiveProperty<bool> IsError { get; private set; } = new ReactiveProperty<bool>();
 		public ReactiveProperty<string> StatusMessage { get; private set; } = new ReactiveProperty<string>();
-		public MainViewModel Owner { get; private set; }
-        public IObservable<Unit> OnSettingChanged { get; }
+		public ReactiveProperty<string> Title { get; private set; } = new ReactiveProperty<string>();
+		public ReactiveProperty<bool> CanSave { get; private set; } = new ReactiveProperty<bool>();
+		public ReactiveProperty<bool> CanClose { get; private set; } = new ReactiveProperty<bool>();
 
-        public EditorLifecycleManager(MainViewModel owner)
+		public Editor(IEditorViewModel owner)
 		{
-			Owner = owner;
+			editorViewModel_ = owner;
+			State.Value = new EmptyState(this);
 
             var project = Project.Where(x => x != null);
 			var dependencyChanged = project.SelectMany(x => Observable.Merge(x.DependenciesPathes.ToArray()));
@@ -34,16 +42,17 @@ namespace PropertyWriter.ViewModels.Editor
                 .Merge(project.SelectMany(x => x.ProjectTypeName))
                 .Merge(dependencyChanged)
                 .Select(x => Unit.Default);
+
+			Title = State.Select(x => "PropertyWriter" + x.Title).ToReactiveProperty();
+			CanSave = State.Select(x => x.CanSave).ToReactiveProperty();
+			CanClose = State.SelectMany(x => x.CanClose).ToReactiveProperty();
 		}
 
 
 		public async Task<bool> CreateNewProjectAsync()
 		{
-			var project = new Project();
-			var vm = new ProjectSetting.NewProjectViewModel(project);
-			Owner.Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "NewProject"));
-
-			if (vm.IsCommitted.Value)
+			var (isCommitted, project) = editorViewModel_.CreateNewProject();
+			if (isCommitted)
 			{
 				Project.Value = project;
 				await Project.Value.LoadDependencyAsync();
@@ -78,13 +87,12 @@ namespace PropertyWriter.ViewModels.Editor
 				}
 				catch (Models.Exceptions.PwProjectException ex)
 				{
-                    var vm = new ProjectSetting.ProjectRepairViewModel(project, ex.Message);
-					Owner.Messenger.Raise(new TransitionMessage(vm, TransitionMode.Modal, "MissingProjectType"));
-					if (!vm.IsCommitted.Value)
+					var (isCommitted, result) = editorViewModel_.RepairProject(project, ex.Message);
+					if (!isCommitted)
 					{
 						return (null, false);
 					}
-                    project = vm.Result;
+                    project = result;
                     isDirty = true;
 				}
 				catch(Exception)
@@ -107,11 +115,18 @@ namespace PropertyWriter.ViewModels.Editor
 			StatusMessage.Value = "データを保存中…";
 
 			await Project.Value.SaveSettingAsync(path);
-			await Project.Value.SaveDataAsync();
+			await Project.Value.SaveSerializedDataAsync();
 
 			StatusMessage.Value = "データを保存しました。";
 			IsError.Value = false;
 		}
+
+		public Task OpenAsync() => State.Value.OpenAsync();
+		public Task SaveAsync() => State.Value.SaveAsync();
+		public Task SaveAsAsync() => State.Value.SaveAsAsync();
+		public Task NewProjectAsync() => State.Value.NewAsync();
+		public Task CloseProjectAsync() => State.Value.CloseAsync();
+		public Task ModifyAsync() => State.Value.ModifyAsync();
 
 		public async Task<string> SaveFileAsAsync()
 		{
@@ -127,7 +142,7 @@ namespace PropertyWriter.ViewModels.Editor
 				StatusMessage.Value = "データを保存中…";
 
 				await Project.Value.SaveSettingAsync(dialog.FileName);
-				await Project.Value.SaveDataAsync();
+				await Project.Value.SaveSerializedDataAsync();
 
 				StatusMessage.Value = "データを保存しました。";
 				IsError.Value = false;
@@ -137,20 +152,14 @@ namespace PropertyWriter.ViewModels.Editor
 			return null;
 		}
 
-		public ClosingViewModel.Result ConfirmClose()
+		public ClosingResult ConfirmClose()
 		{
-			var vm = new ClosingViewModel();
-			var message = new TransitionMessage(vm, "ConfirmClose");
-			Owner.Messenger.Raise(message);
-			return vm.Response;
+			return editorViewModel_.ConfirmCloseProject();
 		}
 
 		public async Task CloseAsync()
 		{
-			await DispatcherHelper.UIDispatcher.InvokeAsync(() =>
-			{
-				Owner.Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
-			});
+			await editorViewModel_.TerminateAsync();
 		}
 	}
 }

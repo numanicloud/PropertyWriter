@@ -136,6 +136,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Editor\ClosingResult.cs" />
+    <Compile Include="Models\Editor\Editor.cs" />
+    <Compile Include="Models\Editor\IEditorViewModel.cs" />
     <Compile Include="Models\Exceptions\PwInvalidStructureException.cs" />
     <Compile Include="Models\Exceptions\PwProjectException.cs" />
     <Compile Include="Models\Properties\ReferenceByIntCollectionProperty.cs" />
@@ -166,11 +169,10 @@
     <Compile Include="Models\PropertyRoot.cs" />
     <Compile Include="Models\Exceptions\PwSerializeException.cs" />
     <Compile Include="ViewModels\ClosingViewModel.cs" />
-    <Compile Include="ViewModels\Editor\CleanState.cs" />
-    <Compile Include="ViewModels\Editor\DirtyState.cs" />
-    <Compile Include="ViewModels\Editor\EditorLifecycleManager.cs" />
-    <Compile Include="ViewModels\Editor\EmptyState.cs" />
-    <Compile Include="ViewModels\Editor\NewState.cs" />
+    <Compile Include="Models\Editor\CleanState.cs" />
+    <Compile Include="Models\Editor\DirtyState.cs" />
+    <Compile Include="Models\Editor\EmptyState.cs" />
+    <Compile Include="Models\Editor\NewState.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\ObservableHelper.cs" />
     <Compile Include="ViewModels\ProjectSetting\NewProjectViewModel.cs" />
@@ -183,7 +185,7 @@
     <Compile Include="ViewModels\Properties\ReferenceByIntCollectionViewModel.cs" />
     <Compile Include="ViewModels\Properties\SubtypingClassCollectionViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
-    <Compile Include="ViewModels\Editor\EditorState.cs" />
+    <Compile Include="Models\Editor\EditorState.cs" />
     <Compile Include="Views\ClosingWindow.xaml.cs">
       <DependentUpon>ClosingWindow.xaml</DependentUpon>
     </Compile>

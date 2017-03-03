@@ -20,13 +20,13 @@ namespace PropertyWriter.Models
 	[JsonObject(MemberSerialization.OptIn)]
 	public class Project
 	{
-		private ObservableCollection<ReactiveProperty<string>> dependenciesPathes_ = new ObservableCollection<ReactiveProperty<string>>();
 		private ObservableCollection<Project> dependencies_ = new ObservableCollection<Project>();
 
+		public ReactiveProperty<string> ProjectDir { get; } = new ReactiveProperty<string>();
 		public ReactiveProperty<string> AssemblyPath { get; } = new ReactiveProperty<string>();
 		public ReactiveProperty<string> ProjectTypeName { get; } = new ReactiveProperty<string>();
 		public ReactiveProperty<string> SavePath { get; } = new ReactiveProperty<string>();
-		public ObservableCollection<ReactiveProperty<string>> DependenciesPathes { get; }
+		public ObservableCollection<ReactiveProperty<string>> DependenciesPathes { get; set; } = new ObservableCollection<ReactiveProperty<string>>();
 		public ReactiveProperty<bool> IsValid { get; }
 
 		public PropertyFactory Factory { get; }
@@ -37,7 +37,7 @@ namespace PropertyWriter.Models
 		{
 			IsValid = AssemblyPath.CombineLatest(ProjectTypeName, (x, y) =>
 			{
-				if (x == null || !File.Exists(x))
+				if (x == null || !File.Exists(GetProjectsContentPath(x)))
 				{
 					return false;
 				}
@@ -47,8 +47,7 @@ namespace PropertyWriter.Models
 				}
 			}).CombineLatest(SavePath.Select(x => x != null), (x, y) => x && y)
 				.ToReactiveProperty();
-
-			DependenciesPathes = dependenciesPathes_;
+			
 			Dependencies = dependencies_.ToReadOnlyReactiveCollection();
 			Factory = new PropertyFactory();
 		}
@@ -59,9 +58,10 @@ namespace PropertyWriter.Models
 			AssemblyPath.Value = project.AssemblyPath.Value;
 			ProjectTypeName.Value = project.ProjectTypeName.Value;
 			SavePath.Value = project.SavePath.Value;
-			dependenciesPathes_ = project.DependenciesPathes;
+			DependenciesPathes = project.DependenciesPathes;
 			dependencies_ = project.dependencies_;
 			Root.Value = project.Root.Value;
+			ProjectDir.Value = project.ProjectDir.Value;
 		}
 
 		public Assembly GetAssembly()
@@ -70,7 +70,14 @@ namespace PropertyWriter.Models
 			{
 				return null;
 			}
-			return Assembly.LoadFrom(AssemblyPath.Value);
+
+			string path = GetProjectsContentPath(AssemblyPath.Value);
+
+			if(File.Exists(path))
+			{
+				return Assembly.LoadFrom(path);
+			}
+			return null;
 		}
 
 		public Type GetProjectType(Assembly assembly)
@@ -94,6 +101,10 @@ namespace PropertyWriter.Models
 			{
 				throw new PwProjectException("アセンブリが移動または削除されています。");
 			}
+			if (assembly == null)
+			{
+				throw new PwProjectException("アセンブリが移動または削除されています。");
+			}
 
 			var projectType = GetProjectType(assembly);
 			if (projectType == null)
@@ -108,7 +119,9 @@ namespace PropertyWriter.Models
 		{
 			using (var file = new StreamReader(path))
 			{
-				return JsonConvert.DeserializeObject<Project>(await file.ReadToEndAsync());
+				var project = JsonConvert.DeserializeObject<Project>(await file.ReadToEndAsync());
+				project.ProjectDir.Value = Directory.GetParent(path).FullName;
+				return project;
 			}
 		}
 
@@ -122,9 +135,11 @@ namespace PropertyWriter.Models
 		public async Task LoadDependencyAsync()
 		{
 			var factories = new List<PropertyFactory>();
-			foreach (var projectPath in dependenciesPathes_)
+			foreach (var projectPath in DependenciesPathes)
 			{
-				dependencies_.Add(await LoadSettingAsync(projectPath.Value));
+				dependencies_.Add(
+					await LoadSettingAsync(
+						GetProjectsContentPath(projectPath.Value)));
 			}
 			foreach (var subProject in dependencies_)
 			{
@@ -135,15 +150,21 @@ namespace PropertyWriter.Models
 
 		private async Task LoadSerializedDataAsync()
 		{
+			var path = GetProjectsContentPath(SavePath.Value);
+			if (!File.Exists(path))
+			{
+				return;
+			}
+
 			var deserializer = Root.Value.Type.GetMethods()
 				.FirstOrDefault(x => x.GetCustomAttribute<PwDeserializerAttribute>() != null);
 			if (deserializer != null)
 			{
-				await CustomSerializer.LoadDataAsync(deserializer, Root.Value, SavePath.Value);
+				await CustomSerializer.LoadDataAsync(deserializer, Root.Value, path);
 			}
 			else
 			{
-				await JsonSerializer.LoadDataAsync(Root.Value, SavePath.Value);
+				await JsonSerializer.LoadDataAsync(Root.Value, path);
 			}
 		}
 
@@ -156,30 +177,42 @@ namespace PropertyWriter.Models
 			}
 		}
 
-		public async Task SaveDataAsync()
+		public async Task SaveSerializedDataAsync()
 		{
+			var path = GetProjectsContentPath(SavePath.Value);
 			var rootType = Root.Value.Type;
 			var serializer = rootType.GetMethods()
 				.FirstOrDefault(x => x.GetCustomAttribute<PwSerializerAttribute>() != null);
 			if (serializer != null)
 			{
-				await CustomSerializer.SaveDataAsync(serializer, Root.Value, SavePath.Value);
+				await CustomSerializer.SaveDataAsync(serializer, Root.Value, path);
 			}
 			else
 			{
-				await JsonSerializer.SaveDataAsync(Root.Value, SavePath.Value);
+				await JsonSerializer.SaveDataAsync(Root.Value, path);
 			}
 		}
 
 		public Project Clone()
 		{
-			return new Project
+			var clone = new Project
 			{
 				AssemblyPathValue = this.AssemblyPathValue,
 				ProjectTypeNameValue = this.ProjectTypeNameValue,
 				SavePathValue = this.SavePathValue,
-				dependenciesPathes_ = this.dependenciesPathes_,
+				DependenciesPathes = this.DependenciesPathes,
 			};
+			clone.ProjectDir.Value = this.ProjectDir.Value;
+			return clone;
+		}
+
+		private string GetProjectsContentPath(string relativePath)
+		{
+			if (!Path.IsPathRooted(relativePath) && ProjectDir.Value != null)
+			{
+				return Path.Combine(ProjectDir.Value, relativePath);
+			}
+			return relativePath;
 		}
 
 		#region Serialize
@@ -208,13 +241,13 @@ namespace PropertyWriter.Models
 		[JsonProperty]
 		public string[] DependenciesPath
 		{
-			get { return dependenciesPathes_.Select(x => x.Value).ToArray(); }
+			get { return DependenciesPathes.Select(x => x.Value).ToArray(); }
 			set
 			{
-				dependenciesPathes_.Clear();
+				DependenciesPathes.Clear();
 				foreach (var item in value)
 				{
-					dependenciesPathes_.Add(new ReactiveProperty<string>(item));
+					DependenciesPathes.Add(new ReactiveProperty<string>(item));
 				}
 			}
 		}

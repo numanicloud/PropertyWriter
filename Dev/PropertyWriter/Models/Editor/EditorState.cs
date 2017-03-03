@@ -8,20 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PropertyWriter.ViewModels.Editor
+namespace PropertyWriter.Models.Editor
 {
 	abstract class EditorState
 	{
-		protected MainViewModel Owner { get; }
-		protected EditorLifecycleManager Manager { get; }
+		protected Editor Manager { get; }
 
 		public abstract string Title { get; }
 		public abstract bool CanSave { get; }
 		public ReactiveProperty<bool> CanClose { get; } = new ReactiveProperty<bool>(true);
 
-		public EditorState(MainViewModel owner, EditorLifecycleManager manager)
+		public EditorState(Editor manager)
 		{
-			Owner = owner;
 			Manager = manager;
 		}
 

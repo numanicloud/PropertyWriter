@@ -1,4 +1,5 @@
 ﻿using Livet.Messaging.Windows;
+using PropertyWriter.Models.Editor;
 using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
@@ -10,19 +11,14 @@ namespace PropertyWriter.ViewModels
 {
 	class ClosingViewModel : Livet.ViewModel
 	{
-		public enum Result
-		{
-			Anyway, AfterSave, Cancel,
-		}
-
-		public Result Response { get; private set; }
+		public ClosingResult Response { get; private set; }
 		public ReactiveCommand AnywayCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand SaveCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand CancelCommand { get; } = new ReactiveCommand();
 
 		public ClosingViewModel()
 		{
-			void SubscribeCommand(ReactiveCommand command, Result result)
+			void SubscribeCommand(ReactiveCommand command, ClosingResult result)
 			{
 				command.Subscribe(x =>
 				{
@@ -31,10 +27,10 @@ namespace PropertyWriter.ViewModels
 				});
 			}
 
-			Response = Result.Cancel;
-			SubscribeCommand(AnywayCommand, Result.Anyway);
-			SubscribeCommand(SaveCommand, Result.AfterSave);
-			SubscribeCommand(CancelCommand, Result.Cancel);
+			Response = ClosingResult.Cancel;
+			SubscribeCommand(AnywayCommand, ClosingResult.Anyway);
+			SubscribeCommand(SaveCommand, ClosingResult.AfterSave);
+			SubscribeCommand(CancelCommand, ClosingResult.Cancel);
 		}
 	}
 }

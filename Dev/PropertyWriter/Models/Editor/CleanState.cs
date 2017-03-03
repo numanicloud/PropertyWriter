@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace PropertyWriter.ViewModels.Editor
+namespace PropertyWriter.Models.Editor
 {
 	internal class CleanState : EditorState
 	{
@@ -10,8 +10,8 @@ namespace PropertyWriter.ViewModels.Editor
 		public override string Title => $" - {ProjectPath.Value}";
 		public override bool CanSave => true;
 
-		public CleanState(MainViewModel owner, EditorLifecycleManager manager, string projectPath)
-			: base(owner, manager)
+		public CleanState(Editor manager, string projectPath)
+			: base(manager)
 		{
 			ProjectPath.Value = projectPath;
 			CanClose.Value = true;
@@ -22,7 +22,7 @@ namespace PropertyWriter.ViewModels.Editor
 			var result = await Manager.CreateNewProjectAsync();
 			if (result)
 			{
-				Owner.State.Value = new NewState(Owner, Manager);
+				Manager.State.Value = new NewState(Manager);
 			}
 		}
 
@@ -33,11 +33,11 @@ namespace PropertyWriter.ViewModels.Editor
 			{
                 if (result.isDirtySetting)
                 {
-                    Owner.State.Value = new DirtyState(Owner, Manager, result.path);
+                    Manager.State.Value = new DirtyState(Manager, result.path);
                 }
                 else
                 {
-                    Owner.State.Value = new CleanState(Owner, Manager, result.path);
+                    Manager.State.Value = new CleanState(Manager, result.path);
                 }
 			}
 		}
@@ -54,7 +54,7 @@ namespace PropertyWriter.ViewModels.Editor
 
 		public override Task ModifyAsync()
 		{
-			Owner.State.Value = new DirtyState(Owner, Manager, ProjectPath.Value);
+			Manager.State.Value = new DirtyState(Manager, ProjectPath.Value);
 			return Task.CompletedTask;
 		}
 

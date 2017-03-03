@@ -43,6 +43,8 @@ namespace PropertyWriter.ViewModels.ProjectSetting
 			AddDependencyCommand.Subscribe(i => AddDependency());
 			RemoveDependencyCommand.Where(x => x >= 0).Subscribe(i => RemoveDependency(i));
 
+			AssemblyPath.Subscribe(x => SetAvailableProjectTypes());
+
             SetAvailableProjectTypes();
 		}
 
@@ -80,18 +82,17 @@ namespace PropertyWriter.ViewModels.ProjectSetting
 			if (dialog.ShowDialog() == DialogResult.OK)
             {
                 AssemblyPath.Value = dialog.FileName;
-                SetAvailableProjectTypes();
             }
         }
 
         private void SetAvailableProjectTypes()
         {
-            if (project_.AssemblyPath.Value != null && File.Exists(project_.AssemblyPath.Value))
+            if (project_.AssemblyPath.Value != null)
             {
-                AvailableProjectTypes.Value = project_.GetAssembly().GetTypes()
-                    .Where(x => x.GetCustomAttribute<PwProjectAttribute>() != null)
-                    .ToArray();
-                if (ProjectTypeName.Value != null)
+                AvailableProjectTypes.Value = project_.GetAssembly()?.GetTypes()
+                    ?.Where(x => x.GetCustomAttribute<PwProjectAttribute>() != null)
+                    ?.ToArray();
+                if (AvailableProjectTypes.Value != null && ProjectTypeName.Value != null)
                 {
                     ProjectType.Value = AvailableProjectTypes.Value.FirstOrDefault(x => x.FullName == ProjectTypeName.Value);
                 }

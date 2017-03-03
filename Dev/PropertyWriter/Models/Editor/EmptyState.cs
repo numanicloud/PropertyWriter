@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PropertyWriter.ViewModels.Editor
+namespace PropertyWriter.Models.Editor
 {
 	class EmptyState : EditorState
 	{
 		public override string Title => "";
 		public override bool CanSave => false;
 
-		public EmptyState(MainViewModel owner, EditorLifecycleManager manager)
-			: base(owner, manager)
+		public EmptyState(Editor manager)
+			: base(manager)
 		{
 			CanClose.Value = true;
 		}
@@ -27,7 +27,7 @@ namespace PropertyWriter.ViewModels.Editor
 			var result = await Manager.CreateNewProjectAsync();
 			if (result)
 			{
-				Owner.State.Value = new NewState(Owner, Manager);
+				Manager.State.Value = new NewState(Manager);
 			}
 		}
 
@@ -38,11 +38,11 @@ namespace PropertyWriter.ViewModels.Editor
 			{
                 if (result.isDirtySetting)
                 {
-                    Owner.State.Value = new DirtyState(Owner, Manager, result.path);
+                    Manager.State.Value = new DirtyState(Manager, result.path);
                 }
                 else
                 {
-                    Owner.State.Value = new CleanState(Owner, Manager, result.path);
+					Manager.State.Value = new CleanState(Manager, result.path);
                 }
 			}
 		}
