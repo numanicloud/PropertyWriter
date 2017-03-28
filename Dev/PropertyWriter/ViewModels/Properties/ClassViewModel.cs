@@ -11,26 +11,16 @@ using System.Diagnostics;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-    public class ClassViewModel : PropertyViewModel<ClassProperty>
+    public class ClassViewModel : StructureHolderViewModel<ClassProperty>
 	{
-        public IPropertyViewModel[] Members { get; }
-        public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
-		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
-
         public ClassViewModel(ClassProperty property, ViewModelFactory factory)
-			: base(property)
+			: base(property, factory)
         {
 			FormatedString.Dispose();
 			FormatedString = Property.OnChanged
 				.Select(x => Value.Value.ToString())
 				.Do(x => { }, ex => Debugger.Log(1, "Error", $"Error from ClassViewModel:\n{ex}\n"))
 				.ToReactiveProperty(Value.Value.ToString());
-
-			EditCommand.Subscribe(x => Messenger.Raise(
-                new TransitionMessage(
-                    new BlockViewModel(this),
-                    "BlockWindow")));
-			Members = property.Members.Select(x => factory.Create(x, true)).ToArray();
         }
 	}
 }

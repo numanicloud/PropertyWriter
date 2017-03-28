@@ -12,6 +12,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		where TProperty : IPropertyModel
 	{
 		protected Subject<Exception> OnErrorSubject { get; }
+		protected Subject<Unit> ShowDetailSubject { get; }
 
 		public TProperty Property { get; protected set; }
 		public ReactiveProperty<string> Title => Property.Title;
@@ -19,10 +20,12 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		public ReactiveProperty<string> FormatedString { get; protected set; }
 		public abstract IObservable<Unit> OnChanged { get; }
 		public IObservable<Exception> OnError => Property.OnError.Merge(OnErrorSubject);
+		public IObservable<Unit> ShowDetail => ShowDetailSubject;
 
 		public PropertyViewModel(TProperty property)
 		{
 			OnErrorSubject = new Subject<Exception>();
+			ShowDetailSubject = new Subject<Unit>();
 			Property = property;
 
 			var nullString = Value.Where(x => x == null)

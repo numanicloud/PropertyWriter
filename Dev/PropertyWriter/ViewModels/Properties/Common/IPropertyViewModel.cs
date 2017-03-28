@@ -11,5 +11,6 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		ReactiveProperty<string> Title { get; }
 		IObservable<Unit> OnChanged { get; }
 		IObservable<Exception> OnError { get; }
+		IObservable<Unit> ShowDetail { get; }
 	}
 }

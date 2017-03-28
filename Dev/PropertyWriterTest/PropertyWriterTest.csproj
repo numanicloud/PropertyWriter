@@ -131,6 +131,7 @@
     <Compile Include="ViewModels\ErrorTest.cs" />
     <Compile Include="ViewModels\OnChangedPropagatingTest.cs" />
     <Compile Include="ViewModels\OnChangedTest.cs" />
+    <Compile Include="ViewModels\StructureHolderTest.cs" />
     <Compile Include="ViewModels\UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>

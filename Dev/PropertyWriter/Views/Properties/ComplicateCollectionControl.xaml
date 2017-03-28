@@ -59,7 +59,24 @@
 			</ContentControl.Resources>
 		</ContentControl>
 
-		<GridSplitter Focusable="False" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" Background="Transparent"/>
+		<GridSplitter Focusable="False" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="3">
+			<GridSplitter.Background>
+				<DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+					<DrawingBrush.Drawing>
+						<DrawingGroup>
+							<GeometryDrawing Brush="LightGreen">
+								<GeometryDrawing.Geometry>
+									<GeometryGroup>
+										<RectangleGeometry Rect="0,0,50,50"/>
+										<RectangleGeometry Rect="50,50,50,50"/>
+									</GeometryGroup>
+								</GeometryDrawing.Geometry>
+							</GeometryDrawing>
+						</DrawingGroup>
+					</DrawingBrush.Drawing>
+				</DrawingBrush>
+			</GridSplitter.Background>
+		</GridSplitter>
 
 	</Grid>
 </UserControl>

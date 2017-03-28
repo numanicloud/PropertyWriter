@@ -104,7 +104,9 @@
 			</TabControl.ItemTemplate>
 			<TabControl.ContentTemplate>
 				<DataTemplate DataType="instance:PropertyModel">
-					<ContentControl Content="{Binding}" Focusable="False"/>
+					<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+						<ContentControl Content="{Binding}" Focusable="False"/>
+					</ScrollViewer>
 				</DataTemplate>
 			</TabControl.ContentTemplate>
 		</TabControl>

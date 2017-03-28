@@ -7,16 +7,47 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-	<UserControl.Resources>
-		<ResourceDictionary Source="InlineProperty.xaml"/>
-	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
 
-	<ItemsControl ItemsSource="{Binding Members}" Grid.IsSharedSizeScope="True" Focusable="False">
-		<ItemsControl.ItemsPanel>
-			<ItemsPanelTemplate>
-				<WrapPanel Orientation="Vertical"/>
-			</ItemsPanelTemplate>
-		</ItemsControl.ItemsPanel>
-	</ItemsControl>
+		<ItemsControl ItemsSource="{Binding Members}" Grid.IsSharedSizeScope="True" Focusable="False">
+			<ItemsControl.Resources>
+				<ResourceDictionary Source="InlineProperty.xaml"/>
+			</ItemsControl.Resources>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel Orientation="Vertical"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+		</ItemsControl>
+		
+		<Border Grid.Column="1" BorderThickness="1,0,1,1" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+			<Border.BorderBrush>
+				<DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+					<DrawingBrush.Drawing>
+						<DrawingGroup>
+							<GeometryDrawing Brush="LightGreen">
+								<GeometryDrawing.Geometry>
+									<GeometryGroup>
+										<RectangleGeometry Rect="0,0,50,50"/>
+										<RectangleGeometry Rect="50,50,50,50"/>
+									</GeometryGroup>
+								</GeometryDrawing.Geometry>
+							</GeometryDrawing>
+						</DrawingGroup>
+					</DrawingBrush.Drawing>
+				</DrawingBrush>
+			</Border.BorderBrush>
+		</Border>
+
+		<ContentControl Content="{Binding PropertyClosedUp.Value}" Focusable="False" Grid.Column="1" Margin="5,0,0,0">
+			<ContentControl.Resources>
+				<ResourceDictionary Source="BlockProperty.xaml"/>
+			</ContentControl.Resources>
+		</ContentControl>
+	</Grid>
 
 </UserControl>

@@ -10,26 +10,15 @@ using Reactive.Bindings;
 
 namespace PropertyWriter.ViewModels.Properties
 {
-    public class StructViewModel : PropertyViewModel<StructProperty>
+    public class StructViewModel : StructureHolderViewModel<StructProperty>
 	{
-		public IPropertyViewModel[] Members { get; }
-		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
-		public override IObservable<Unit> OnChanged => Observable.Merge(Members.Select(x => x.OnChanged));
-
 		public StructViewModel(StructProperty property, ViewModelFactory factory)
-			: base(property)
+			: base(property, factory)
         {
 			FormatedString = Property.OnChanged
 				.Select(x => Value.Value.ToString())
 				.ToReactiveProperty();
-
 			FormatedString.Subscribe(x => { }, OnErrorSubject.OnNext);
-
-			EditCommand.Subscribe(x => Messenger.Raise(
-                new TransitionMessage(
-                    new BlockViewModel(this),
-                    "BlockWindow")));
-			Members = property.Members.Select(x => factory.Create(x, true)).ToArray();
         }
 	}
 }

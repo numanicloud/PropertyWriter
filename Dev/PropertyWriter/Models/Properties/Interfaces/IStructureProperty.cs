@@ -2,7 +2,7 @@
 
 namespace PropertyWriter.Models.Properties.Interfaces
 {
-    interface IStructureProperty
+    public interface IStructureProperty
     {
         Type ValueType { get; }
         IPropertyModel[] Members { get; }
