@@ -21,6 +21,8 @@ namespace PropertyWriter.Models.Properties
 		public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
 		public Type ElementType => CollectionValue.ItemType;
 
+		public ReactiveProperty<int> Count => CollectionValue.Count;
+
 		public ReferenceByIntCollectionProperty(ReferencableMasterInfo source, string idPropertyName, PropertyFactory factory)
 		{
 			Source = source;

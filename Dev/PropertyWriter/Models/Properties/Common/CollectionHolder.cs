@@ -21,6 +21,7 @@ namespace PropertyWriter.Models.Properties.Common
 		public ObservableCollection<(IPropertyModel model, IDisposable error)> Collection { get; }
 		public ReactiveProperty<IEnumerable> Value { get; }
 		public IObservable<Exception> OnError => OnErrorSubject;
+		public ReactiveProperty<int> Count { get; } = new ReactiveProperty<int>();
 
 		public CollectionHolder(Type type, PropertyFactory modelFactory)
 		{
@@ -50,6 +51,7 @@ namespace PropertyWriter.Models.Properties.Common
 			Collection.ToCollectionChanged()
 				.Subscribe(x =>
 				{
+					Count.Value = Collection.Count;
 					try
 					{
 						Value.Value = MakeValue(Collection);

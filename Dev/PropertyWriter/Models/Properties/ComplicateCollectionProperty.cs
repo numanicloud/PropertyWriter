@@ -13,10 +13,11 @@ namespace PropertyWriter.Models.Properties
 
 		public override Type ValueType => CollectionValue.Type;
 		public override ReactiveProperty<object> Value { get; }
-        public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
+		public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
         public Type ElementType => CollectionValue.ItemType;
+		public ReactiveProperty<int> Count => CollectionValue.Count;
 
-        public ComplicateCollectionProperty(Type type, PropertyFactory modelFactory)
+		public ComplicateCollectionProperty(Type type, PropertyFactory modelFactory)
         {
             CollectionValue = new CollectionHolder(type, modelFactory);
             Value = CollectionValue.Value

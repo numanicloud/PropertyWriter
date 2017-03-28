@@ -65,17 +65,7 @@
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type instance:SubtypingViewModel}">
-		<StackPanel>
-			<i:Interaction.Triggers>
-				<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="SubtypeEditor">
-					<l:TransitionInteractionMessageAction WindowType="{x:Type views:BlockWindow}" Mode="Modal"/>
-				</l:InteractionMessageTrigger>
-			</i:Interaction.Triggers>
-			<ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}"
-								DisplayMemberPath="Name" HorizontalAlignment="Left"/>
-			<TextBlock Text="{Binding FormatedString.Value}" Style="{StaticResource Revealer}"/>
-			<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}" HorizontalAlignment="Left"/>
-		</StackPanel>
+		<properties:SubtypingClassControl DataContext="{Binding Path=.}"/>
 	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type vm:PluginViewModel}">

@@ -15,6 +15,7 @@
 
 		<Grid Grid.Column="0">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
 				<RowDefinition/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
@@ -24,10 +25,13 @@
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 
+			<TextBlock Text="{Binding Property.Title.Value}"  Style="{StaticResource ResourceKey=BlockTitle}"
+								 Grid.ColumnSpan="2"/>
+
 			<ListBox 
 				ItemsSource="{Binding Collection}"
 				SelectedIndex="{Binding SelectedIndex.Value}"
-				Grid.Row="0"
+				Grid.Row="1"
 				Grid.ColumnSpan="3"
 				IsSynchronizedWithCurrentItem="True"
 				Name="MasterList">
@@ -44,13 +48,13 @@
 				</ListBox.Resources>
 			</ListBox>
 
-			<Button Content="追加" Command="{Binding AddCommand}" Grid.Row="1" Grid.Column="0"/>
+			<Button Content="追加" Command="{Binding AddCommand}" Grid.Row="2" Grid.Column="0"/>
 			<Button Content="削除" Command="{Binding RemoveCommand}"
-							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="2" Grid.Column="0"/>
+							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="3" Grid.Column="0"/>
 			<Button Content="⇧" Command="{Binding UpCommand}"
-							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="1" Grid.Column="1"/>
-			<Button Content="⇩" Command="{Binding DownCommand}"
 							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="2" Grid.Column="1"/>
+			<Button Content="⇩" Command="{Binding DownCommand}"
+							CommandParameter="{Binding ElementName=MasterList, Path=SelectedIndex}" Grid.Row="3" Grid.Column="1"/>
 		</Grid>
 
 		<ContentControl Content="{Binding Collection/}" Focusable="False" Grid.Column="1" Margin="5,0,0,0">
@@ -64,7 +68,7 @@
 				<DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
 					<DrawingBrush.Drawing>
 						<DrawingGroup>
-							<GeometryDrawing Brush="LightGreen">
+							<GeometryDrawing Brush="{DynamicResource PrimaryHueMidBrush}">
 								<GeometryDrawing.Geometry>
 									<GeometryGroup>
 										<RectangleGeometry Rect="0,0,50,50"/>

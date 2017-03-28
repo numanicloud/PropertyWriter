@@ -14,7 +14,9 @@ namespace PropertyWriter.Models.Properties
 		public ReadOnlyReactiveCollection<IPropertyModel> Collection { get; }
         public override ReactiveProperty<object> Value { get; }
 
-        public BasicCollectionProperty(Type type, PropertyFactory modelFactory)
+		public ReactiveProperty<int> Count => CollectionValue.Count;
+
+		public BasicCollectionProperty(Type type, PropertyFactory modelFactory)
         {
             CollectionValue = new CollectionHolder(type, modelFactory);
             Value = CollectionValue.Value.Cast<object>().ToReactiveProperty();

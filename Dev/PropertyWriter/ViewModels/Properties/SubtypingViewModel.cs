@@ -12,7 +12,7 @@ namespace PropertyWriter.ViewModels.Properties
 {
 	public class SubtypingViewModel : PropertyViewModel<SubtypingProperty>
 	{
-		private ReactiveProperty<IPropertyViewModel> Instance { get; }
+		public ReactiveProperty<IPropertyViewModel> Instance { get; }
 
         public SubTypeInfo[] AvailableTypes => Property.AvailableTypes;
 		public ReactiveProperty<SubTypeInfo> SelectedType => Property.SelectedType;
@@ -31,9 +31,9 @@ namespace PropertyWriter.ViewModels.Properties
 
             EditCommand.Where(x => Instance.Value != null).Subscribe(x =>
             {
-				var vm = new BlockViewModel(Instance.Value);
-				Messenger.Raise(new TransitionMessage(vm, "SubtypeEditor"));
+				ShowDetailSubject.OnNext(Instance.Value);
             });
+			Instance.Subscribe(x => ShowDetailSubject.OnNext(null));
 
 			OnChanged = Instance.Where(x => x != null)
 				.SelectMany(x => x.OnChanged)

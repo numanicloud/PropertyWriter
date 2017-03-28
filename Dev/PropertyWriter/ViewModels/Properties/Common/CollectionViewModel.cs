@@ -35,10 +35,9 @@ namespace PropertyWriter.ViewModels.Properties.Common
 				vm.OnChanged.Subscribe(y => OnChangedSubject.OnNext(Unit.Default));
 				return vm;
 			});
-
-			FormatedString = Property.Value
-				.Select(x => "Count = " + Collection.Count)
-				.ToReactiveProperty();
+			
+			FormatedString = Property.Count.Select(x => $"Count = {x}")
+				.ToReactiveProperty(mode: ReactivePropertyMode.RaiseLatestValueOnSubscribe);
 
 			AddCommand.Subscribe(x =>
 			{
@@ -64,10 +63,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 				}
 				OnChangedSubject.OnNext(Unit.Default);
 			});
-			EditCommand.Subscribe(x => Messenger.Raise(
-				new TransitionMessage(
-					new BlockViewModel(this),
-					"BlockWindow")));
+			EditCommand.Subscribe(x => ShowDetailSubject.OnNext(this));
 
 			UpCommand.Subscribe(x =>
 			{

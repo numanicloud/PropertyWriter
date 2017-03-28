@@ -11,7 +11,12 @@
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Amber.xaml" />
 				<ResourceDictionary Source="Views/EditorStyle.xaml"/>
 				<ResourceDictionary>
-					
+					<Style TargetType="TextBlock" x:Key="BlockTitle">
+						<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}"/>
+						<Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightForegroundBrush}"/>
+						<Setter Property="Margin" Value="2"/>
+						<Setter Property="Padding" Value="3"/>
+					</Style>
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>

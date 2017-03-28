@@ -194,6 +194,9 @@
     </Compile>
     <Compile Include="Views\Properties\BlockProperty.cs" />
     <Compile Include="Views\Properties\InlineProperty.cs" />
+    <Compile Include="Views\Properties\SubtypingClassControl.xaml.cs">
+      <DependentUpon>SubtypingClassControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -304,6 +307,10 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Properties\SubtypingClassControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

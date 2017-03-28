@@ -58,7 +58,7 @@ namespace PropertyWriterTest.ViewModels
 
 			subject.OnNext(Unit.Default);
 
-			ClassVm.PropertyClosedUp.Is(memberVm);
+			ClassVm.PropertyClosedUp.Value.Is(memberVm);
 		}
 
 		[TestMethod]

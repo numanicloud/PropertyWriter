@@ -25,11 +25,11 @@ namespace PropertyWriter.ViewModels.Properties.Common
 			PropertyClosedUp = new ReactiveProperty<IPropertyViewModel>();
 			Members = property.Members.Select(x => factory.Create(x, true)).ToArray();
 			OnChanged = Observable.Merge(Members.Select(x => x.OnChanged));
-			EditCommand.Subscribe(x => ShowDetailSubject.OnNext(Unit.Default));
+			EditCommand.Subscribe(x => ShowDetailSubject.OnNext(this));
 			
 			foreach (var member in Members)
 			{
-				member.ShowDetail.Subscribe(x => PropertyClosedUp.Value = member);
+				member.ShowDetail.Subscribe(x => PropertyClosedUp.Value = x);
 			}
 		}
 	}
