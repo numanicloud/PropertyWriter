@@ -144,6 +144,11 @@ namespace PropertyWriter.Models.Serialize
             object structureValue,
             List<(ReferenceByIntProperty reference, int id)> references)
         {
+			if (structureValue == null)
+			{
+				return;
+			}
+
             var members = model.Members;
             foreach (var property in members)
             {

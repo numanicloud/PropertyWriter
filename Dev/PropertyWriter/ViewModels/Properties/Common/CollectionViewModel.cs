@@ -31,8 +31,18 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		{
 			Collection = property.Collection.ToReadOnlyReactiveCollection(x =>
 			{
-				var vm = factory.Create(x);
+				IPropertyViewModel vm = null;
+				try
+				{
+					vm = factory.Create(x);
+				}
+				catch (Exception e)
+				{
+					OnErrorSubject.OnNext(e);
+					return null;
+				}
 				vm.OnChanged.Subscribe(y => OnChangedSubject.OnNext(Unit.Default));
+				vm.OnError.Subscribe(e => OnErrorSubject.OnNext(e));
 				return vm;
 			});
 			

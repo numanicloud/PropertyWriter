@@ -54,9 +54,9 @@ namespace PropertyWriterTest.ViewModels
 		public void ShowDetailイベントを発行したメンバーをCloseUpに設定する()
 		{
 			var memberVm = ClassVm.Members[0].IsInstanceOf<ClassViewModel>();
-			var subject = (Subject<Unit>)memberVm.ShowDetail;
+			var subject = (Subject<IPropertyViewModel>)memberVm.ShowDetail;
 
-			subject.OnNext(Unit.Default);
+			subject.OnNext(memberVm);
 
 			ClassVm.PropertyClosedUp.Value.Is(memberVm);
 		}

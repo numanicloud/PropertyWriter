@@ -13,14 +13,18 @@ namespace PropertyWriter.ViewModels.Properties
 {
     public class ClassViewModel : StructureHolderViewModel<ClassProperty>
 	{
-        public ClassViewModel(ClassProperty property, ViewModelFactory factory)
+		public ClassViewModel(ClassProperty property, ViewModelFactory factory)
 			: base(property, factory)
-        {
+		{
+			string GetString()
+			{
+				return Value?.Value?.ToString();
+			}
+
 			FormatedString.Dispose();
 			FormatedString = Property.OnChanged
-				.Select(x => Value.Value.ToString())
-				.Do(x => { }, ex => Debugger.Log(1, "Error", $"Error from ClassViewModel:\n{ex}\n"))
-				.ToReactiveProperty(Value.Value.ToString());
+				.Select(x => GetString())
+				.ToReactiveProperty(GetString());
         }
 	}
 }
