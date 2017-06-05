@@ -142,13 +142,13 @@
     <Compile Include="Models\Editor\IEditorViewModel.cs" />
     <Compile Include="Models\Exceptions\PwInvalidStructureException.cs" />
     <Compile Include="Models\Exceptions\PwProjectException.cs" />
+    <Compile Include="Models\Properties\Extensibility\PropertyRouter.cs" />
     <Compile Include="Models\Properties\MiscProperty.cs" />
     <Compile Include="Models\Properties\ReferenceByIntCollectionProperty.cs" />
     <Compile Include="ViewModels\Properties\Common\CollectionViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModelFactory.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\PropertyCompounder.cs" />
-    <Compile Include="ViewModels\Properties\Extensibility\PropertyRouter.cs" />
     <Compile Include="Models\Serialize\CustomSerializer.cs" />
     <Compile Include="Models\Properties\Interfaces\ICollectionProperty.cs" />
     <Compile Include="Models\Properties\Interfaces\PropertyModel.cs" />
@@ -182,6 +182,7 @@
     <Compile Include="ViewModels\ProjectSetting\ProjectRepairViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\StructureHolderViewModel.cs" />
     <Compile Include="ViewModels\Properties\Common\ViewModelFactory.cs" />
+    <Compile Include="ViewModels\Properties\Extensibility\ViewModelRouter.cs" />
     <Compile Include="ViewModels\Properties\MultilineStringViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\PluginViewModel.cs" />
     <Compile Include="ViewModels\Properties\ReferenceByIntCollectionViewModel.cs" />

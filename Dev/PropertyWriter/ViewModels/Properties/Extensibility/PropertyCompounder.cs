@@ -16,7 +16,7 @@ namespace PropertyWriter.ViewModels.Properties.Extensibility
 	public class PropertyCompounder
 	{
 		IPropertyModel model;
-		PropertyRouter router;
+		ViewModelRouter router;
 
 		public bool UsePlugin { get; set; }
 		public IObservable<Unit> CompoundOnChangedObservable { get; private set; }
@@ -25,7 +25,7 @@ namespace PropertyWriter.ViewModels.Properties.Extensibility
 		{
 			UsePlugin = true;
 			this.model = model;
-			router = new PropertyRouter(factory);
+			router = new ViewModelRouter(factory);
 			CompoundOnChangedObservable = Observable.Empty<Unit>();
 		}
 

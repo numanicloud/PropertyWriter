@@ -11,15 +11,12 @@ using PropertyWriter.ViewModels.Properties;
 using System.Reactive;
 using System.Reactive.Linq;
 
-namespace PropertyWriter.ViewModels
+namespace PropertyWriter.Models
 {
 	public class PropertyRouter
 	{
-		private ViewModelFactory factory_;
-
-		public PropertyRouter(ViewModelFactory factory)
+		public PropertyRouter()
 		{
-			factory_ = factory;
 		}
 
 		public ReactiveProperty<int> GetIntProperty(IPropertyModel model, string route)
@@ -64,12 +61,6 @@ namespace PropertyWriter.ViewModels
 				return p.StringValue;
 			}
 			throw new InvalidCastException($"{route} は int 型ではありません。");
-		}
-
-		public IPropertyViewModel CreateViewModel(IPropertyModel model, string route, bool usePlugin = true)
-		{
-			var m = GetValuePropertyModel(model, route);
-			return factory_.Create(m, usePlugin);
 		}
 
 		public IPropertyModel GetValuePropertyModel(IPropertyModel model, string route)

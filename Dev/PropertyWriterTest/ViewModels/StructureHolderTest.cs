@@ -27,7 +27,7 @@ namespace PropertyWriterTest.ViewModels
 		}
 
 		public ClassViewModel ClassVm { get; set; }
-		public PropertyRouter Router { get; set; }
+		public ViewModelRouter Router { get; set; }
 
 		[TestInitialize]
 		public void Initialize()
@@ -36,7 +36,7 @@ namespace PropertyWriterTest.ViewModels
 			var classProp = new ClassProperty(typeof(Fuga), propFactory);
 			var vmFactory = new ViewModelFactory(propFactory);
 			ClassVm = new ClassViewModel(classProp, vmFactory);
-			Router = new PropertyRouter(vmFactory);
+			Router = new ViewModelRouter(vmFactory);
 		}
 
 		[TestMethod]
