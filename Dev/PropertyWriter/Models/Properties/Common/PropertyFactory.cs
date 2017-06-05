@@ -21,105 +21,22 @@ namespace PropertyWriter.Models.Properties.Common
 
 	public class PropertyFactory
 	{
-		private Dictionary<string, ReferencableMasterInfo> masters_;
-		private Dictionary<Type, Type[]> subtypings_;
+		private MasterLoader loader;
 
-		public ReadOnlyDictionary<string, ReferencableMasterInfo> Masters => new ReadOnlyDictionary<string, ReferencableMasterInfo>(masters_);
+		public ReadOnlyDictionary<string, ReferencableMasterInfo> Masters => new ReadOnlyDictionary<string, ReferencableMasterInfo>(loader.Masters);
+		
 
 		public PropertyFactory()
 		{
-			masters_ = new Dictionary<string, ReferencableMasterInfo>();
-			subtypings_ = new Dictionary<Type, Type[]>();
+			loader = new MasterLoader(this);
 		}
 
 		public PropertyRoot GetStructure(Assembly assembly, Type projectType, Project[] dependencies)
 		{
-			if (!projectType.IsPublic && !projectType.IsNestedPublic)
-			{
-				throw new ArgumentException($"プロジェクト型 {projectType.FullName} がパブリックではありませんでした。", nameof(projectType));
-			}
-
-			LoadSubtypes(assembly);
-
-			var masterMembers = projectType.GetMembers();
-			var masters = GetMastersInfo(masterMembers, true).ToArray();
-
-			masters_ = new Dictionary<string, ReferencableMasterInfo>();
-			LoadMasters(masters);
-			dependencies.SelectMany(x => x.Factory.Masters
-					.Select(y => (key: x.Root.Value.Type.Name + "." + y.Key, value: y.Value)))
-				.ForEach(x => masters_[x.key] = x.value);
-
-			var globals = GetMastersInfo(masterMembers, false);
-			var models = globals.Concat(masters).ToArray();
-
-			return new PropertyRoot(projectType, models.ToArray());
+			return loader.LoadStructure(assembly, projectType, dependencies);
 		}
 
-		private IEnumerable<MasterInfo> GetDependentedMasters(PropertyRoot[] dependencies)
-		{
-			return dependencies.Select(root => (props: root.Structure.Properties, type: root.Type))
-				.Select(x => (ps: GetMastersInfo(x.props.Select(p => p.PropertyInfo).ToArray(), true), type: x.type))
-				.SelectMany(x => x.ps.Select(y => new MasterInfo(x.type.Name + "." + y.Key, y.Property, y.Master)))
-				.ToArray();
-		}
-
-		private void LoadMasters(MasterInfo[] masters)
-		{
-			foreach (var info in masters)
-			{
-				if (info.Master is ComplicateCollectionProperty prop)
-				{
-					masters_[info.Key] = new ReferencableMasterInfo()
-					{
-						Collection = prop.Collection.ToReadOnlyReactiveCollection(x => x.Value.Value),
-						Type = info.Property.PropertyType.GetElementType(),
-					};
-				}
-			}
-		}
-
-		private void LoadSubtypes(Assembly assembly)
-		{
-			var types = assembly.GetTypes();
-			var subtypings = types.Where(Helpers.IsAnnotatedType<PwSubtypingAttribute>).ToArray();
-			var subtypes = types.Where(Helpers.IsAnnotatedType<PwSubtypeAttribute>).ToArray();
-			subtypings_ = subtypings.ToDictionary(x => x,
-				x => subtypes.Where(y => x.IsAssignableFrom(y)).ToArray());
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="masterMembers"></param>
-		/// <param name="filterArrayType"></param>
-		/// <returns></returns>
-		/// <remarks>リストマスターが読み込まれていない場合<paramref name="filterArrayType"/>をfalseにすると例外を投げる</remarks>
-		private IEnumerable<MasterInfo> GetMastersInfo(MemberInfo[] masterMembers, bool filterArrayType)
-		{
-			foreach (var member in masterMembers)
-			{
-				var attr = member.GetCustomAttribute<PwMasterAttribute>();
-				if (attr == null)
-				{
-					continue;
-				}
-
-				if (member.MemberType != MemberTypes.Property)
-				{
-					continue;
-				}
-
-				var property = (PropertyInfo)member;
-				if (property.PropertyType.IsArray == filterArrayType)
-				{
-					var title = attr.Name ?? property.Name;
-					yield return new MasterInfo(attr.Key, property, Create(property.PropertyType, title));
-				}
-			}
-		}
-
-		public IEnumerable<IPropertyModel> GetMembers(Type type)
+		public IEnumerable<IPropertyModel> CreateForMembers(Type type)
 		{
 			var properties = type.GetProperties();
 
@@ -128,7 +45,7 @@ namespace PropertyWriter.Models.Properties.Common
 				throw new InvalidOperationException($"クラス {type.Name} は依存関係が循環しています。");
 			}
 
-			var models = properties.Select(MakeModel)
+			var models = properties.Select(CreateFromProperty)
 				.Where(x => x != null)
 				.ToArray();
 
@@ -136,6 +53,19 @@ namespace PropertyWriter.Models.Properties.Common
 
 			return models.Cast<IPropertyModel>().ToArray();
 		}
+
+		public IPropertyModel Create(Type type, string title)
+		{
+			var propertyType = TypeRecognizer.ParseType(type);
+			if (!type.IsPublic && !type.IsNestedPublic)
+			{
+				throw new ArgumentException($"型 {type.FullName} がパブリックではありませんでした。", nameof(type));
+			}
+			var model = Create(propertyType, type);
+			model.Title.Value = title;
+			return model;
+		}
+		
 
 		private static void LoadBackwardBind(Type type, IPropertyModel[] properties)
 		{
@@ -158,7 +88,7 @@ namespace PropertyWriter.Models.Properties.Common
 			}
 		}
 
-		private IPropertyModel MakeModel(PropertyInfo info)
+		private IPropertyModel CreateFromProperty(PropertyInfo info)
 		{
 			IPropertyModel result = null;
 			void SetInfo()
@@ -210,44 +140,34 @@ namespace PropertyWriter.Models.Properties.Common
 			}
 		}
 
-		public IPropertyModel CreateReference(Type type, string masterKey, string idMemberName, string title)
+		private IPropertyModel CreateReference(Type type, string masterKey, string idMemberName, string title)
 		{
 			var propertyType = TypeRecognizer.ParseType(type);
 			switch (propertyType)
 			{
 			case PropertyKind.Integer:
-				if (!masters_.ContainsKey(masterKey))
+				if (!loader.Masters.ContainsKey(masterKey))
 				{
 					throw new KeyNotFoundException($"[PwReferenceMember] 属性で指定されたマスターキー \"{masterKey}\" を持つ [PwMaster] 属性のついたメンバーがプロジェクトに含まれていません。");
 				}
-				return new ReferenceByIntProperty(masters_[masterKey], idMemberName)
+				return new ReferenceByIntProperty(loader.Masters[masterKey], idMemberName)
 				{
 					Title = { Value = title }
 				};
+
 			case PropertyKind.BasicCollection:
-				if (!masters_.ContainsKey(masterKey))
+				if (!loader.Masters.ContainsKey(masterKey))
 				{
 					throw new KeyNotFoundException($"[PwReferenceMember] 属性で指定されたマスターキー \"{masterKey}\" を持つ [PwMaster] 属性のついたメンバーがプロジェクトに含まれていません。");
 				}
-				return new ReferenceByIntCollectionProperty(masters_[masterKey], idMemberName, this)
+				return new ReferenceByIntCollectionProperty(loader.Masters[masterKey], idMemberName, this)
 				{
 					Title = { Value = title }
 				};
+
 			default:
 				throw new InvalidOperationException("ID参照をするプロパティの型は int, int[] 型のみがサポートされます。");
 			}
-		}
-
-		public IPropertyModel Create(Type type, string title)
-		{
-			var propertyType = TypeRecognizer.ParseType(type);
-			if (!type.IsPublic && !type.IsNestedPublic)
-			{
-				throw new ArgumentException($"型 {type.FullName} がパブリックではありませんでした。", nameof(type));
-			}
-			var model = Create(propertyType, type);
-			model.Title.Value = title;
-			return model;
 		}
 
 		private IPropertyModel Create(PropertyKind propertyType, Type type)
@@ -263,7 +183,7 @@ namespace PropertyWriter.Models.Properties.Common
 			case PropertyKind.Struct: return new StructProperty(type, this);
 			case PropertyKind.BasicCollection: return new BasicCollectionProperty(type, this);
 			case PropertyKind.ComplicateCollection: return new ComplicateCollectionProperty(type, this);
-			case PropertyKind.SubtypingClass: return new SubtypingProperty(type, this, subtypings_[type]);
+			case PropertyKind.SubtypingClass: return new SubtypingProperty(type, this, loader.Subtypes[type]);
 
 			case PropertyKind.Unknown: return null;
 			default: return null;

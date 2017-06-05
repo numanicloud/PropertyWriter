@@ -136,11 +136,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Properties\Common\MasterBuilder.cs" />
     <Compile Include="Models\Editor\ClosingResult.cs" />
     <Compile Include="Models\Editor\Editor.cs" />
     <Compile Include="Models\Editor\IEditorViewModel.cs" />
     <Compile Include="Models\Exceptions\PwInvalidStructureException.cs" />
     <Compile Include="Models\Exceptions\PwProjectException.cs" />
+    <Compile Include="Models\Properties\MiscProperty.cs" />
     <Compile Include="Models\Properties\ReferenceByIntCollectionProperty.cs" />
     <Compile Include="ViewModels\Properties\Common\CollectionViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModel.cs" />

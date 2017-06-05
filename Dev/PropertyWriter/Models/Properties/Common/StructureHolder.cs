@@ -24,7 +24,7 @@ namespace PropertyWriter.Models.Properties.Common
 
 		public StructureHolder(Type type, PropertyFactory modelFactory)
         {
-            Properties = modelFactory.GetMembers(type);
+            Properties = modelFactory.CreateForMembers(type);
             Initialize(type);
         }
 

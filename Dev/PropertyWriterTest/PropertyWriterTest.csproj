@@ -122,6 +122,7 @@
     <Compile Include="Models\DictionaryProperty.cs" />
     <Compile Include="Models\EditorTest.cs" />
     <Compile Include="Models\ErrorOnInternalClass.cs" />
+    <Compile Include="Models\MasterBuilderTest.cs" />
     <Compile Include="Models\OnChangedTest.cs" />
     <Compile Include="Models\RouterTest.cs" />
     <Compile Include="Models\TypeParserTest.cs" />
