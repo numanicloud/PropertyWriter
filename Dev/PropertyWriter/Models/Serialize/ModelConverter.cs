@@ -32,7 +32,7 @@ namespace PropertyWriter.Models.Serialize
 
     class ModelConverter
     {
-        public static async Task LoadValueToRootAsync(PropertyRoot root, object obj)
+        public async Task LoadValueToRootAsync(PropertyRoot root, object obj)
         {
             var references = new List<(ReferenceByIntProperty model, int id)>();
             foreach (var p in root.Structure.Properties)
@@ -47,7 +47,7 @@ namespace PropertyWriter.Models.Serialize
             }
         }
 
-        private static void LoadValueToModel(
+        private void LoadValueToModel(
             IPropertyModel model,
             object value,
             List<(ReferenceByIntProperty reference, int id)> references)
@@ -79,7 +79,7 @@ namespace PropertyWriter.Models.Serialize
                 references.Add((m, (int)value));
                 break;
             case SubtypingProperty m:
-                LoadSubtypeToModel(value, references, m);
+                LoadSubtypeToModel(m, value, references);
                 break;
             case ComplicateCollectionProperty m:
                 LoadCollectionToModel(m, value, references);
@@ -95,11 +95,11 @@ namespace PropertyWriter.Models.Serialize
             }
         }
 
-        private static void LoadSubtypeToModel(
-            object value,
-            List<(ReferenceByIntProperty reference, int id)> references,
-            SubtypingProperty m)
-        {
+        private void LoadSubtypeToModel(
+			SubtypingProperty m,
+			object value,
+			List<(ReferenceByIntProperty reference, int id)> references)
+		{
             foreach (var type in m.AvailableTypes)
             {
                 if (type.Type == value?.GetType())
@@ -113,7 +113,7 @@ namespace PropertyWriter.Models.Serialize
             }
         }
 
-        private static void LoadCollectionToModel(
+        private void LoadCollectionToModel(
             ICollectionProperty model,
             object value,
             List<(ReferenceByIntProperty reference, int id)> references)
@@ -139,7 +139,7 @@ namespace PropertyWriter.Models.Serialize
             }
         }
 
-        private static void LoadObjectToModel(
+        private void LoadObjectToModel(
             IStructureProperty model,
             object structureValue,
             List<(ReferenceByIntProperty reference, int id)> references)
@@ -167,7 +167,7 @@ namespace PropertyWriter.Models.Serialize
             }
         }
 
-        private static void ConvertEnum(EnumProperty model, object obj)
+        private void ConvertEnum(EnumProperty model, object obj)
         {
             var val = model.EnumValues.FirstOrDefault(x => x.ToString() == model.ValueType.GetEnumName(obj));
             model.EnumValue.Value = val;

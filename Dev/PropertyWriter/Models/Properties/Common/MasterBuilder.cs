@@ -3,29 +3,32 @@ using PropertyWriter.Models.Info;
 using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
 namespace PropertyWriter.Models.Properties.Common
 {
 	using MasterRepository = Dictionary<string, ReferencableMasterInfo>;
+	using ReadOnlyMasterRepository = ReadOnlyDictionary<string, ReferencableMasterInfo>;
 
 	public class MasterLoader
 	{
 		private MasterRepository masters = new MasterRepository();
 		private Dictionary<Type, Type[]> subtypes = new Dictionary<Type, Type[]>();
+		private ReadOnlyMasterRepository readonlyMasters = null;
 		private bool isLoaded = false;
 		private PropertyFactory factory;
 
-		public MasterRepository Masters
+		public ReadOnlyMasterRepository Masters
 		{
 			get
 			{
-				if (!isLoaded)
+				if (!isLoaded || readonlyMasters == null)
 				{
 					throw new InvalidOperationException("マスターを参照する前にロードを行ってください。");
 				}
-				return masters;
+				return readonlyMasters;
 			}
 		}
 		public Dictionary<Type, Type[]> Subtypes
@@ -53,22 +56,23 @@ namespace PropertyWriter.Models.Properties.Common
 				throw new ArgumentException($"プロジェクト型 {projectType.FullName} がパブリックではありませんでした。", nameof(projectType));
 			}
 
-			LoadSubtypes(assembly);
+			subtypes = GetSubtypes(assembly.GetTypes());
 
 			// マスターの情報を取得
 			var masterMembers = projectType.GetMembers();
 			var properties = GetMastersProperties(masterMembers);
-			var masterinfo = from p in properties
-							 where p.info.PropertyType.IsArray
-							 select GetMasterinfo(p);
-			masters = GetMasters(masterinfo);
+			var masterinfo = properties.Where(x => x.info.PropertyType.IsArray)
+				.Select(GetMasterinfo)
+				.ToArray();
+			masters = GetReferencableMasters(masterinfo);
 
 			// 依存関係先のマスター・グローバル情報を取得
 			var dependencyMasters = from p in dependencies
 									from q in p.Factory.Masters
-									select (key: p.Root.Value.Type.Name, value: q.Value);
+									select (key: p.Root.Value.Type.Name + "." + q.Key, value: q.Value);
 			dependencyMasters.ForEach(x => masters[x.key] = x.value);
 
+			readonlyMasters = new ReadOnlyMasterRepository(masters);
 			isLoaded = true;
 
 			// グローバルの情報を取得
@@ -81,12 +85,11 @@ namespace PropertyWriter.Models.Properties.Common
 		}
 
 
-		private void LoadSubtypes(Assembly assembly)
+		private Dictionary<Type, Type[]> GetSubtypes(Type[] domainTypes)
 		{
-			var types = assembly.GetTypes();
-			var subtypings = types.Where(Helpers.IsAnnotatedType<PwSubtypingAttribute>).ToArray();
-			var subtypes = types.Where(Helpers.IsAnnotatedType<PwSubtypeAttribute>).ToArray();
-			this.subtypes = subtypings.ToDictionary(x => x,
+			var subtypings = domainTypes.Where(Helpers.IsAnnotatedType<PwSubtypingAttribute>).ToArray();
+			var subtypes = domainTypes.Where(Helpers.IsAnnotatedType<PwSubtypeAttribute>).ToArray();
+			return subtypings.ToDictionary(x => x,
 				x => subtypes.Where(y => x.IsAssignableFrom(y)).ToArray());
 		}
 
@@ -98,7 +101,7 @@ namespace PropertyWriter.Models.Properties.Common
 			return new MasterInfo(key, property.info, factory.Create(type, title));
 		}
 
-		private MasterRepository GetMasters(IEnumerable<MasterInfo> masterinfo)
+		private MasterRepository GetReferencableMasters(IEnumerable<MasterInfo> masterinfo)
 		{
 			var dictionary = new MasterRepository();
 			foreach (var info in masterinfo)

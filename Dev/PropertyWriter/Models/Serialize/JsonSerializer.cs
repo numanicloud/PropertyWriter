@@ -70,7 +70,8 @@ namespace PropertyWriter.Models.Serialize
 					Thread.CurrentThread.CurrentCulture = currentCulture;
 				}
 			}
-            await ModelConverter.LoadValueToRootAsync(root, obj);
+			var converter = new ModelConverter();
+            await converter.LoadValueToRootAsync(root, obj);
         }
 	}
 }

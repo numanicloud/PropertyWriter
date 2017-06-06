@@ -23,7 +23,7 @@ namespace PropertyWriter.Models.Properties.Common
 	{
 		private MasterLoader loader;
 
-		public ReadOnlyDictionary<string, ReferencableMasterInfo> Masters => new ReadOnlyDictionary<string, ReferencableMasterInfo>(loader.Masters);
+		public ReadOnlyDictionary<string, ReferencableMasterInfo> Masters => loader.Masters;
 		
 
 		public PropertyFactory()

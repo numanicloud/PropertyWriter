@@ -38,7 +38,8 @@ namespace PropertyWriter.Models.Serialize
 					throw new Exception("データ ファイルが壊れています。");
 				}
 			}
-			await ModelConverter.LoadValueToRootAsync(root, value);
+			var converter = new ModelConverter();
+			await converter.LoadValueToRootAsync(root, value);
 		}
 
 		public static async Task SaveDataAsync(MethodInfo serializer, PropertyRoot root, string savePath)
