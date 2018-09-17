@@ -15,5 +15,13 @@ namespace PropertyWriter.Models.Properties
         {
             Value = IntValue.Select(x => (object)x).ToReactiveProperty();
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is IntProperty intProp)
+			{
+				IntValue.Value = intProp.IntValue.Value;
+			}
+		}
+	}
 }

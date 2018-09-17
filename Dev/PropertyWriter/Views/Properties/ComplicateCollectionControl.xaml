@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:instance="clr-namespace:PropertyWriter.ViewModels.Properties"
+             xmlns:local="clr-namespace:PropertyWriter.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding DuplicateCommand}"
+                    CommandParameter="{Binding SelectedIndex.Value}"/>
+    </UserControl.InputBindings>
 
 	<Grid>
 		<Grid.ColumnDefinitions>
@@ -42,10 +48,19 @@
 					<DataTemplate DataType="{x:Type instance:SubtypingViewModel}">
 						<TextBlock Text="{Binding FormatedString.Value}"/>
 					</DataTemplate>
-					<DataTemplate DataType="{x:Type instance:ReferenceByIntViewModel}">
-						<TextBlock Text="{Binding FormatedString.Value}"/>
-					</DataTemplate>
-				</ListBox.Resources>
+                    <DataTemplate DataType="{x:Type instance:ReferenceByIntViewModel}">
+                        <TextBlock Text="{Binding FormatedString.Value}"/>
+                    </DataTemplate>
+                    <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                </ListBox.Resources>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="複製"
+                                  Command="{Binding Path=Data.DuplicateCommand, Source={StaticResource proxy}}"
+                                  CommandParameter="{Binding Path=Data.SelectedIndex.Value, Source={StaticResource proxy}}"
+                                  InputGestureText="Ctrl+D"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
 			</ListBox>
 
 			<Button Content="追加" Command="{Binding AddCommand}" Grid.Row="2" Grid.Column="0"/>

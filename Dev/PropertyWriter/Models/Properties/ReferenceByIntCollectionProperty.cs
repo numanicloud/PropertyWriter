@@ -47,5 +47,18 @@ namespace PropertyWriter.Models.Properties
 		}
 		public void RemoveElementAt(int index) => CollectionValue.RemoveAt(index);
 		public void Move(int oldIndex, int newIndex) => CollectionValue.Move(oldIndex, newIndex);
+		public void Duplicate(int source, int destination) => CollectionValue.Duplicate(source, destination);
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is ReferenceByIntCollectionProperty collectionProperty)
+			{
+				foreach (var item in collectionProperty.CollectionValue.Collection)
+				{
+					var clone = AddNewElement();
+					clone.CopyFrom(item.model);
+				}
+			}
+		}
 	}
 }

@@ -11,5 +11,6 @@ namespace PropertyWriter.Models.Properties.Interfaces
         ReactiveProperty<string> Title { get; }
         PropertyInfo PropertyInfo { get; set; }
 		IObservable<Exception> OnError { get; }
-    }
+		void CopyFrom(IPropertyModel sourceProp);
+	}
 }

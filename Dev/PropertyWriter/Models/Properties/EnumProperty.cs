@@ -29,5 +29,13 @@ namespace PropertyWriter.Models.Properties
                 EnumValue.Value = EnumValues[0];
             }
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is EnumProperty enumProperty)
+			{
+				EnumValue.Value = enumProperty.EnumValue.Value;
+			}
+		}
+	}
 }

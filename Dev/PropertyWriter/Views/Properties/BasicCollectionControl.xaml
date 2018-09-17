@@ -3,21 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PropertyWriter.Views"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-	<Grid>
+
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding DuplicateCommand}"
+                    CommandParameter="{Binding SelectedIndex.Value}"/>
+    </UserControl.InputBindings>
+    
+    <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
-		<ListBox 
-				Name="dataList"
-				ItemsSource="{Binding Collection}"
-				Grid.Row="0">
-			<ListBox.Resources>
-				<ResourceDictionary Source="InlineProperty.xaml"/>
-			</ListBox.Resources>
+		<ListBox Name="dataList" ItemsSource="{Binding Collection}" Grid.Row="0">
+            <ListBox.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="InlineProperty.xaml"/>
+                        <ResourceDictionary>
+                            <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ListBox.Resources>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="複製"
+                              Command="{Binding Path=Data.DuplicateCommand, Source={StaticResource proxy}}"
+                              CommandParameter="{Binding Path=Data.SelectedIndex.Value, Source={StaticResource proxy}}"
+                              InputGestureText="Ctrl+D">
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
 		</ListBox>
 
 		<Grid Grid.Row="1">

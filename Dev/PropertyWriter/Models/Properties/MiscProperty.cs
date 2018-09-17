@@ -19,5 +19,13 @@ namespace PropertyWriter.Models.Properties
 			Value = new ReactiveProperty<object>(val);
 			ValueType = type;
 		}
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is MiscProperty miscProperty)
+			{
+				Value.Value = miscProperty.Value.Value;
+			}
+		}
 	}
 }

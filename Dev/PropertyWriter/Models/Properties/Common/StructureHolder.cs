@@ -64,5 +64,20 @@ namespace PropertyWriter.Models.Properties.Common
 			OnError = Observable.Merge(Properties.Select(x => x.OnError))
 				.Merge(OnErrorSubject);
         }
+
+		public void CopyFrom(StructureHolder holder)
+		{
+			var srcArray = holder.Properties.ToArray();
+			var destArray = Properties.ToArray();
+			if (srcArray.Length != destArray.Length)
+			{
+				return;
+			}
+
+			for (int i = 0; i < destArray.Length; i++)
+			{
+				destArray[i].CopyFrom(srcArray[i]);
+			}
+		}
     }
 }

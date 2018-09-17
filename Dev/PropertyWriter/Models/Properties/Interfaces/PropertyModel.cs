@@ -20,5 +20,7 @@ namespace PropertyWriter.Models.Properties.Interfaces
 		{
 			OnError.Subscribe(x => Debugger.Log(1, "Error", $"Error from {Title.Value}\n"));
 		}
+
+		public abstract void CopyFrom(IPropertyModel property);
     }
 }

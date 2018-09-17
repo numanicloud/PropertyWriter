@@ -39,5 +39,20 @@ namespace PropertyWriter.Models.Properties
 		{
 			CollectionValue.Move(oldIndex, newIndex);
 		}
+
+		public void Duplicate(int source, int destination) => CollectionValue.Duplicate(source, destination);
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is BasicCollectionProperty collectionProperty
+				&& CollectionValue.ItemType == collectionProperty.CollectionValue.ItemType)
+			{
+				foreach (var item in collectionProperty.CollectionValue.Collection)
+				{
+					var clone = AddNewElement();
+					clone.CopyFrom(item.model);
+				}
+			}
+		}
 	}
 }

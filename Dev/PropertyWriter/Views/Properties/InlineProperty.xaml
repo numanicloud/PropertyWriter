@@ -138,7 +138,7 @@
 				<ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType.Value}"
 								DisplayMemberPath="Name"/>
 				<TextBlock Text="{Binding FormatedString.Value}" Style="{StaticResource Revealer}"/>
-				<Button Content="編集" Command="{Binding EditCommand}" CommandParameter="{Binding Model.Value}" HorizontalAlignment="Left"/>
+				<Button Content="編集" Command="{Binding EditCommand}" HorizontalAlignment="Left"/>
 			</StackPanel>
 		</ContentControl>
 	</DataTemplate>

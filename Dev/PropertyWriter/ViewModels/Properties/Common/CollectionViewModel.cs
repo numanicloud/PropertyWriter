@@ -26,6 +26,7 @@ namespace PropertyWriter.ViewModels.Properties.Common
 		public ReactiveCommand EditCommand { get; } = new ReactiveCommand();
 		public ReactiveCommand<int> UpCommand { get; } = new ReactiveCommand<int>();
 		public ReactiveCommand<int> DownCommand { get; } = new ReactiveCommand<int>();
+		public ReactiveCommand<int> DuplicateCommand { get; } = new ReactiveCommand<int>();
 
 		public CollectionViewModel(TProperty property, ViewModelFactory factory) : base(property)
 		{
@@ -84,6 +85,11 @@ namespace PropertyWriter.ViewModels.Properties.Common
 			{
 				Property.Move(x + 1, x);
 				SelectedIndex.Value = x;
+			});
+
+			DuplicateCommand.Subscribe(x =>
+			{
+				Property.Duplicate(x, x + 1);
 			});
 		}
 	}

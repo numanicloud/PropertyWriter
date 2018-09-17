@@ -145,6 +145,7 @@
     <Compile Include="Models\Properties\Extensibility\PropertyRouter.cs" />
     <Compile Include="Models\Properties\MiscProperty.cs" />
     <Compile Include="Models\Properties\ReferenceByIntCollectionProperty.cs" />
+    <Compile Include="Models\VersionInfo.cs" />
     <Compile Include="ViewModels\Properties\Common\CollectionViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModel.cs" />
     <Compile Include="ViewModels\Properties\Extensibility\IPluginViewModelFactory.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="ViewModels\Properties\SubtypingClassCollectionViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
     <Compile Include="Models\Editor\EditorState.cs" />
+    <Compile Include="Views\BindingProxy.cs" />
     <Compile Include="Views\ClosingWindow.xaml.cs">
       <DependentUpon>ClosingWindow.xaml</DependentUpon>
     </Compile>

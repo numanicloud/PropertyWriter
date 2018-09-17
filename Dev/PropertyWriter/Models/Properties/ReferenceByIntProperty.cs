@@ -41,5 +41,13 @@ namespace PropertyWriter.Models.Properties
                 SelectedObject.Value = obj;
             }
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is ReferenceByIntProperty referenceProperty)
+			{
+				SelectedObject.Value = referenceProperty.SelectedObject.Value;
+			}
+		}
+	}
 }

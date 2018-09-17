@@ -32,5 +32,13 @@ namespace PropertyWriter.Models.Properties
 
 			structureValue_.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
 		}
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is ClassProperty classProperty)
+			{
+				structureValue_.CopyFrom(classProperty.structureValue_);
+			}
+		}
+	}
 }

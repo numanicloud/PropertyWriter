@@ -31,5 +31,19 @@ namespace PropertyWriter.Models.Properties
         public IPropertyModel AddNewElement() => CollectionValue.AddNewElement();
         public void RemoveElementAt(int index) => CollectionValue.RemoveAt(index);
 		public void Move(int oldIndex, int newIndex) => CollectionValue.Move(oldIndex, newIndex);
-    }
+		public void Duplicate(int source, int destination) => CollectionValue.Duplicate(source, destination);
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is ComplicateCollectionProperty collectionProperty
+				&& ElementType == collectionProperty.ElementType)
+			{
+				foreach (var item in collectionProperty.CollectionValue.Collection)
+				{
+					var clone = AddNewElement();
+					clone.CopyFrom(item.model);
+				}
+			}
+		}
+	}
 }

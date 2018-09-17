@@ -112,5 +112,17 @@ namespace PropertyWriter.Models.Properties.Common
 			}
 			Collection.Move(oldIndex, newIndex);
 		}
+
+		public void Duplicate(int source, int destination)
+		{
+			var sourceProp = Collection[source].model;
+			var sourceType = sourceProp.ValueType;
+
+			var clone = modelFactory_.Create(sourceType, sourceProp.Title.Value);
+			clone.CopyFrom(sourceProp);
+			var disposable = clone.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
+
+			Collection.Insert(destination, (clone, disposable));
+		}
 	}
 }

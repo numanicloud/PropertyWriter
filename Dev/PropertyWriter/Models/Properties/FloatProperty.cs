@@ -15,5 +15,13 @@ namespace PropertyWriter.Models.Properties
         {
             Value = FloatValue.Select(x => (object)x).ToReactiveProperty();
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is FloatProperty floatProperty)
+			{
+				FloatValue.Value = floatProperty.FloatValue.Value;
+			}
+		}
+	}
 }

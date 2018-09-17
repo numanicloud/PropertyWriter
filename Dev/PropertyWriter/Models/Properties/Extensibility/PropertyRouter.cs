@@ -40,7 +40,7 @@ namespace PropertyWriter.Models
 			{
 				return p.BoolValue;
 			}
-			throw new InvalidCastException($"{route} は int 型ではありません。");
+			throw new InvalidCastException($"{route} は bool 型ではありません。");
 		}
 
 		public ReactiveProperty<float> GetFloatProperty(IPropertyModel model, string route)
@@ -50,7 +50,7 @@ namespace PropertyWriter.Models
 			{
 				return p.FloatValue;
 			}
-			throw new InvalidCastException($"{route} は int 型ではありません。");
+			throw new InvalidCastException($"{route} は float 型ではありません。");
 		}
 
 		public ReactiveProperty<string> GetStringProperty(IPropertyModel model, string route)
@@ -60,7 +60,7 @@ namespace PropertyWriter.Models
 			{
 				return p.StringValue;
 			}
-			throw new InvalidCastException($"{route} は int 型ではありません。");
+			throw new InvalidCastException($"{route} は string 型ではありません。");
 		}
 
 		public IPropertyModel GetValuePropertyModel(IPropertyModel model, string route)

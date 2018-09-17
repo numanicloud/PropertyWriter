@@ -17,5 +17,13 @@ namespace PropertyWriter.Models.Properties
 			IsMultiLine = isMultiLine;
             Value = StringValue.Select(x => (object)x).ToReactiveProperty();
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is StringProperty stringProperty)
+			{
+				StringValue.Value = stringProperty.StringValue.Value;
+			}
+		}
+	}
 }

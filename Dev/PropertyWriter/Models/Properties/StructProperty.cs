@@ -33,5 +33,13 @@ namespace PropertyWriter.Models.Properties
 
 			StructureValue.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is StructProperty structProperty)
+			{
+				StructureValue.CopyFrom(structProperty.StructureValue);
+			}
+		}
+	}
 }

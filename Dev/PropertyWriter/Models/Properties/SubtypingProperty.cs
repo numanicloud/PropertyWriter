@@ -50,5 +50,18 @@ namespace PropertyWriter.Models.Properties
 				.SelectMany(x => x.OnError)
 				.Subscribe(x => OnErrorSubject.OnNext(x));
         }
-    }
+
+		public override void CopyFrom(IPropertyModel property)
+		{
+			if (property is SubtypingProperty subtypingProperty)
+			{
+				// 具象型が未設定の時はコピー先も未設定にする
+				if (subtypingProperty.SelectedType.Value != null)
+				{
+					SelectedType.Value = AvailableTypes.FirstOrDefault(x => x.Type == subtypingProperty.SelectedType.Value.Type);
+					Model.Value.CopyFrom(subtypingProperty.Model.Value);
+				}
+			}
+		}
+	}
 }

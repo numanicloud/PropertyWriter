@@ -9,5 +9,6 @@ namespace PropertyWriter.Models.Properties.Interfaces
         IPropertyModel AddNewElement();
 		void RemoveElementAt(int index);
 		void Move(int oldIndex, int newIndex);
+		void Duplicate(int source, int destination);
     }
 }

@@ -42,8 +42,9 @@ namespace PropertyWriter.Models.Editor
                 .Merge(project.SelectMany(x => x.ProjectTypeName))
                 .Merge(dependencyChanged)
                 .Select(x => Unit.Default);
-
-			Title = State.Select(x => "PropertyWriter" + x.Title).ToReactiveProperty();
+			
+			Title = State.Select(x => "PropertyWriter" + VersionInfo.GetAppVersionString() + x.Title)
+				.ToReactiveProperty();
 			CanSave = State.Select(x => x.CanSave).ToReactiveProperty();
 			CanClose = State.SelectMany(x => x.CanClose).ToReactiveProperty();
 		}
