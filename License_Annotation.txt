@@ -1,3 +1,5 @@
+The license of PropertyWriter.Annotation:
+
 MIT License
 
 Copyright (c) 2018 NumAniCloud
