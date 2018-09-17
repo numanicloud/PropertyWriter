@@ -14,7 +14,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (C)  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("ja")]
 
 // アセンブリのバージョン情報は次の 4 つの値で構成されています:
 //

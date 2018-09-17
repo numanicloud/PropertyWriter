@@ -86,6 +86,7 @@ namespace PropertyWriter.Models
 			{
 				return null;
 			}
+			
 			return assembly.GetTypes()
 				.FirstOrDefault(x => x.FullName == ProjectTypeName.Value);
 		}
