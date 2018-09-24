@@ -15,10 +15,12 @@ namespace PropertyWriter.ViewModels.Properties
 		public StructViewModel(StructProperty property, ViewModelFactory factory)
 			: base(property, factory)
         {
+			string GetString() => Value?.Value?.ToString();
+
+			FormatedString.Dispose();
 			FormatedString = Property.OnChanged
-				.Select(x => Value.Value.ToString())
-				.ToReactiveProperty();
-			FormatedString.Subscribe(x => { }, OnErrorSubject.OnNext);
+				.Select(x => GetString())
+				.ToReactiveProperty(GetString());
         }
 	}
 }

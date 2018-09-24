@@ -8,7 +8,7 @@ namespace PropertyWriter.Models
 {
 	class VersionInfo
 	{
-		private static readonly Version AppVersion = new Version(1, 0, 0, 0);
+		private static readonly Version AppVersion = new Version(1, 0, 2, 0);
 
 		public static string GetAppVersionString()
 		{

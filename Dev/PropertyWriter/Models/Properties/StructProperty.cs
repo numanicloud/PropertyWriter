@@ -16,7 +16,7 @@ namespace PropertyWriter.Models.Properties
         public IPropertyModel[] Members => StructureValue.Properties.ToArray();
         public override ReactiveProperty<object> Value { get; }
 		public IObservable<Unit> OnChanged => StructureValue.ValueChanged;
-
+		
 		public StructProperty(Type type, PropertyFactory modelFactory)
         {
             ValueType = type;
@@ -26,10 +26,8 @@ namespace PropertyWriter.Models.Properties
             }
 
             StructureValue = new StructureHolder(type, modelFactory);
-
-            Value = StructureValue.ValueChanged
-                .Select(x => StructureValue.Value.Value)
-                .ToReactiveProperty();
+			Value = new ReactiveProperty<object>(StructureValue.Value.Value, ReactivePropertyMode.RaiseLatestValueOnSubscribe);
+			StructureValue.ValueChanged.Subscribe(x => Value.Value = StructureValue.Value.Value);
 
 			StructureValue.OnError.Subscribe(x => OnErrorSubject.OnNext(x));
         }
